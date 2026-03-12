@@ -45,7 +45,7 @@ class ChickenShopsController < ApplicationController
                when "highest_rated" then @reviews.highest_rated
                when "lowest_rated" then @reviews.lowest_rated
                else @reviews.recent
-               end
+    end
     @review = Review.new
     @user_review = current_user ? @chicken_shop.reviews.find_by(user: current_user) : nil
   end
