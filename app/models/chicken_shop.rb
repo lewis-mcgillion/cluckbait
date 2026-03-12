@@ -44,7 +44,8 @@ class ChickenShop < ApplicationRecord
   end
 
   def rating_distribution
-    (1..5).map { |r| [ r, reviews.where(rating: r).count ] }.to_h
+    counts = reviews.group(:rating).count
+    (1..5).index_with { |r| counts.fetch(r, 0) }
   end
 
   def distance_from(lat, lng)
