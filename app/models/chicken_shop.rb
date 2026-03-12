@@ -7,6 +7,7 @@ class ChickenShop < ApplicationRecord
   validates :city, presence: true
   validates :latitude, presence: true
   validates :longitude, presence: true
+  validates :website, format: { with: /\Ahttps?:\/\/\S+\z/i, message: "must start with http:// or https://" }, allow_blank: true
 
   scope :search_by_name, ->(query) { where("name LIKE ?", "%#{query}%") if query.present? }
   scope :search_by_city, ->(city) { where("city LIKE ?", "%#{city}%") if city.present? }
