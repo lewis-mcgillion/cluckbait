@@ -12,6 +12,8 @@ class Message < ApplicationRecord
 
   scope :ordered, -> { order(created_at: :asc) }
 
+  after_create :notify_recipient
+
   private
 
   def shareable_present?
@@ -23,5 +25,17 @@ class Message < ApplicationRecord
     unless user_id == conversation.sender_id || user_id == conversation.receiver_id
       errors.add(:user, "is not a participant in this conversation")
     end
+  end
+
+  def notify_recipient
+    recipient = conversation.other_user(user)
+    return unless recipient
+
+    Notification.create(
+      user: recipient,
+      actor: user,
+      action: "new_message",
+      notifiable: self
+    )
   end
 end

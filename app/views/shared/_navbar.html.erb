@@ -28,6 +28,12 @@
 
     <div class="nav-right">
       <% if user_signed_in? %>
+        <%= link_to notifications_path, class: "nav-link nav-bell #{'active' if current_page?(notifications_path)}" do %>
+          🔔
+          <% if current_user.unread_notifications_count > 0 %>
+            <span class="nav-badge"><%= current_user.unread_notifications_count %></span>
+          <% end %>
+        <% end %>
         <div class="nav-user-menu">
           <%= link_to profile_path(current_user), class: "nav-avatar-link" do %>
             <% if current_user.avatar.attached? %>

@@ -14,6 +14,7 @@ class User < ApplicationRecord
   has_many :received_conversations, class_name: "Conversation", foreign_key: :receiver_id, dependent: :destroy
   has_many :messages, dependent: :destroy
   has_many :conversation_reads, dependent: :destroy
+  has_many :notifications, dependent: :destroy
 
   validates :display_name, length: { maximum: 50 }
   validates :bio, length: { maximum: 500 }
@@ -61,6 +62,10 @@ class User < ApplicationRecord
 
   def conversations
     Conversation.for_user(self)
+  end
+
+  def unread_notifications_count
+    notifications.unread.count
   end
 
   def unread_conversations_count
