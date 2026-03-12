@@ -14,8 +14,12 @@ module Api
         lat = params[:lat].to_f
         lng = params[:lng].to_f
 
-        unless lat.between?(-90, 90) && lng.between?(-180, 180)
-          return render json: { error: "Invalid coordinates: lat must be between -90 and 90, lng must be between -180 and 180" },
+        errors = []
+        errors << "lat must be between -90 and 90" unless lat.between?(-90, 90)
+        errors << "lng must be between -180 and 180" unless lng.between?(-180, 180)
+
+        if errors.any?
+          return render json: { error: "Invalid coordinates: #{errors.join(', ')}" },
                         status: :unprocessable_entity
         end
 
