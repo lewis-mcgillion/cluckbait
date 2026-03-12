@@ -13,6 +13,8 @@ class Review < ApplicationRecord
   scope :highest_rated, -> { order(rating: :desc) }
   scope :lowest_rated, -> { order(rating: :asc) }
 
+  after_create :create_activity
+
   def rating_label
     case rating
     when 5 then "Outstanding"
@@ -21,5 +23,11 @@ class Review < ApplicationRecord
     when 2 then "Fair"
     when 1 then "Poor"
     end
+  end
+
+  private
+
+  def create_activity
+    Activity.create!(user: user, action: "posted_review", trackable: self)
   end
 end

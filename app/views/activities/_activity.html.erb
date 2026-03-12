@@ -1,0 +1,58 @@
+<div class="activity-card">
+  <% case activity.action %>
+  <% when "posted_review" %>
+    <% if activity.trackable.present? %>
+      <div class="activity-card-avatar">
+        <% if activity.user.avatar.attached? %>
+          <%= image_tag activity.user.avatar, class: "activity-avatar" %>
+        <% else %>
+          <div class="activity-avatar-placeholder"><%= activity.user.name[0].upcase %></div>
+        <% end %>
+      </div>
+      <div class="activity-card-content">
+        <div class="activity-card-header">
+          <%= link_to activity.user.name, profile_path(activity.user), class: "activity-user-name" %>
+          <span class="activity-action-text">reviewed</span>
+          <%= link_to activity.trackable.chicken_shop.name, chicken_shop_path(activity.trackable.chicken_shop), class: "activity-shop-link" %>
+        </div>
+        <div class="activity-rating">
+          <% activity.trackable.rating.times do %>
+            <span class="star filled">★</span>
+          <% end %>
+          <% (5 - activity.trackable.rating).times do %>
+            <span class="star">★</span>
+          <% end %>
+          <span class="activity-rating-label"><%= activity.trackable.rating_label %></span>
+        </div>
+        <p class="activity-review-title"><%= activity.trackable.title %></p>
+        <div class="activity-timestamp"><%= time_ago_in_words(activity.created_at) %> ago</div>
+      </div>
+    <% end %>
+
+  <% when "became_friends" %>
+    <% if activity.trackable.present? %>
+      <% other = activity.trackable.other_user(activity.user) %>
+      <div class="activity-card-avatars">
+        <% if activity.user.avatar.attached? %>
+          <%= image_tag activity.user.avatar, class: "activity-avatar" %>
+        <% else %>
+          <div class="activity-avatar-placeholder"><%= activity.user.name[0].upcase %></div>
+        <% end %>
+        <% if other.avatar.attached? %>
+          <%= image_tag other.avatar, class: "activity-avatar activity-avatar-overlap" %>
+        <% else %>
+          <div class="activity-avatar-placeholder activity-avatar-overlap"><%= other.name[0].upcase %></div>
+        <% end %>
+      </div>
+      <div class="activity-card-content">
+        <div class="activity-card-header">
+          <%= link_to activity.user.name, profile_path(activity.user), class: "activity-user-name" %>
+          <span class="activity-action-text">and</span>
+          <%= link_to other.name, profile_path(other), class: "activity-user-name" %>
+          <span class="activity-action-text">became friends</span>
+        </div>
+        <div class="activity-timestamp"><%= time_ago_in_words(activity.created_at) %> ago</div>
+      </div>
+    <% end %>
+  <% end %>
+</div>
