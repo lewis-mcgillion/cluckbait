@@ -1,15 +1,34 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+alice_sams_review:
+  user: alice
+  chicken_shop: sams_chicken
+  rating: 5
+  title: Absolutely outstanding
+  body: Best chicken burger I have ever had. Crispy coating, juicy inside, perfect sauce.
 
-one:
-  user: one
-  chicken_shop: one
-  rating: 1
-  title: MyString
-  body: MyText
+bob_sams_review:
+  user: bob
+  chicken_shop: sams_chicken
+  rating: 4
+  title: Really solid
+  body: Great chicken, good value. Would come back again for sure.
 
-two:
-  user: two
-  chicken_shop: two
+alice_morleys_review:
+  user: alice
+  chicken_shop: morley_fried
+  rating: 3
+  title: Decent but not amazing
+  body: The chicken was okay. Nothing special but not bad either. Average experience overall.
+
+bob_morleys_review:
+  user: bob
+  chicken_shop: morley_fried
+  rating: 2
+  title: Could be better
+  body: Waited too long and the chicken was a bit dry. Not my favourite place to eat.
+
+carol_wing_stop_review:
+  user: carol
+  chicken_shop: wing_stop
   rating: 1
-  title: MyString
-  body: MyText
+  title: Disappointing
+  body: Really not great. The burger was cold and the service was slow. Would not recommend.
