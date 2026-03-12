@@ -115,7 +115,18 @@
 
       <!-- Right column: Reviews -->
       <div class="shop-reviews">
-        <h2 class="reviews-heading">Reviews (<%= @reviews.count %>)</h2>
+        <div class="reviews-header">
+          <h2 class="reviews-heading">Reviews (<%= @reviews.count %>)</h2>
+          <div class="review-sort-options" data-controller="search-filter">
+            <span class="sort-label">Sort:</span>
+            <% [["recent", "🕐 Recent"], ["highest_rated", "⭐ Highest"], ["lowest_rated", "👎 Lowest"]].each do |value, label| %>
+              <%= link_to label,
+                    chicken_shop_path(@chicken_shop, review_sort: value),
+                    class: "sort-btn sort-btn-sm #{('sort-btn-active' if @review_sort == value)}",
+                    data: { turbo_frame: "reviews_list" } %>
+            <% end %>
+          </div>
+        </div>
 
         <%= turbo_frame_tag "reviews_list" do %>
           <% if @reviews.any? %>

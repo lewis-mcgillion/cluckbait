@@ -220,4 +220,97 @@ class ChickenShopTest < ActiveSupport::TestCase
     shop_no_lng = build(:chicken_shop, latitude: 51.5, longitude: nil)
     assert_nil shop_no_lng.distance_from(51.5, -0.1)
   end
+
+  # -- with_min_rating --
+
+  test "with_min_rating returns shops with average rating at or above threshold" do
+    good_shop = create(:chicken_shop)
+    create(:review, chicken_shop: good_shop, rating: 5)
+    create(:review, chicken_shop: good_shop, rating: 4)
+
+    bad_shop = create(:chicken_shop)
+    create(:review, chicken_shop: bad_shop, rating: 2)
+
+    results = ChickenShop.with_min_rating(4)
+    assert_includes results, good_shop
+    assert_not_includes results, bad_shop
+  end
+
+  test "with_min_rating excludes shops with no reviews" do
+    create(:chicken_shop)
+    results = ChickenShop.with_min_rating(1)
+    assert_empty results
+  end
+
+  # -- with_min_reviews --
+
+  test "with_min_reviews returns shops with at least N reviews" do
+    popular = create(:chicken_shop)
+    3.times { create(:review, chicken_shop: popular) }
+
+    quiet = create(:chicken_shop)
+    create(:review, chicken_shop: quiet)
+
+    results = ChickenShop.with_min_reviews(3)
+    assert_includes results, popular
+    assert_not_includes results, quiet
+  end
+
+  test "with_min_reviews excludes shops with no reviews" do
+    create(:chicken_shop)
+    results = ChickenShop.with_min_reviews(1)
+    assert_empty results
+  end
+
+  # -- with_photos --
+
+  test "with_photos returns shops that have reviews with photos" do
+    shop_with_photo = create(:chicken_shop)
+    review = create(:review, chicken_shop: shop_with_photo)
+    review.photos.attach(
+      io: StringIO.new("fake image"),
+      filename: "photo.jpg",
+      content_type: "image/jpeg"
+    )
+
+    shop_without_photo = create(:chicken_shop)
+    create(:review, chicken_shop: shop_without_photo)
+
+    results = ChickenShop.with_photos
+    assert_includes results, shop_with_photo
+    assert_not_includes results, shop_without_photo
+  end
+
+  test "with_photos excludes shops with no reviews" do
+    create(:chicken_shop)
+    assert_empty ChickenShop.with_photos
+  end
+
+  # -- in_rating_range --
+
+  test "in_rating_range returns shops with average rating within range" do
+    mid_shop = create(:chicken_shop)
+    create(:review, chicken_shop: mid_shop, rating: 3)
+
+    high_shop = create(:chicken_shop)
+    create(:review, chicken_shop: high_shop, rating: 5)
+
+    low_shop = create(:chicken_shop)
+    create(:review, chicken_shop: low_shop, rating: 1)
+
+    results = ChickenShop.in_rating_range(2, 4)
+    assert_includes results, mid_shop
+    assert_not_includes results, high_shop
+    assert_not_includes results, low_shop
+  end
+
+  # -- by_newest --
+
+  test "by_newest orders shops by creation date descending" do
+    old_shop = create(:chicken_shop, created_at: 2.days.ago)
+    new_shop = create(:chicken_shop, created_at: 1.hour.ago)
+
+    shops = ChickenShop.by_newest.to_a
+    assert shops.index(new_shop) < shops.index(old_shop)
+  end
 end

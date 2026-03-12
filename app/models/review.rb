@@ -11,6 +11,7 @@ class Review < ApplicationRecord
 
   scope :recent, -> { order(created_at: :desc) }
   scope :highest_rated, -> { order(rating: :desc) }
+  scope :lowest_rated, -> { order(rating: :asc) }
 
   def rating_label
     case rating

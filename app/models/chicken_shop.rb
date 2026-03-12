@@ -12,6 +12,34 @@ class ChickenShop < ApplicationRecord
   scope :search_by_name, ->(query) { where("name LIKE ?", "%#{query}%") if query.present? }
   scope :search_by_city, ->(city) { where("city LIKE ?", "%#{city}%") if city.present? }
 
+  scope :with_min_rating, ->(rating) {
+    left_joins(:reviews)
+      .group(:id)
+      .having("COALESCE(AVG(reviews.rating), 0) >= ?", rating.to_f)
+  }
+
+  scope :with_min_reviews, ->(count) {
+    left_joins(:reviews)
+      .group(:id)
+      .having("COUNT(reviews.id) >= ?", count.to_i)
+  }
+
+  scope :with_photos, -> {
+    where(
+      "EXISTS (SELECT 1 FROM reviews " \
+      "INNER JOIN active_storage_attachments ON active_storage_attachments.record_type = 'Review' " \
+      "AND active_storage_attachments.record_id = reviews.id " \
+      "AND active_storage_attachments.name = 'photos' " \
+      "WHERE reviews.chicken_shop_id = chicken_shops.id)"
+    )
+  }
+
+  scope :in_rating_range, ->(min, max) {
+    left_joins(:reviews)
+      .group(:id)
+      .having("COALESCE(AVG(reviews.rating), 0) >= ? AND COALESCE(AVG(reviews.rating), 0) <= ?", min.to_f, max.to_f)
+  }
+
   scope :by_highest_rated, -> {
     left_joins(:reviews)
       .group(:id)
@@ -23,6 +51,8 @@ class ChickenShop < ApplicationRecord
       .group(:id)
       .order(Arel.sql("COUNT(reviews.id) DESC"))
   }
+
+  scope :by_newest, -> { order(created_at: :desc) }
 
   scope :by_distance_from, ->(lat, lng) {
     quoted_lat = Arel::Nodes.build_quoted(lat.to_f)
