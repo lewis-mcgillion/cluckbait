@@ -8,8 +8,9 @@ module Api
                          .group("chicken_shops.id")
 
       if params[:search].present?
+        term = ActiveRecord::Base.sanitize_sql_like(params[:search])
         shops = shops.where("name LIKE ? OR city LIKE ? OR postcode LIKE ?",
-          "%#{params[:search]}%", "%#{params[:search]}%", "%#{params[:search]}%")
+          "%#{term}%", "%#{term}%", "%#{term}%")
       end
 
       if params[:lat].present? && params[:lng].present?

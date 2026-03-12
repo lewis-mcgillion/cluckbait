@@ -10,8 +10,8 @@ class ChickenShop < ApplicationRecord
   validates :longitude, presence: true
   validates :website, format: { with: /\Ahttps?:\/\/\S+\z/i, message: "must start with http:// or https://" }, allow_blank: true
 
-  scope :search_by_name, ->(query) { where("name LIKE ?", "%#{query}%") if query.present? }
-  scope :search_by_city, ->(city) { where("city LIKE ?", "%#{city}%") if city.present? }
+  scope :search_by_name, ->(query) { where("name LIKE ?", "%#{sanitize_sql_like(query)}%") if query.present? }
+  scope :search_by_city, ->(city) { where("city LIKE ?", "%#{sanitize_sql_like(city)}%") if city.present? }
 
   scope :with_min_rating, ->(rating) {
     left_joins(:reviews)

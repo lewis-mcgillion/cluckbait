@@ -57,7 +57,8 @@ Rails.application.configure do
   # config.action_mailer.raise_delivery_errors = false
 
   # Set host to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: "example.com" }
+  # TODO: Replace with actual production domain
+  config.action_mailer.default_url_options = { host: ENV.fetch("APP_HOST", "cluckbait.com") }
 
   # Specify outgoing SMTP server. Remember to add smtp/* credentials via rails credentials:edit.
   # config.action_mailer.smtp_settings = {
@@ -86,4 +87,10 @@ Rails.application.configure do
   #
   # Skip DNS rebinding protection for the default health check endpoint.
   config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+
+  # Security headers
+  config.action_dispatch.default_headers.merge!(
+    "Permissions-Policy" => "camera=(), microphone=(), geolocation=(self)",
+    "X-Permitted-Cross-Domain-Policies" => "none"
+  )
 end

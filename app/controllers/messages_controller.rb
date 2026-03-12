@@ -9,8 +9,10 @@ class MessagesController < ApplicationController
     if params[:message][:shareable_type].present? && params[:message][:shareable_id].present?
       shareable_type = params[:message][:shareable_type]
       if Message::ALLOWED_SHAREABLE_TYPES.include?(shareable_type)
-        @message.shareable_type = shareable_type
-        @message.shareable_id = params[:message][:shareable_id]
+        shareable = shareable_type.constantize.find_by(id: params[:message][:shareable_id])
+        if shareable
+          @message.shareable = shareable
+        end
       end
     end
 
