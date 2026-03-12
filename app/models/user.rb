@@ -2,7 +2,11 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  has_many :activities, dependent: :destroy
   has_many :reviews, dependent: :destroy
+  has_many :review_reactions, dependent: :destroy
+  has_many :wishlist_items, dependent: :destroy
+  has_many :wishlisted_shops, through: :wishlist_items, source: :chicken_shop
   has_one_attached :avatar
 
   # Friendships
@@ -14,6 +18,7 @@ class User < ApplicationRecord
   has_many :received_conversations, class_name: "Conversation", foreign_key: :receiver_id, dependent: :destroy
   has_many :messages, dependent: :destroy
   has_many :conversation_reads, dependent: :destroy
+  has_many :notifications, dependent: :destroy
 
   validates :display_name, length: { maximum: 50 }
   validates :bio, length: { maximum: 500 }
@@ -61,6 +66,18 @@ class User < ApplicationRecord
 
   def conversations
     Conversation.for_user(self)
+  end
+
+  def wishlisted?(shop)
+    wishlist_items.exists?(chicken_shop_id: shop.id)
+  end
+
+  def wishlist_count
+    wishlist_items.count
+  end
+
+  def unread_notifications_count
+    notifications.unread.count
   end
 
   def unread_conversations_count

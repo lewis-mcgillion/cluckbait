@@ -1,0 +1,17 @@
+<div id="<%= dom_id(notification) %>" class="notification-item <%= 'notification-unread' if notification.unread? %>">
+  <%= link_to notification.target_path, class: "notification-link" do %>
+    <span class="notification-icon"><%= notification.icon %></span>
+    <div class="notification-content">
+      <p class="notification-text"><%= notification.message_text %></p>
+      <span class="notification-time"><%= time_ago_in_words(notification.created_at) %> ago</span>
+    </div>
+    <% if notification.unread? %>
+      <span class="notification-dot"></span>
+    <% end %>
+  <% end %>
+  <% if notification.unread? %>
+    <%= button_to mark_as_read_notification_path(notification), method: :patch, class: "notification-mark-btn", data: { turbo_stream: true }, title: "Mark as read" do %>
+      ✓
+    <% end %>
+  <% end %>
+</div>

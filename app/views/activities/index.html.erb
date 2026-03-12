@@ -1,0 +1,27 @@
+<div class="page-header">
+  <div class="container">
+    <h1 class="page-title">What's Happening</h1>
+    <p class="page-subtitle">See what your friends have been up to</p>
+  </div>
+</div>
+
+<div class="container" style="padding: 2rem 1.5rem;">
+  <% if @activities.any? %>
+    <div class="activity-feed">
+      <%= render partial: "activity", collection: @activities %>
+    </div>
+
+    <% if @activities.size == 20 %>
+      <div class="activity-load-more">
+        <%= link_to "Load more", activities_path(page: @page + 1), class: "btn btn-outline" %>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="empty-state">
+      <div class="empty-state-icon">📡</div>
+      <h3>No activity yet</h3>
+      <p class="text-muted">When your friends post reviews or make new connections, you'll see it here.</p>
+      <%= link_to "Find Friends", friendships_path, class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>

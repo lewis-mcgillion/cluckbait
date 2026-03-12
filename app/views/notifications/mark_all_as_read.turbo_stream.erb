@@ -1,0 +1,7 @@
+<%= turbo_stream.replace "notifications-list" do %>
+  <div id="notifications-list">
+    <% current_user.notifications.recent_first.includes(:actor, :notifiable).limit(50).each do |notification| %>
+      <%= render partial: "notifications/notification", locals: { notification: notification } %>
+    <% end %>
+  </div>
+<% end %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_12_213359) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_13_000000) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -37,6 +37,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_12_213359) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "activities", force: :cascade do |t|
+    t.string "action", null: false
+    t.datetime "created_at", null: false
+    t.integer "trackable_id"
+    t.string "trackable_type"
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["trackable_type", "trackable_id"], name: "index_activities_on_trackable_type_and_trackable_id"
+    t.index ["user_id", "created_at"], name: "index_activities_on_user_id_and_created_at"
+    t.index ["user_id"], name: "index_activities_on_user_id"
   end
 
   create_table "chicken_shops", force: :cascade do |t|
@@ -98,6 +110,31 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_12_213359) do
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
+  create_table "notifications", force: :cascade do |t|
+    t.string "action", null: false
+    t.integer "actor_id"
+    t.datetime "created_at", null: false
+    t.integer "notifiable_id"
+    t.string "notifiable_type"
+    t.datetime "read_at"
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable_type_and_notifiable_id"
+    t.index ["user_id", "read_at"], name: "index_notifications_on_user_id_and_read_at"
+    t.index ["user_id"], name: "index_notifications_on_user_id"
+  end
+
+  create_table "review_reactions", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "kind", null: false
+    t.integer "review_id", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["review_id"], name: "index_review_reactions_on_review_id"
+    t.index ["user_id", "review_id", "kind"], name: "index_review_reactions_on_user_id_and_review_id_and_kind", unique: true
+    t.index ["user_id"], name: "index_review_reactions_on_user_id"
+  end
+
   create_table "reviews", force: :cascade do |t|
     t.text "body"
     t.integer "chicken_shop_id", null: false
@@ -124,8 +161,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_12_213359) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "wishlist_items", force: :cascade do |t|
+    t.integer "chicken_shop_id", null: false
+    t.datetime "created_at", null: false
+    t.text "notes"
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.boolean "visited", default: false, null: false
+    t.index ["chicken_shop_id"], name: "index_wishlist_items_on_chicken_shop_id"
+    t.index ["user_id", "chicken_shop_id"], name: "index_wishlist_items_on_user_id_and_chicken_shop_id", unique: true
+    t.index ["user_id"], name: "index_wishlist_items_on_user_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "activities", "users"
   add_foreign_key "conversation_reads", "conversations"
   add_foreign_key "conversation_reads", "users"
   add_foreign_key "conversations", "users", column: "receiver_id"
@@ -134,6 +184,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_12_213359) do
   add_foreign_key "friendships", "users", column: "friend_id"
   add_foreign_key "messages", "conversations"
   add_foreign_key "messages", "users"
+  add_foreign_key "notifications", "users"
+  add_foreign_key "notifications", "users", column: "actor_id"
+  add_foreign_key "review_reactions", "reviews"
+  add_foreign_key "review_reactions", "users"
   add_foreign_key "reviews", "chicken_shops"
   add_foreign_key "reviews", "users"
+  add_foreign_key "wishlist_items", "chicken_shops"
+  add_foreign_key "wishlist_items", "users"
 end
