@@ -26,6 +26,7 @@
             <div class="shop-contact">🌐 <%= link_to "Website", @chicken_shop.website, target: "_blank", rel: "noopener" %></div>
           <% end %>
         </div>
+        <%= render "wishlist_items/wishlist_button", shop: @chicken_shop, wishlist_item: @wishlist_item %>
       </div>
     </div>
   </div>

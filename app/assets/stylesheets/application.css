@@ -1226,3 +1226,196 @@ turbo-frame { display: contents; }
   .profile-actions { flex-direction: column; width: 100%; }
   .profile-actions .btn { width: 100%; text-align: center; }
 }
+
+/* ==========================================================================
+   Wishlist
+   ========================================================================== */
+
+.wishlist-button-wrapper {
+  margin-top: 1rem;
+}
+
+.wishlist-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--radius);
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  border: 2px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+}
+
+.wishlist-btn:hover {
+  background: var(--accent);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.wishlist-btn.saved {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.wishlist-btn.saved:hover {
+  background: transparent;
+  color: var(--accent);
+}
+
+/* Card bookmark button */
+.shop-card-container {
+  position: relative;
+}
+
+.wishlist-card-bookmark {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 2;
+}
+
+.wishlist-bookmark-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  color: #fff;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: var(--transition);
+  padding: 0;
+  line-height: 1;
+}
+
+.wishlist-bookmark-btn:hover {
+  background: var(--accent);
+  transform: scale(1.1);
+}
+
+.wishlist-bookmark-btn.saved {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Wishlist index page */
+.wishlist-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0;
+}
+
+.wishlist-tab {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  background: none;
+  color: var(--text-secondary);
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: var(--transition);
+  text-decoration: none;
+}
+
+.wishlist-tab:hover {
+  color: var(--text-primary);
+}
+
+.wishlist-tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.wishlist-card-wrapper {
+  position: relative;
+}
+
+.wishlist-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--bg-card);
+  border-top: 1px solid var(--border);
+  border-radius: 0 0 var(--radius) var(--radius);
+}
+
+.wishlist-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.wishlist-toggle-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.wishlist-toggle-btn.visited {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+.wishlist-remove-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.6rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-left: auto;
+}
+
+.wishlist-remove-btn:hover {
+  border-color: #e74c3c;
+  color: #e74c3c;
+}
+
+/* Wishlist badges on profile */
+.wishlist-visited-badge,
+.wishlist-pending-badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-top: 0.25rem;
+}
+
+.wishlist-visited-badge {
+  background: rgba(46, 204, 113, 0.15);
+  color: #2ecc71;
+}
+
+.wishlist-pending-badge {
+  background: rgba(255, 107, 53, 0.15);
+  color: var(--accent);
+}

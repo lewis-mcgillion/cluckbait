@@ -1,5 +1,6 @@
 class ChickenShop < ApplicationRecord
   has_many :reviews, dependent: :destroy
+  has_many :wishlist_items, dependent: :destroy
   has_one_attached :image
 
   validates :name, presence: true

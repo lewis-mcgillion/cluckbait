@@ -1,0 +1,72 @@
+<% content_for(:title) { "My Wishlist — Cluckbait" } %>
+
+<section class="section">
+  <div class="container">
+    <div class="page-header">
+      <h1 class="page-title">🔖 My Wishlist</h1>
+      <p class="page-subtitle">Chicken shops you want to try</p>
+    </div>
+
+    <div class="wishlist-tabs">
+      <%= link_to "All", wishlist_items_path, class: "wishlist-tab #{'active' if @filter == 'all'}" %>
+      <%= link_to "Want to Try", wishlist_items_path(filter: "want_to_try"), class: "wishlist-tab #{'active' if @filter == 'want_to_try'}" %>
+      <%= link_to "Visited", wishlist_items_path(filter: "visited"), class: "wishlist-tab #{'active' if @filter == 'visited'}" %>
+    </div>
+
+    <% if @wishlist_items.any? %>
+      <div class="shops-grid" id="wishlist-items">
+        <% @wishlist_items.each do |item| %>
+          <div class="wishlist-card-wrapper" id="<%= dom_id(item) %>">
+            <%= link_to chicken_shop_path(item.chicken_shop), class: "shop-card" do %>
+              <div class="shop-card-image">
+                <% if item.chicken_shop.image.attached? %>
+                  <%= image_tag item.chicken_shop.image, class: "shop-img" %>
+                <% else %>
+                  <div class="shop-img-placeholder">
+                    <span>🍔</span>
+                  </div>
+                <% end %>
+                <div class="shop-card-badge">
+                  <span class="shop-rating-badge">★ <%= item.chicken_shop.average_rating %></span>
+                </div>
+              </div>
+              <div class="shop-card-body">
+                <h3 class="shop-card-name"><%= item.chicken_shop.name %></h3>
+                <p class="shop-card-location">📍 <%= item.chicken_shop.city %><%= ", #{item.chicken_shop.postcode}" if item.chicken_shop.postcode.present? %></p>
+                <div class="shop-card-stats">
+                  <span class="shop-reviews-count"><%= item.chicken_shop.reviews_count %> reviews</span>
+                  <span class="shop-card-stars"><%= "★" * item.chicken_shop.average_rating.round %><%= "☆" * (5 - item.chicken_shop.average_rating.round) %></span>
+                </div>
+              </div>
+            <% end %>
+            <div class="wishlist-card-actions">
+              <% if item.visited? %>
+                <span class="wishlist-visited-badge">✅ Visited</span>
+              <% else %>
+                <span class="wishlist-pending-badge">🍗 Want to Try</span>
+              <% end %>
+              <%= button_to wishlist_item_path(item), method: :patch, class: "btn btn-sm btn-outline wishlist-toggle-btn" do %>
+                <%= item.visited? ? "Mark Unvisited" : "Mark Visited ✅" %>
+              <% end %>
+              <%= button_to wishlist_item_path(item), method: :delete, class: "btn btn-sm btn-danger wishlist-remove-btn", data: { turbo_confirm: "Remove from wishlist?" } do %>
+                Remove
+              <% end %>
+            </div>
+            <% if item.notes.present? %>
+              <div class="wishlist-card-notes">
+                <p>📝 <%= item.notes %></p>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="empty-state">
+        <span class="empty-icon">🔖</span>
+        <h3><%= @filter == "visited" ? "No visited shops yet" : @filter == "want_to_try" ? "No shops on your list" : "Your wishlist is empty" %></h3>
+        <p>Discover chicken shops and save the ones you want to try!</p>
+        <%= link_to "Explore Shops", chicken_shops_path, class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+</section>

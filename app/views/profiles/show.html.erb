@@ -25,6 +25,10 @@
             <span class="stat-number"><%= @user.average_rating_given %></span>
             <span class="stat-label">Avg Rating</span>
           </div>
+          <div class="stat">
+            <span class="stat-number"><%= @user.wishlist_count %></span>
+            <span class="stat-label">Wishlisted</span>
+          </div>
         </div>
         <% if current_user == @user %>
           <%= link_to "Edit Profile", edit_profile_path(@user), class: "btn btn-outline btn-sm" %>
@@ -88,6 +92,51 @@
         <span class="empty-icon">🍗</span>
         <h3>No reviews yet</h3>
         <p><%= @user == current_user ? "You haven't written any reviews yet. Find a chicken shop and share your thoughts!" : "#{@user.name} hasn't written any reviews yet." %></p>
+        <% if @user == current_user %>
+          <%= link_to "Explore Shops", chicken_shops_path, class: "btn btn-primary" %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">🔖 <%= @user == current_user ? "My" : "#{@user.name}'s" %> Wishlist</h2>
+
+    <% if @wishlist_items.any? %>
+      <div class="shops-grid">
+        <% @wishlist_items.each do |item| %>
+          <%= link_to chicken_shop_path(item.chicken_shop), class: "shop-card" do %>
+            <div class="shop-card-image">
+              <% if item.chicken_shop.image.attached? %>
+                <%= image_tag item.chicken_shop.image, class: "shop-img" %>
+              <% else %>
+                <div class="shop-img-placeholder">
+                  <span>🍔</span>
+                </div>
+              <% end %>
+              <div class="shop-card-badge">
+                <span class="shop-rating-badge">★ <%= item.chicken_shop.average_rating %></span>
+              </div>
+            </div>
+            <div class="shop-card-body">
+              <h3 class="shop-card-name"><%= item.chicken_shop.name %></h3>
+              <p class="shop-card-location">📍 <%= item.chicken_shop.city %></p>
+              <% if item.visited? %>
+                <span class="wishlist-visited-badge">✅ Visited</span>
+              <% else %>
+                <span class="wishlist-pending-badge">🍗 Want to Try</span>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="empty-state">
+        <span class="empty-icon">🔖</span>
+        <h3>No wishlist items yet</h3>
+        <p><%= @user == current_user ? "Save chicken shops you want to try!" : "#{@user.name} hasn't saved any shops yet." %></p>
         <% if @user == current_user %>
           <%= link_to "Explore Shops", chicken_shops_path, class: "btn btn-primary" %>
         <% end %>

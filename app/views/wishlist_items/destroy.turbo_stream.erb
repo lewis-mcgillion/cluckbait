@@ -1,0 +1,18 @@
+<%= turbo_stream.replace "wishlist_button_#{@chicken_shop.id}" do %>
+  <%= render "wishlist_items/wishlist_button", shop: @chicken_shop, wishlist_item: nil %>
+<% end %>
+
+<%= turbo_stream.replace "wishlist_card_button_#{@chicken_shop.id}" do %>
+  <%= render "wishlist_items/card_button", shop: @chicken_shop, wishlist_item: nil %>
+<% end %>
+
+<%= turbo_stream.remove dom_id(@wishlist_item) %>
+
+<%= turbo_stream.replace "wishlist_nav_count" do %>
+  <span id="wishlist_nav_count">
+    <% count = current_user.wishlist_count %>
+    <% if count > 0 %>
+      <span class="nav-badge"><%= count %></span>
+    <% end %>
+  </span>
+<% end %>
