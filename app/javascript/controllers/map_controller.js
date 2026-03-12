@@ -38,7 +38,10 @@ export default class extends Controller {
   loadShops(params = {}) {
     const queryString = new URLSearchParams(params).toString()
     fetch("/api/shops?" + queryString)
-      .then(r => r.json())
+      .then(r => {
+        if (!r.ok) throw new Error(`Server error: ${r.status} ${r.statusText}`)
+        return r.json()
+      })
       .then(shops => {
         this.clearMarkers()
         shops.forEach(shop => {
@@ -63,6 +66,10 @@ export default class extends Controller {
           const group = new L.featureGroup(this.markers)
           this.map.fitBounds(group.getBounds().pad(0.1))
         }
+      })
+      .catch(error => {
+        console.error("Failed to load shops:", error)
+        alert("Unable to load chicken shops. Please try again later.")
       })
   }
 
