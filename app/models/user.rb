@@ -13,6 +13,7 @@ class User < ApplicationRecord
   has_many :sent_conversations, class_name: "Conversation", foreign_key: :sender_id, dependent: :destroy
   has_many :received_conversations, class_name: "Conversation", foreign_key: :receiver_id, dependent: :destroy
   has_many :messages, dependent: :destroy
+  has_many :conversation_reads, dependent: :destroy
 
   validates :display_name, length: { maximum: 50 }
   validates :bio, length: { maximum: 500 }
@@ -63,6 +64,9 @@ class User < ApplicationRecord
   end
 
   def unread_conversations_count
-    0 # Placeholder for future unread tracking
+    conversations.where(
+      "EXISTS (SELECT 1 FROM messages WHERE messages.conversation_id = conversations.id AND messages.user_id != ? AND messages.created_at > COALESCE((SELECT last_read_at FROM conversation_reads WHERE conversation_reads.conversation_id = conversations.id AND conversation_reads.user_id = ?), '1970-01-01'))",
+      id, id
+    ).count
   end
 end

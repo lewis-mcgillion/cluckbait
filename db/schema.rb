@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_12_212253) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_12_213359) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -51,6 +51,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_12_212253) do
     t.string "postcode"
     t.datetime "updated_at", null: false
     t.string "website"
+  end
+
+  create_table "conversation_reads", force: :cascade do |t|
+    t.integer "conversation_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "last_read_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["conversation_id"], name: "index_conversation_reads_on_conversation_id"
+    t.index ["user_id", "conversation_id"], name: "index_conversation_reads_on_user_id_and_conversation_id", unique: true
+    t.index ["user_id"], name: "index_conversation_reads_on_user_id"
   end
 
   create_table "conversations", force: :cascade do |t|
@@ -115,6 +126,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_12_212253) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "conversation_reads", "conversations"
+  add_foreign_key "conversation_reads", "users"
   add_foreign_key "conversations", "users", column: "receiver_id"
   add_foreign_key "conversations", "users", column: "sender_id"
   add_foreign_key "friendships", "users"

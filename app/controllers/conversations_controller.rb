@@ -10,6 +10,7 @@ class ConversationsController < ApplicationController
     @messages = @conversation.messages.ordered.includes(:user, :shareable)
     @message = Message.new
     @friends = current_user.friends
+    ConversationRead.mark_read!(current_user, @conversation)
   end
 
   def create

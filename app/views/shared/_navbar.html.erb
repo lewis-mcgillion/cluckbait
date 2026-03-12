@@ -19,6 +19,9 @@
         <% end %>
         <%= link_to conversations_path, class: "nav-link #{'active' if current_page?(conversations_path)}" do %>
           Messages
+          <% if current_user.unread_conversations_count > 0 %>
+            <span class="nav-badge"><%= current_user.unread_conversations_count %></span>
+          <% end %>
         <% end %>
       <% end %>
     </div>
