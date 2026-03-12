@@ -5,11 +5,11 @@ Rails.application.routes.draw do
 
   root "home#index"
 
-  resources :chicken_shops, only: [:index, :show] do
-    resources :reviews, only: [:create, :destroy]
+  resources :chicken_shops, only: [ :index, :show ] do
+    resources :reviews, only: [ :create, :destroy ]
   end
 
-  resources :profiles, only: [:show, :edit, :update], param: :id
+  resources :profiles, only: [ :show, :edit, :update ], param: :id
 
   # API endpoints for map
   get "api/shops", to: "api/shops#index"

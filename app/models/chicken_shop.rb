@@ -39,11 +39,11 @@ class ChickenShop < ApplicationRecord
   end
 
   def full_address
-    [address, city, postcode].compact.join(", ")
+    [ address, city, postcode ].compact.join(", ")
   end
 
   def rating_distribution
-    (1..5).map { |r| [r, reviews.where(rating: r).count] }.to_h
+    (1..5).map { |r| [ r, reviews.where(rating: r).count ] }.to_h
   end
 
   def distance_from(lat, lng)
