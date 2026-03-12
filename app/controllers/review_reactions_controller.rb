@@ -3,12 +3,13 @@ class ReviewReactionsController < ApplicationController
   before_action :set_review
 
   def create
-    @reaction = @review.reactions.find_by(user: current_user, kind: params[:kind])
+    kind = reaction_params[:kind]
+    @reaction = @review.reactions.find_by(user: current_user, kind: kind)
 
     if @reaction
       @reaction.destroy
     else
-      @reaction = @review.reactions.build(user: current_user, kind: params[:kind])
+      @reaction = @review.reactions.build(user: current_user, kind: kind)
       unless @reaction.save
         head :unprocessable_entity
         return
@@ -29,5 +30,9 @@ class ReviewReactionsController < ApplicationController
 
   def set_review
     @review = Review.find(params[:review_id])
+  end
+
+  def reaction_params
+    params.permit(:kind)
   end
 end

@@ -7,8 +7,11 @@ class MessagesController < ApplicationController
     @message.user = current_user
 
     if params[:message][:shareable_type].present? && params[:message][:shareable_id].present?
-      @message.shareable_type = params[:message][:shareable_type]
-      @message.shareable_id = params[:message][:shareable_id]
+      shareable_type = params[:message][:shareable_type]
+      if Message::ALLOWED_SHAREABLE_TYPES.include?(shareable_type)
+        @message.shareable_type = shareable_type
+        @message.shareable_id = params[:message][:shareable_id]
+      end
     end
 
     if @message.save

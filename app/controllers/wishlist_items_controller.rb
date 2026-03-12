@@ -54,4 +54,8 @@ class WishlistItemsController < ApplicationController
   def set_wishlist_item
     @wishlist_item = current_user.wishlist_items.find(params[:id])
   end
+
+  def wishlist_params
+    params.permit(:notes)
+  end
 end
