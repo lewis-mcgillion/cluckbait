@@ -19,7 +19,7 @@ class User < ApplicationRecord
   validates :bio, length: { maximum: 500 }
 
   def name
-    display_name.presence || email.split("@").first
+    display_name.presence || email.split("@").first.presence || "?"
   end
 
   def avatar_url

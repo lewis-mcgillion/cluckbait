@@ -49,11 +49,14 @@ class ProfilesControllerTest < ActionDispatch::IntegrationTest
 
   test "edit redirects unauthenticated users" do
     get edit_profile_path(@user)
-    # ProfilesController doesn't use authenticate_user!, so it should render
-    # but show redirect via the unless block
-    # Actually looking at the code, edit redirects if @user != current_user
-    # and current_user is nil when not signed in, so it redirects
-    assert_redirected_to profile_path(@user)
+    assert_redirected_to new_user_session_path
+  end
+
+  test "update redirects unauthenticated users" do
+    patch profile_path(@user), params: {
+      user: { display_name: "Hacked" }
+    }
+    assert_redirected_to new_user_session_path
   end
 
   # -- #update --
