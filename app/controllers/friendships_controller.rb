@@ -22,7 +22,7 @@ class FriendshipsController < ApplicationController
       if @friendship.save
         redirect_to profile_path(friend), notice: "Friend request sent to #{friend.name}! 🤝"
       else
-        redirect_to profile_path(friend), alert: @friendship.errors.full_messages.join(", ")
+        redirect_to profile_path(friend), alert: "Unable to send friend request. Please try again."
       end
     rescue ActiveRecord::RecordNotUnique
       redirect_to profile_path(friend), alert: "Friend request already exists."
