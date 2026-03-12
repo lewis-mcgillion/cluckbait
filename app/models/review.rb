@@ -10,6 +10,8 @@ class Review < ApplicationRecord
   validates :body, presence: true, length: { maximum: 2000 }
   validates :user_id, uniqueness: { scope: :chicken_shop_id, message: "has already reviewed this shop" }
 
+  validate :acceptable_photos
+
   scope :recent, -> { order(created_at: :desc) }
   scope :highest_rated, -> { order(rating: :desc) }
   scope :lowest_rated, -> { order(rating: :asc) }
@@ -42,6 +44,22 @@ class Review < ApplicationRecord
   end
 
   private
+
+  def acceptable_photos
+    return unless photos.attached?
+
+    photos.each do |photo|
+      unless photo.blob.content_type.in?(%w[image/png image/jpeg image/gif image/webp])
+        errors.add(:photos, "must be PNG, JPEG, GIF, or WebP images")
+        break
+      end
+
+      if photo.blob.byte_size > 10.megabytes
+        errors.add(:photos, "must each be less than 10MB")
+        break
+      end
+    end
+  end
 
   def create_activity
     Activity.create!(user: user, action: "posted_review", trackable: self)

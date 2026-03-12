@@ -9,6 +9,8 @@ class User < ApplicationRecord
   has_many :wishlisted_shops, through: :wishlist_items, source: :chicken_shop
   has_one_attached :avatar
 
+  validate :acceptable_avatar
+
   # Friendships
   has_many :sent_friendships, class_name: "Friendship", foreign_key: :user_id, dependent: :destroy
   has_many :received_friendships, class_name: "Friendship", foreign_key: :friend_id, dependent: :destroy
@@ -78,6 +80,18 @@ class User < ApplicationRecord
 
   def unread_notifications_count
     notifications.unread.count
+  end
+
+  def acceptable_avatar
+    return unless avatar.attached?
+
+    unless avatar.blob.content_type.in?(%w[image/png image/jpeg image/gif image/webp])
+      errors.add(:avatar, "must be a PNG, JPEG, GIF, or WebP image")
+    end
+
+    if avatar.blob.byte_size > 5.megabytes
+      errors.add(:avatar, "must be less than 5MB")
+    end
   end
 
   def unread_conversations_count

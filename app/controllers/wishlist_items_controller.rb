@@ -14,7 +14,7 @@ class WishlistItemsController < ApplicationController
 
   def create
     @chicken_shop = ChickenShop.find(params[:chicken_shop_id])
-    @wishlist_item = current_user.wishlist_items.build(chicken_shop: @chicken_shop, notes: params[:notes])
+    @wishlist_item = current_user.wishlist_items.build(chicken_shop: @chicken_shop, notes: wishlist_params[:notes])
 
     if @wishlist_item.save
       respond_to do |format|
@@ -53,5 +53,9 @@ class WishlistItemsController < ApplicationController
 
   def set_wishlist_item
     @wishlist_item = current_user.wishlist_items.find(params[:id])
+  end
+
+  def wishlist_params
+    params.permit(:notes)
   end
 end
