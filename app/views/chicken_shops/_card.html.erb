@@ -1,3 +1,4 @@
+<div class="shop-card-container">
 <%= link_to chicken_shop_path(shop), class: "shop-card" do %>
   <div class="shop-card-image">
     <% if shop.image.attached? %>
@@ -23,3 +24,8 @@
     <% end %>
   </div>
 <% end %>
+<% if user_signed_in? %>
+  <% wishlist_item = current_user.wishlist_items.find_by(chicken_shop: shop) %>
+  <%= render "wishlist_items/card_button", shop: shop, wishlist_item: wishlist_item %>
+<% end %>
+</div>

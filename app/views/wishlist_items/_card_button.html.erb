@@ -1,0 +1,11 @@
+<div id="wishlist_card_button_<%= shop.id %>" class="wishlist-card-bookmark">
+  <% if user_signed_in? && wishlist_item.present? %>
+    <%= button_to wishlist_item_path(wishlist_item), method: :delete, class: "wishlist-bookmark-btn saved", title: "Remove from wishlist" do %>
+      <span class="bookmark-icon">♥</span>
+    <% end %>
+  <% elsif user_signed_in? %>
+    <%= button_to wishlist_items_path(chicken_shop_id: shop.id), method: :post, class: "wishlist-bookmark-btn", title: "Save to wishlist" do %>
+      <span class="bookmark-icon">♡</span>
+    <% end %>
+  <% end %>
+</div>

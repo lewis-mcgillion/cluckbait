@@ -147,6 +147,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_13_000000) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "wishlist_items", force: :cascade do |t|
+    t.integer "chicken_shop_id", null: false
+    t.datetime "created_at", null: false
+    t.text "notes"
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.boolean "visited", default: false, null: false
+    t.index ["chicken_shop_id"], name: "index_wishlist_items_on_chicken_shop_id"
+    t.index ["user_id", "chicken_shop_id"], name: "index_wishlist_items_on_user_id_and_chicken_shop_id", unique: true
+    t.index ["user_id"], name: "index_wishlist_items_on_user_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "activities", "users"
@@ -162,4 +174,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_13_000000) do
   add_foreign_key "review_reactions", "users"
   add_foreign_key "reviews", "chicken_shops"
   add_foreign_key "reviews", "users"
+  add_foreign_key "wishlist_items", "chicken_shops"
+  add_foreign_key "wishlist_items", "users"
 end

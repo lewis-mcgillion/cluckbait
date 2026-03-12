@@ -14,6 +14,14 @@
       <% end %>
       <%= link_to "All Shops", chicken_shops_path, class: "nav-link #{'active' if current_page?(chicken_shops_path)}" %>
       <% if user_signed_in? %>
+        <%= link_to wishlist_items_path, class: "nav-link #{'active' if current_page?(wishlist_items_path)}" do %>
+          Wishlist
+          <span id="wishlist_nav_count">
+            <% if current_user.wishlist_count > 0 %>
+              <span class="nav-badge"><%= current_user.wishlist_count %></span>
+            <% end %>
+          </span>
+        <% end %>
         <%= link_to friendships_path, class: "nav-link #{'active' if current_page?(friendships_path)}" do %>
           Friends
           <% if current_user.pending_friend_requests_count > 0 %>

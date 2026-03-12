@@ -15,6 +15,8 @@ Rails.application.routes.draw do
 
   resources :profiles, only: [ :show, :edit, :update ], param: :id
 
+  resources :wishlist_items, only: [ :index, :create, :update, :destroy ]
+
   resources :friendships, only: [ :index, :create, :update, :destroy ]
 
   resources :activities, only: [ :index ]

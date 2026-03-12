@@ -1,0 +1,52 @@
+<%= turbo_stream.replace dom_id(@wishlist_item) do %>
+  <div class="wishlist-card-wrapper" id="<%= dom_id(@wishlist_item) %>">
+    <%= link_to chicken_shop_path(@wishlist_item.chicken_shop), class: "shop-card" do %>
+      <div class="shop-card-image">
+        <% if @wishlist_item.chicken_shop.image.attached? %>
+          <%= image_tag @wishlist_item.chicken_shop.image, class: "shop-img" %>
+        <% else %>
+          <div class="shop-img-placeholder">
+            <span>🍔</span>
+          </div>
+        <% end %>
+        <div class="shop-card-badge">
+          <span class="shop-rating-badge">★ <%= @wishlist_item.chicken_shop.average_rating %></span>
+        </div>
+      </div>
+      <div class="shop-card-body">
+        <h3 class="shop-card-name"><%= @wishlist_item.chicken_shop.name %></h3>
+        <p class="shop-card-location">📍 <%= @wishlist_item.chicken_shop.city %><%= ", #{@wishlist_item.chicken_shop.postcode}" if @wishlist_item.chicken_shop.postcode.present? %></p>
+        <div class="shop-card-stats">
+          <span class="shop-reviews-count"><%= @wishlist_item.chicken_shop.reviews_count %> reviews</span>
+          <span class="shop-card-stars"><%= "★" * @wishlist_item.chicken_shop.average_rating.round %><%= "☆" * (5 - @wishlist_item.chicken_shop.average_rating.round) %></span>
+        </div>
+      </div>
+    <% end %>
+    <div class="wishlist-card-actions">
+      <% if @wishlist_item.visited? %>
+        <span class="wishlist-visited-badge">✅ Visited</span>
+      <% else %>
+        <span class="wishlist-pending-badge">🍗 Want to Try</span>
+      <% end %>
+      <%= button_to wishlist_item_path(@wishlist_item), method: :patch, class: "btn btn-sm btn-outline wishlist-toggle-btn" do %>
+        <%= @wishlist_item.visited? ? "Mark Unvisited" : "Mark Visited ✅" %>
+      <% end %>
+      <%= button_to wishlist_item_path(@wishlist_item), method: :delete, class: "btn btn-sm btn-danger wishlist-remove-btn", data: { turbo_confirm: "Remove from wishlist?" } do %>
+        Remove
+      <% end %>
+    </div>
+    <% if @wishlist_item.notes.present? %>
+      <div class="wishlist-card-notes">
+        <p>📝 <%= @wishlist_item.notes %></p>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<%= turbo_stream.replace "wishlist_button_#{@chicken_shop.id}" do %>
+  <%= render "wishlist_items/wishlist_button", shop: @chicken_shop, wishlist_item: @wishlist_item %>
+<% end %>
+
+<%= turbo_stream.replace "wishlist_card_button_#{@chicken_shop.id}" do %>
+  <%= render "wishlist_items/card_button", shop: @chicken_shop, wishlist_item: @wishlist_item %>
+<% end %>

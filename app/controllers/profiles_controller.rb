@@ -4,6 +4,7 @@ class ProfilesController < ApplicationController
 
   def show
     @reviews = @user.reviews.includes(:chicken_shop).recent
+    @wishlist_items = @user.wishlist_items.includes(:chicken_shop).want_to_try.recent
   end
 
   def edit

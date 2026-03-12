@@ -49,6 +49,7 @@ class ChickenShopsController < ApplicationController
                end
     @review = Review.new
     @user_review = current_user ? @chicken_shop.reviews.find_by(user: current_user) : nil
+    @wishlist_item = current_user ? current_user.wishlist_items.find_by(chicken_shop: @chicken_shop) : nil
   end
 
   private

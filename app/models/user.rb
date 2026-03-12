@@ -5,6 +5,8 @@ class User < ApplicationRecord
   has_many :activities, dependent: :destroy
   has_many :reviews, dependent: :destroy
   has_many :review_reactions, dependent: :destroy
+  has_many :wishlist_items, dependent: :destroy
+  has_many :wishlisted_shops, through: :wishlist_items, source: :chicken_shop
   has_one_attached :avatar
 
   # Friendships
@@ -63,6 +65,14 @@ class User < ApplicationRecord
 
   def conversations
     Conversation.for_user(self)
+  end
+
+  def wishlisted?(shop)
+    wishlist_items.exists?(chicken_shop_id: shop.id)
+  end
+
+  def wishlist_count
+    wishlist_items.count
   end
 
   def unread_conversations_count
