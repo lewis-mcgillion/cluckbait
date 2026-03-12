@@ -48,7 +48,7 @@ class ChickenShop < ApplicationRecord
   end
 
   def distance_from(lat, lng)
-    return nil unless lat && lng
+    return nil unless lat && lng && latitude && longitude
     rad = Math::PI / 180
     dlat = (latitude - lat) * rad
     dlng = (longitude - lng) * rad
