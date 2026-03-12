@@ -9,6 +9,10 @@ Rails.application.routes.draw do
     resources :reviews, only: [ :create, :destroy ]
   end
 
+  resources :reviews, only: [] do
+    resources :reactions, only: [ :create ], controller: "review_reactions"
+  end
+
   resources :profiles, only: [ :show, :edit, :update ], param: :id
 
   resources :friendships, only: [ :index, :create, :update, :destroy ]

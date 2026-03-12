@@ -115,7 +115,13 @@
 
       <!-- Right column: Reviews -->
       <div class="shop-reviews">
-        <h2 class="reviews-heading">Reviews (<%= @reviews.count %>)</h2>
+        <div class="reviews-header">
+          <h2 class="reviews-heading">Reviews (<%= @reviews.count %>)</h2>
+          <div class="reviews-sort">
+            <%= link_to "Recent", chicken_shop_path(@chicken_shop, sort: "recent"), class: "sort-btn #{'sort-btn--active' unless @sort == 'most_helpful'}" %>
+            <%= link_to "Most Helpful", chicken_shop_path(@chicken_shop, sort: "most_helpful"), class: "sort-btn #{'sort-btn--active' if @sort == 'most_helpful'}" %>
+          </div>
+        </div>
 
         <%= turbo_frame_tag "reviews_list" do %>
           <% if @reviews.any? %>

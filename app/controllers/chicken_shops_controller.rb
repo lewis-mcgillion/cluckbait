@@ -26,7 +26,12 @@ class ChickenShopsController < ApplicationController
 
   def show
     @chicken_shop = ChickenShop.find(params[:id])
-    @reviews = @chicken_shop.reviews.includes(:user).recent
+    @sort = params[:sort]
+    @reviews = if @sort == "most_helpful"
+      @chicken_shop.reviews.includes(:user, :reactions).by_most_helpful
+    else
+      @chicken_shop.reviews.includes(:user, :reactions).recent
+    end
     @review = Review.new
     @user_review = current_user ? @chicken_shop.reviews.find_by(user: current_user) : nil
   end

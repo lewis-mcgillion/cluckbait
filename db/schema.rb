@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_12_213359) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_12_215820) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -98,6 +98,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_12_213359) do
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
+  create_table "review_reactions", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "kind", null: false
+    t.integer "review_id", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["review_id"], name: "index_review_reactions_on_review_id"
+    t.index ["user_id", "review_id", "kind"], name: "index_review_reactions_on_user_id_and_review_id_and_kind", unique: true
+    t.index ["user_id"], name: "index_review_reactions_on_user_id"
+  end
+
   create_table "reviews", force: :cascade do |t|
     t.text "body"
     t.integer "chicken_shop_id", null: false
@@ -134,6 +145,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_12_213359) do
   add_foreign_key "friendships", "users", column: "friend_id"
   add_foreign_key "messages", "conversations"
   add_foreign_key "messages", "users"
+  add_foreign_key "review_reactions", "reviews"
+  add_foreign_key "review_reactions", "users"
   add_foreign_key "reviews", "chicken_shops"
   add_foreign_key "reviews", "users"
 end
