@@ -62,7 +62,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_12_211600) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["chicken_shop_id"], name: "index_reviews_on_chicken_shop_id"
-    t.index ["user_id", "chicken_shop_id"], name: "index_reviews_on_user_id_and_chicken_shop_id", unique: true
+    t.index [ "user_id", "chicken_shop_id" ], name: "index_reviews_on_user_id_and_chicken_shop_id", unique: true
     t.index ["user_id"], name: "index_reviews_on_user_id"
   end
 
