@@ -185,4 +185,15 @@ class ChickenShopTest < ActiveSupport::TestCase
     assert_nil shop.distance_from(nil, -0.1)
     assert_nil shop.distance_from(51.5, nil)
   end
+
+  test "distance_from returns nil when shop latitude or longitude is nil" do
+    shop = build(:chicken_shop, latitude: nil, longitude: nil)
+    assert_nil shop.distance_from(51.5, -0.1)
+
+    shop_no_lat = build(:chicken_shop, latitude: nil, longitude: -0.1)
+    assert_nil shop_no_lat.distance_from(51.5, -0.1)
+
+    shop_no_lng = build(:chicken_shop, latitude: 51.5, longitude: nil)
+    assert_nil shop_no_lng.distance_from(51.5, -0.1)
+  end
 end
