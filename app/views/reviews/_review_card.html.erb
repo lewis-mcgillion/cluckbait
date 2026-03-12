@@ -2,7 +2,7 @@
   <div class="review-card">
     <div class="review-header">
       <div class="review-author-info">
-        <%= link_to profile_path(review.user), class: "review-author-link" do %>
+        <%= link_to profile_path(review.user), class: "review-author-link", data: { turbo_frame: "_top" } do %>
           <% if review.user.avatar.attached? %>
             <%= image_tag review.user.avatar.variant(resize_to_fill: [40, 40]), class: "review-avatar" %>
           <% else %>
