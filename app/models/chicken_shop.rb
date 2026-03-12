@@ -25,10 +25,10 @@ class ChickenShop < ApplicationRecord
   }
 
   scope :by_distance_from, ->(lat, lng) {
-    lat_val = Arel::Nodes.build_quoted(lat.to_f)
-    lng_val = Arel::Nodes.build_quoted(lng.to_f)
-    lat_diff = arel_table[:latitude] - lat_val
-    lng_diff = arel_table[:longitude] - lng_val
+    quoted_lat = Arel::Nodes.build_quoted(lat.to_f)
+    quoted_lng = Arel::Nodes.build_quoted(lng.to_f)
+    lat_diff = arel_table[:latitude] - quoted_lat
+    lng_diff = arel_table[:longitude] - quoted_lng
     order((lat_diff * lat_diff) + (lng_diff * lng_diff))
   }
 
