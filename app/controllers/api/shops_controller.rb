@@ -15,6 +15,16 @@ module Api
       if params[:lat].present? && params[:lng].present?
         lat = params[:lat].to_f
         lng = params[:lng].to_f
+
+        errors = []
+        errors << "lat must be between -90 and 90" unless lat.between?(-90, 90)
+        errors << "lng must be between -180 and 180" unless lng.between?(-180, 180)
+
+        if errors.any?
+          return render json: { error: "Invalid coordinates: #{errors.join(', ')}" },
+                        status: :unprocessable_entity
+        end
+
         # Simple distance filter (~30 miles)
         shops = shops.where(
           "latitude BETWEEN ? AND ? AND longitude BETWEEN ? AND ?",
