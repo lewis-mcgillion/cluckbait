@@ -22,8 +22,14 @@
           <% if @chicken_shop.phone.present? %>
             <div class="shop-contact">📞 <%= @chicken_shop.phone %></div>
           <% end %>
-          <% if @chicken_shop.website.present? %>
-            <div class="shop-contact">🌐 <%= link_to "Website", @chicken_shop.website, target: "_blank", rel: "noopener" %></div>
+          <% safe_website_url = begin
+               uri = URI.parse(@chicken_shop.website.to_s)
+               uri.is_a?(URI::HTTP) ? uri.to_s : nil
+             rescue URI::InvalidURIError, TypeError
+               nil
+             end %>
+          <% if safe_website_url.present? %>
+            <div class="shop-contact">🌐 <%= link_to "Website", safe_website_url, target: "_blank", rel: "noopener" %></div>
           <% end %>
         </div>
         <%= render "wishlist_items/wishlist_button", shop: @chicken_shop, wishlist_item: @wishlist_item %>
