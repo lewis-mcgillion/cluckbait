@@ -3,7 +3,9 @@ module Api
     protect_from_forgery with: :null_session
 
     def index
-      shops = ChickenShop.all
+      shops = ChickenShop.left_joins(:reviews)
+                         .select("chicken_shops.*, COALESCE(AVG(reviews.rating), 0) as avg_rating, COUNT(reviews.id) as review_count")
+                         .group("chicken_shops.id")
 
       if params[:search].present?
         shops = shops.where("name LIKE ? OR city LIKE ? OR postcode LIKE ?",
@@ -29,8 +31,8 @@ module Api
           postcode: shop.postcode,
           latitude: shop.latitude,
           longitude: shop.longitude,
-          average_rating: shop.average_rating,
-          reviews_count: shop.reviews_count,
+          average_rating: shop.avg_rating.to_f.round(1),
+          reviews_count: shop.review_count,
           url: chicken_shop_path(shop)
         }
       }
