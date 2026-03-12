@@ -110,6 +110,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_13_000000) do
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
+  create_table "notifications", force: :cascade do |t|
+    t.string "action", null: false
+    t.integer "actor_id"
+    t.datetime "created_at", null: false
+    t.integer "notifiable_id"
+    t.string "notifiable_type"
+    t.datetime "read_at"
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable_type_and_notifiable_id"
+    t.index ["user_id", "read_at"], name: "index_notifications_on_user_id_and_read_at"
+    t.index ["user_id"], name: "index_notifications_on_user_id"
+  end
+
   create_table "review_reactions", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "kind", null: false
@@ -170,6 +184,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_13_000000) do
   add_foreign_key "friendships", "users", column: "friend_id"
   add_foreign_key "messages", "conversations"
   add_foreign_key "messages", "users"
+  add_foreign_key "notifications", "users"
+  add_foreign_key "notifications", "users", column: "actor_id"
   add_foreign_key "review_reactions", "reviews"
   add_foreign_key "review_reactions", "users"
   add_foreign_key "reviews", "chicken_shops"
