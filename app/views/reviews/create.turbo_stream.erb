@@ -1,0 +1,9 @@
+<%= turbo_stream.prepend "reviews_list" do %>
+  <%= render "reviews/review_card", review: @review, chicken_shop: @chicken_shop %>
+<% end %>
+
+<%= turbo_stream.update "review-form" do %>
+  <div class="sidebar-card">
+    <p class="text-muted">✅ You've already reviewed this shop.</p>
+  </div>
+<% end %>

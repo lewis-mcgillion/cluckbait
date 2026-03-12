@@ -1,0 +1,21 @@
+<div class="review-card-mini">
+  <div class="review-card-header">
+    <div class="review-stars"><%= "★" * review.rating %><%= "☆" * (5 - review.rating) %></div>
+    <span class="review-badge"><%= review.rating_label %></span>
+  </div>
+  <h4 class="review-card-title"><%= review.title %></h4>
+  <p class="review-card-body"><%= truncate(review.body, length: 120) %></p>
+  <div class="review-card-footer">
+    <div class="review-author">
+      <% if review.user.avatar.attached? %>
+        <%= image_tag review.user.avatar.variant(resize_to_fill: [32, 32]), class: "review-avatar" %>
+      <% else %>
+        <div class="review-avatar-placeholder"><%= review.user.name[0].upcase %></div>
+      <% end %>
+      <span><%= review.user.name %></span>
+    </div>
+    <%= link_to chicken_shop_path(review.chicken_shop), class: "review-shop-link" do %>
+      📍 <%= review.chicken_shop.name %>
+    <% end %>
+  </div>
+</div>

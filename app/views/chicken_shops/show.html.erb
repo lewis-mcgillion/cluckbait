@@ -1,0 +1,136 @@
+<% content_for(:title) { "#{@chicken_shop.name} — Cluckbait" } %>
+
+<section class="shop-hero">
+  <div class="shop-hero-bg">
+    <% if @chicken_shop.image.attached? %>
+      <%= image_tag @chicken_shop.image, class: "shop-hero-img" %>
+    <% else %>
+      <div class="shop-hero-placeholder"></div>
+    <% end %>
+  </div>
+  <div class="shop-hero-overlay">
+    <div class="container">
+      <div class="shop-hero-content">
+        <h1 class="shop-name"><%= @chicken_shop.name %></h1>
+        <p class="shop-address">📍 <%= @chicken_shop.full_address %></p>
+        <div class="shop-meta">
+          <div class="shop-rating-large">
+            <span class="rating-number"><%= @chicken_shop.average_rating %></span>
+            <div class="rating-stars-large"><%= "★" * @chicken_shop.average_rating.round %><%= "☆" * (5 - @chicken_shop.average_rating.round) %></div>
+            <span class="rating-count"><%= @chicken_shop.reviews_count %> reviews</span>
+          </div>
+          <% if @chicken_shop.phone.present? %>
+            <div class="shop-contact">📞 <%= @chicken_shop.phone %></div>
+          <% end %>
+          <% if @chicken_shop.website.present? %>
+            <div class="shop-contact">🌐 <%= link_to "Website", @chicken_shop.website, target: "_blank", rel: "noopener" %></div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="shop-layout">
+      <!-- Left column: Info + Review form -->
+      <div class="shop-sidebar">
+        <% if @chicken_shop.description.present? %>
+          <div class="sidebar-card">
+            <h3>About</h3>
+            <p><%= @chicken_shop.description %></p>
+          </div>
+        <% end %>
+
+        <!-- Rating Distribution -->
+        <div class="sidebar-card">
+          <h3>Rating Breakdown</h3>
+          <div class="rating-bars">
+            <% @chicken_shop.rating_distribution.reverse_each do |rating, count| %>
+              <div class="rating-bar-row">
+                <span class="rating-bar-label"><%= rating %> ★</span>
+                <div class="rating-bar-track">
+                  <div class="rating-bar-fill" style="width: <%= @chicken_shop.reviews_count > 0 ? (count.to_f / @chicken_shop.reviews_count * 100).round : 0 %>%"></div>
+                </div>
+                <span class="rating-bar-count"><%= count %></span>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Map -->
+        <div class="sidebar-card">
+          <h3>Location</h3>
+          <div class="shop-map"
+               data-controller="shop-map"
+               data-shop-map-lat-value="<%= @chicken_shop.latitude %>"
+               data-shop-map-lng-value="<%= @chicken_shop.longitude %>"
+               data-shop-map-name-value="<%= @chicken_shop.name %>">
+          </div>
+        </div>
+
+        <!-- Write a Review -->
+        <% if user_signed_in? && @user_review.nil? %>
+          <div class="sidebar-card review-form-card" id="review-form">
+            <h3>Write a Review</h3>
+            <%= form_with(model: [@chicken_shop, @review], class: "review-form", data: { turbo_frame: "reviews_list" }) do |f| %>
+              <div class="form-group" data-controller="star-rating">
+                <label class="form-label">Your Rating</label>
+                <%= f.hidden_field :rating, data: { star_rating_target: "input" }, value: 0 %>
+                <div class="star-rating-input">
+                  <% (1..5).each do |i| %>
+                    <span class="star"
+                          data-star-rating-target="star"
+                          data-value="<%= i %>"
+                          data-action="click->star-rating#select mouseenter->star-rating#hover mouseleave->star-rating#unhover">★</span>
+                  <% end %>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Title</label>
+                <%= f.text_field :title, class: "form-input", placeholder: "Sum it up in a few words..." %>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Your Review</label>
+                <%= f.text_area :body, class: "form-input form-textarea", rows: 5, placeholder: "Tell us about the chicken burger..." %>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Photos (optional)</label>
+                <%= f.file_field :photos, multiple: true, class: "form-file-input", accept: "image/*" %>
+              </div>
+              <%= f.submit "Post Review 🍗", class: "btn btn-primary btn-block" %>
+            <% end %>
+          </div>
+        <% elsif user_signed_in? && @user_review %>
+          <div class="sidebar-card">
+            <p class="text-muted">✅ You've already reviewed this shop.</p>
+          </div>
+        <% else %>
+          <div class="sidebar-card">
+            <p class="text-muted"><%= link_to "Sign in", new_user_session_path %> to write a review.</p>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- Right column: Reviews -->
+      <div class="shop-reviews">
+        <h2 class="reviews-heading">Reviews (<%= @reviews.count %>)</h2>
+
+        <%= turbo_frame_tag "reviews_list" do %>
+          <% if @reviews.any? %>
+            <% @reviews.each do |review| %>
+              <%= render "reviews/review_card", review: review, chicken_shop: @chicken_shop %>
+            <% end %>
+          <% else %>
+            <div class="empty-state">
+              <span class="empty-icon">📝</span>
+              <h3>No reviews yet</h3>
+              <p>Be the first to review this chicken shop!</p>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</section>

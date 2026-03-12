@@ -1,0 +1,80 @@
+<% content_for(:title) { "#{@user.name}'s Profile — Cluckbait" } %>
+
+<section class="profile-hero">
+  <div class="container">
+    <div class="profile-header">
+      <div class="profile-avatar-section">
+        <% if @user.avatar.attached? %>
+          <%= image_tag @user.avatar, class: "profile-avatar-large" %>
+        <% else %>
+          <div class="profile-avatar-placeholder-large"><%= @user.name[0].upcase %></div>
+        <% end %>
+      </div>
+      <div class="profile-info">
+        <h1 class="profile-name"><%= @user.name %></h1>
+        <p class="profile-joined">Member since <%= @user.created_at.strftime("%B %Y") %></p>
+        <% if @user.bio.present? %>
+          <p class="profile-bio"><%= @user.bio %></p>
+        <% end %>
+        <div class="profile-stats">
+          <div class="stat">
+            <span class="stat-number"><%= @user.reviews_count %></span>
+            <span class="stat-label">Reviews</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number"><%= @user.average_rating_given %></span>
+            <span class="stat-label">Avg Rating</span>
+          </div>
+        </div>
+        <% if current_user == @user %>
+          <%= link_to "Edit Profile", edit_profile_path(@user), class: "btn btn-outline btn-sm" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">📝 <%= @user.name %>'s Reviews</h2>
+
+    <% if @reviews.any? %>
+      <div class="profile-reviews">
+        <% @reviews.each do |review| %>
+          <div class="review-card">
+            <div class="review-header">
+              <div class="review-shop-info">
+                <%= link_to chicken_shop_path(review.chicken_shop), class: "review-shop-link" do %>
+                  <strong>🍗 <%= review.chicken_shop.name %></strong>
+                  <span class="review-shop-city">— <%= review.chicken_shop.city %></span>
+                <% end %>
+              </div>
+              <div class="review-rating-badge">
+                <span class="review-stars"><%= "★" * review.rating %><%= "☆" * (5 - review.rating) %></span>
+              </div>
+            </div>
+            <h4 class="review-title"><%= review.title %></h4>
+            <p class="review-body"><%= review.body %></p>
+            <% if review.photos.attached? %>
+              <div class="review-photos">
+                <% review.photos.each do |photo| %>
+                  <%= image_tag photo, class: "review-photo" %>
+                <% end %>
+              </div>
+            <% end %>
+            <span class="review-date"><%= review.created_at.strftime("%d %b %Y") %></span>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="empty-state">
+        <span class="empty-icon">🍗</span>
+        <h3>No reviews yet</h3>
+        <p><%= @user == current_user ? "You haven't written any reviews yet. Find a chicken shop and share your thoughts!" : "#{@user.name} hasn't written any reviews yet." %></p>
+        <% if @user == current_user %>
+          <%= link_to "Explore Shops", chicken_shops_path, class: "btn btn-primary" %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</section>

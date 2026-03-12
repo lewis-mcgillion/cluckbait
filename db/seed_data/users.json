@@ -1,0 +1,27 @@
+[
+  {
+    "name": "CluckFan99",
+    "email": "cluckfan@example.com",
+    "bio": "Obsessed with finding the perfect chicken burger. I've tried them all across London."
+  },
+  {
+    "name": "WingKing",
+    "email": "wingking@example.com",
+    "bio": "Professional chicken enthusiast. If it's fried, I'm eating it."
+  },
+  {
+    "name": "CrispyQueen",
+    "email": "crispyqueen@example.com",
+    "bio": "Life's too short for bad chicken. Manchester-based, nationwide reviewer."
+  },
+  {
+    "name": "PoultryCritic",
+    "email": "poultrychef@example.com",
+    "bio": "Former chef turned chicken burger reviewer. I judge on crunch, juiciness, and seasoning."
+  },
+  {
+    "name": "SpiceSeeker",
+    "email": "spiceseeker@example.com",
+    "bio": "Give me the hottest chicken burger you've got. I fear no sauce."
+  }
+]

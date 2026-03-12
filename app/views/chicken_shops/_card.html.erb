@@ -1,0 +1,25 @@
+<%= link_to chicken_shop_path(shop), class: "shop-card" do %>
+  <div class="shop-card-image">
+    <% if shop.image.attached? %>
+      <%= image_tag shop.image, class: "shop-img" %>
+    <% else %>
+      <div class="shop-img-placeholder">
+        <span>🍔</span>
+      </div>
+    <% end %>
+    <div class="shop-card-badge">
+      <span class="shop-rating-badge">★ <%= shop.average_rating %></span>
+    </div>
+  </div>
+  <div class="shop-card-body">
+    <h3 class="shop-card-name"><%= shop.name %></h3>
+    <p class="shop-card-location">📍 <%= shop.city %><%= ", #{shop.postcode}" if shop.postcode.present? %></p>
+    <div class="shop-card-stats">
+      <span class="shop-reviews-count"><%= shop.reviews_count %> reviews</span>
+      <span class="shop-card-stars"><%= "★" * shop.average_rating.round %><%= "☆" * (5 - shop.average_rating.round) %></span>
+    </div>
+    <% if defined?(distance) && distance %>
+      <p class="shop-card-distance">📏 <%= "%.1f" % distance %> km away</p>
+    <% end %>
+  </div>
+<% end %>

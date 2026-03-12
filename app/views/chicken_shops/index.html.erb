@@ -1,0 +1,85 @@
+<% content_for(:title) { "All Chicken Shops — Cluckbait" } %>
+
+<section class="page-header">
+  <div class="container">
+    <h1 class="page-title">🍗 All Chicken Shops</h1>
+    <p class="page-subtitle">Browse every chicken shop in our database</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container" data-controller="shop-sort">
+    <div class="shops-filter-bar">
+      <%= form_tag chicken_shops_path, method: :get, class: "filter-form", data: { shop_sort_target: "form" } do %>
+        <div class="search-box">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+          <%= text_field_tag :search, params[:search], placeholder: "Search by name...", class: "search-input" %>
+        </div>
+        <div class="search-box">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+          </svg>
+          <%= text_field_tag :city, params[:city], placeholder: "Filter by city...", class: "search-input" %>
+        </div>
+        <%= hidden_field_tag :sort, params[:sort], data: { shop_sort_target: "sortField" } %>
+        <%= hidden_field_tag :lat, params[:lat], data: { shop_sort_target: "latField" } %>
+        <%= hidden_field_tag :lng, params[:lng], data: { shop_sort_target: "lngField" } %>
+        <%= submit_tag "Search", class: "btn btn-primary" %>
+        <% if params[:search].present? || params[:city].present? %>
+          <%= link_to "Clear", chicken_shops_path, class: "btn btn-outline" %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="sort-bar">
+      <span class="sort-label">Sort by:</span>
+      <div class="sort-buttons">
+        <button type="button"
+                class="sort-btn <%= 'sort-btn-active' unless @sort.present? %>"
+                data-action="click->shop-sort#sortBy"
+                data-sort-value="">
+          🔤 Name
+        </button>
+        <button type="button"
+                class="sort-btn <%= 'sort-btn-active' if @sort == 'highest_rated' %>"
+                data-action="click->shop-sort#sortBy"
+                data-sort-value="highest_rated">
+          ⭐ Highest Rated
+        </button>
+        <button type="button"
+                class="sort-btn <%= 'sort-btn-active' if @sort == 'most_popular' %>"
+                data-action="click->shop-sort#sortBy"
+                data-sort-value="most_popular">
+          🔥 Most Popular
+        </button>
+        <button type="button"
+                class="sort-btn <%= 'sort-btn-active' if @sort == 'distance' %>"
+                data-action="click->shop-sort#sortByDistance"
+                data-sort-value="distance"
+                data-shop-sort-target="distanceBtn">
+          📍 Nearest to Me
+        </button>
+      </div>
+    </div>
+
+    <% if @chicken_shops.any? %>
+      <div class="shops-grid">
+        <% @chicken_shops.each do |shop| %>
+          <% if @sort == "distance" && @user_lat && @user_lng %>
+            <%= render "card", shop: shop, distance: shop.distance_from(@user_lat, @user_lng) %>
+          <% else %>
+            <%= render "card", shop: shop %>
+          <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="empty-state">
+        <span class="empty-icon">🔍</span>
+        <h3>No shops found</h3>
+        <p>Try a different search or <%= link_to "browse all shops", chicken_shops_path %>.</p>
+      </div>
+    <% end %>
+  </div>
+</section>

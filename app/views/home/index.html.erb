@@ -1,0 +1,86 @@
+<% content_for(:title) { "Cluckbait — Find & Review the Best Chicken Burgers in the UK" } %>
+
+<div data-controller="map">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">
+        Find the <span class="text-accent">best chicken burgers</span> near you
+      </h1>
+      <p class="hero-subtitle">
+        Discover, rate & review chicken shops across the UK. Your next favourite burger is just around the corner.
+      </p>
+      <div class="hero-search">
+        <div class="search-box">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+          <input type="text"
+                 data-map-target="searchInput"
+                 data-action="input->map#search"
+                 placeholder="Search by name, city, or postcode..."
+                 class="search-input"
+                 autocomplete="off">
+          <button data-action="click->map#locate"
+                  class="btn btn-accent btn-locate"
+                  title="Use my location">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+              <circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Map Section -->
+  <section class="map-section">
+    <div data-map-target="container" id="map" class="main-map"></div>
+  </section>
+</div>
+
+<!-- Top Rated Shops -->
+<% if @top_shops.any? %>
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">🏆 Top Rated Chicken Shops</h2>
+      <p class="section-subtitle">The cream of the crop, rated by real chicken burger fans</p>
+    </div>
+    <div class="shops-grid">
+      <% @top_shops.each do |shop| %>
+        <%= render "chicken_shops/card", shop: shop %>
+      <% end %>
+    </div>
+  </div>
+</section>
+<% end %>
+
+<!-- Recent Reviews -->
+<% if @recent_reviews.any? %>
+<section class="section section-dark">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">📝 Latest Reviews</h2>
+      <p class="section-subtitle">Fresh takes from the Cluckbait community</p>
+    </div>
+    <div class="reviews-grid">
+      <% @recent_reviews.each do |review| %>
+        <%= render "reviews/mini_card", review: review %>
+      <% end %>
+    </div>
+  </div>
+</section>
+<% end %>
+
+<!-- CTA Section -->
+<section class="section cta-section">
+  <div class="container text-center">
+    <h2 class="section-title">Ready to rate some chicken? 🍗</h2>
+    <p class="section-subtitle">Join thousands of chicken burger enthusiasts sharing their honest reviews</p>
+    <% unless user_signed_in? %>
+      <%= link_to "Create Free Account", new_user_registration_path, class: "btn btn-primary btn-lg" %>
+    <% end %>
+    <%= link_to "Browse All Shops", chicken_shops_path, class: "btn btn-outline btn-lg" %>
+  </div>
+</section>
