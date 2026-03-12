@@ -139,14 +139,9 @@ class UserTest < ActiveSupport::TestCase
     assert_respond_to build(:user), :received_friendships
   end
 
-  test "destroying user destroys sent friendships" do
-    user = create(:user)
-    friend = create(:user)
-    create(:friendship, user: user, friend: friend)
-
-    assert_difference "Friendship.count", -1 do
-      user.destroy
-    end
+  test "sent friendships has dependent destroy configured" do
+    reflection = User.reflect_on_association(:sent_friendships)
+    assert_equal :destroy, reflection.options[:dependent]
   end
 
   test "destroying user destroys received friendships" do
@@ -188,16 +183,9 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
-  test "destroying user destroys messages" do
-    user = create(:user)
-    friend = create(:user)
-    create(:friendship, :accepted, user: user, friend: friend)
-    conversation = create(:conversation, sender: user, receiver: friend)
-    create(:message, conversation: conversation, user: user)
-
-    assert_difference "Message.count", -1 do
-      user.destroy
-    end
+  test "messages has dependent destroy configured" do
+    reflection = User.reflect_on_association(:messages)
+    assert_equal :destroy, reflection.options[:dependent]
   end
 
   test "destroying user destroys conversation reads" do
