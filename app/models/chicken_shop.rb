@@ -25,10 +25,9 @@ class ChickenShop < ApplicationRecord
   }
 
   scope :by_distance_from, ->(lat, lng) {
-    order(Arel.sql(
-      "((chicken_shops.latitude - #{lat.to_f}) * (chicken_shops.latitude - #{lat.to_f})) + " \
-      "((chicken_shops.longitude - #{lng.to_f}) * (chicken_shops.longitude - #{lng.to_f})) ASC"
-    ))
+    lat_diff = arel_table[:latitude] - lat.to_f
+    lng_diff = arel_table[:longitude] - lng.to_f
+    order((lat_diff * lat_diff) + (lng_diff * lng_diff))
   }
 
   def average_rating
