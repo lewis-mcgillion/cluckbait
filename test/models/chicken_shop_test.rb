@@ -56,6 +56,30 @@ class ChickenShopTest < ActiveSupport::TestCase
     assert_includes shop.errors[:longitude], "can't be blank"
   end
 
+  test "valid with blank website" do
+    assert build(:chicken_shop, website: "").valid?
+  end
+
+  test "valid with http website URL" do
+    assert build(:chicken_shop, website: "http://example.com").valid?
+  end
+
+  test "valid with https website URL" do
+    assert build(:chicken_shop, website: "https://example.com").valid?
+  end
+
+  test "invalid with website missing protocol" do
+    shop = build(:chicken_shop, website: "example.com")
+    assert_not shop.valid?
+    assert shop.errors[:website].any?
+  end
+
+  test "invalid with website using ftp protocol" do
+    shop = build(:chicken_shop, website: "ftp://example.com")
+    assert_not shop.valid?
+    assert shop.errors[:website].any?
+  end
+
   # -- Scopes --
 
   test "search_by_name filters by partial name match" do
