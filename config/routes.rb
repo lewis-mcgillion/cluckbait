@@ -13,6 +13,8 @@ Rails.application.routes.draw do
 
   resources :friendships, only: [ :index, :create, :update, :destroy ]
 
+  resources :activities, only: [ :index ]
+
   resources :conversations, only: [ :index, :show, :create ] do
     resources :messages, only: [ :create ]
   end

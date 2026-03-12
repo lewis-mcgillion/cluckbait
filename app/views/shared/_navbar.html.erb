@@ -9,6 +9,9 @@
 
     <div class="nav-center">
       <%= link_to "Discover", root_path, class: "nav-link #{'active' if current_page?(root_path)}" %>
+      <% if user_signed_in? %>
+        <%= link_to "Feed", activities_path, class: "nav-link #{'active' if current_page?(activities_path)}" %>
+      <% end %>
       <%= link_to "All Shops", chicken_shops_path, class: "nav-link #{'active' if current_page?(chicken_shops_path)}" %>
       <% if user_signed_in? %>
         <%= link_to friendships_path, class: "nav-link #{'active' if current_page?(friendships_path)}" do %>
