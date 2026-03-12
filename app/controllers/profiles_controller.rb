@@ -10,7 +10,6 @@ class ProfilesController < ApplicationController
   def edit
     unless @user == current_user
       redirect_to profile_path(@user), alert: "You can only edit your own profile."
-      return
     end
   end
 
