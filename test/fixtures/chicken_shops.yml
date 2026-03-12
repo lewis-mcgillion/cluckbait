@@ -1,23 +1,43 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+sams_chicken:
+  name: Sam's Chicken
+  address: 123 High Street
+  city: Northampton
+  postcode: NN1 2AA
+  latitude: 52.2405
+  longitude: -0.9027
+  description: The best chicken in Northampton
+  phone: "01onal 123456"
+  website: https://samschicken.co.uk
 
-one:
-  name: MyString
-  address: MyString
-  city: MyString
-  postcode: MyString
-  latitude: 1.5
-  longitude: 1.5
-  description: MyText
-  phone: MyString
-  website: MyString
+morley_fried:
+  name: Morley's Fried Chicken
+  address: 45 Brixton Road
+  city: London
+  postcode: SW9 6DE
+  latitude: 51.4620
+  longitude: -0.1150
+  description: South London institution
+  phone: "020 7123 4567"
+  website: https://morleys.co.uk
 
-two:
-  name: MyString
-  address: MyString
-  city: MyString
-  postcode: MyString
-  latitude: 1.5
-  longitude: 1.5
-  description: MyText
-  phone: MyString
-  website: MyString
+wing_stop:
+  name: Wing Stop
+  address: 10 Market Street
+  city: Manchester
+  postcode: M1 1PT
+  latitude: 53.4808
+  longitude: -2.2426
+  description: Wings done right
+  phone: ""
+  website: ""
+
+no_reviews_shop:
+  name: New Cluckers
+  address: 1 Empty Lane
+  city: Birmingham
+  postcode: B1 1AA
+  latitude: 52.4862
+  longitude: -1.8904
+  description: ""
+  phone: ""
+  website: ""

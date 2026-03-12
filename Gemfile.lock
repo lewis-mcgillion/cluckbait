@@ -116,6 +116,11 @@ GEM
     erubi (1.13.1)
     et-orbi (1.4.0)
       tzinfo
+    factory_bot (6.5.6)
+      activesupport (>= 6.1.0)
+    factory_bot_rails (6.5.1)
+      factory_bot (~> 6.5)
+      railties (>= 6.1.0)
     ffi (1.17.3-aarch64-linux-gnu)
     ffi (1.17.3-aarch64-linux-musl)
     ffi (1.17.3-arm-linux-gnu)
@@ -180,9 +185,7 @@ GEM
     mini_magick (5.3.1)
       logger
     mini_mime (1.1.5)
-    minitest (6.0.2)
-      drb (~> 2.0)
-      prism (~> 1.5)
+    minitest (5.27.0)
     msgpack (1.8.0)
     net-imap (0.6.3)
       date
@@ -418,10 +421,12 @@ DEPENDENCIES
   capybara
   debug
   devise
+  factory_bot_rails
   geocoder
   image_processing (~> 1.2)
   importmap-rails
   kamal
+  minitest (~> 5.25)
   propshaft
   puma (>= 5.0)
   rails (~> 8.0.1)

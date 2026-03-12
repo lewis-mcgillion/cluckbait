@@ -7,6 +7,7 @@ class ChickenShop < ApplicationRecord
   validates :city, presence: true
   validates :latitude, presence: true
   validates :longitude, presence: true
+  validates :website, format: { with: /\Ahttps?:\/\/\S+\z/i, message: "must start with http:// or https://" }, allow_blank: true
 
   scope :search_by_name, ->(query) { where("name LIKE ?", "%#{query}%") if query.present? }
   scope :search_by_city, ->(city) { where("city LIKE ?", "%#{city}%") if city.present? }
@@ -39,11 +40,11 @@ class ChickenShop < ApplicationRecord
   end
 
   def full_address
-    [address, city, postcode].compact.join(", ")
+    [ address, city, postcode ].compact.join(", ")
   end
 
   def rating_distribution
-    (1..5).map { |r| [r, reviews.where(rating: r).count] }.to_h
+    (1..5).map { |r| [ r, reviews.where(rating: r).count ] }.to_h
   end
 
   def distance_from(lat, lng)
