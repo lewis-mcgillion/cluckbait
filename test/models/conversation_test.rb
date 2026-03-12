@@ -58,4 +58,80 @@ class ConversationTest < ActiveSupport::TestCase
     result = Conversation.ordered
     assert_equal convo1, result.first
   end
+
+  # -- #other_user --
+
+  test "other_user returns receiver when current_user is sender" do
+    user1 = create(:user)
+    user2 = create(:user)
+    Friendship.create!(user: user1, friend: user2, status: :accepted)
+    conversation = create(:conversation, sender: user1, receiver: user2)
+
+    assert_equal user2, conversation.other_user(user1)
+  end
+
+  test "other_user returns sender when current_user is receiver" do
+    user1 = create(:user)
+    user2 = create(:user)
+    Friendship.create!(user: user1, friend: user2, status: :accepted)
+    conversation = create(:conversation, sender: user1, receiver: user2)
+
+    assert_equal user1, conversation.other_user(user2)
+  end
+
+  # -- #last_message --
+
+  test "last_message returns the most recent message" do
+    user1 = create(:user)
+    user2 = create(:user)
+    Friendship.create!(user: user1, friend: user2, status: :accepted)
+    conversation = create(:conversation, sender: user1, receiver: user2)
+    create(:message, conversation: conversation, user: user1, body: "First", created_at: 2.minutes.ago)
+    last = create(:message, conversation: conversation, user: user2, body: "Second", created_at: 1.minute.ago)
+
+    assert_equal last, conversation.last_message
+  end
+
+  test "last_message returns nil when no messages" do
+    user1 = create(:user)
+    user2 = create(:user)
+    Friendship.create!(user: user1, friend: user2, status: :accepted)
+    conversation = create(:conversation, sender: user1, receiver: user2)
+
+    assert_nil conversation.last_message
+  end
+
+  # -- Associations --
+
+  test "has many messages" do
+    assert_respond_to Conversation.new, :messages
+  end
+
+  test "destroying conversation destroys associated messages" do
+    user1 = create(:user)
+    user2 = create(:user)
+    Friendship.create!(user: user1, friend: user2, status: :accepted)
+    conversation = create(:conversation, sender: user1, receiver: user2)
+    create(:message, conversation: conversation, user: user1)
+
+    assert_difference "Message.count", -1 do
+      conversation.destroy
+    end
+  end
+
+  test "belongs to sender" do
+    user1 = create(:user)
+    user2 = create(:user)
+    Friendship.create!(user: user1, friend: user2, status: :accepted)
+    conversation = create(:conversation, sender: user1, receiver: user2)
+    assert_instance_of User, conversation.sender
+  end
+
+  test "belongs to receiver" do
+    user1 = create(:user)
+    user2 = create(:user)
+    Friendship.create!(user: user1, friend: user2, status: :accepted)
+    conversation = create(:conversation, sender: user1, receiver: user2)
+    assert_instance_of User, conversation.receiver
+  end
 end

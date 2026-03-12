@@ -39,4 +39,38 @@ class ConversationReadTest < ActiveSupport::TestCase
     ConversationRead.mark_read!(@receiver, @conversation)
     assert_equal 1, ConversationRead.where(user: @receiver, conversation: @conversation).count
   end
+
+  # -- Associations --
+
+  test "belongs to user" do
+    cr = ConversationRead.mark_read!(@receiver, @conversation)
+    assert_instance_of User, cr.user
+  end
+
+  test "belongs to conversation" do
+    cr = ConversationRead.mark_read!(@receiver, @conversation)
+    assert_instance_of Conversation, cr.conversation
+  end
+
+  # -- Validations --
+
+  test "enforces unique user and conversation pair" do
+    ConversationRead.create!(user: @receiver, conversation: @conversation, last_read_at: Time.current)
+    duplicate = ConversationRead.new(user: @receiver, conversation: @conversation, last_read_at: Time.current)
+    assert_not duplicate.valid?
+    assert duplicate.errors[:user_id].any?
+  end
+
+  # -- mark_read! updates last_read_at --
+
+  test "mark_read updates last_read_at on subsequent calls" do
+    ConversationRead.mark_read!(@receiver, @conversation)
+    first_read = ConversationRead.find_by(user: @receiver, conversation: @conversation).last_read_at
+
+    travel 1.minute
+    ConversationRead.mark_read!(@receiver, @conversation)
+    second_read = ConversationRead.find_by(user: @receiver, conversation: @conversation).last_read_at
+
+    assert second_read > first_read
+  end
 end

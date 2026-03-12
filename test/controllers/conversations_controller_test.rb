@@ -50,4 +50,27 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
     get conversations_path
     assert_redirected_to new_user_session_path
   end
+
+  test "create with non-friend redirects with alert" do
+    non_friend = create(:user)
+    post conversations_path, params: { receiver_id: non_friend.id }
+    assert_redirected_to friendships_path
+    assert_equal "You can only message friends.", flash[:alert]
+  end
+
+  test "create with non-friend does not create conversation" do
+    non_friend = create(:user)
+    assert_no_difference "Conversation.count" do
+      post conversations_path, params: { receiver_id: non_friend.id }
+    end
+  end
+
+  test "show marks conversation as read" do
+    conversation = create(:conversation, sender: @friend, receiver: @user)
+    create(:message, conversation: conversation, user: @friend, body: "Hey!")
+
+    assert_equal 1, @user.unread_conversations_count
+    get conversation_path(conversation)
+    assert_equal 0, @user.unread_conversations_count
+  end
 end

@@ -54,4 +54,47 @@ class RoutingTest < ActionDispatch::IntegrationTest
     get "/chicken_shops/1/edit"
     assert_response :not_found
   end
+
+  # -- Friendship routes --
+
+  test "friendships index route" do
+    assert_routing "/friendships", controller: "friendships", action: "index"
+  end
+
+  test "friendships create route" do
+    assert_routing({ method: "post", path: "/friendships" },
+      controller: "friendships", action: "create")
+  end
+
+  test "friendships update route" do
+    assert_routing({ method: "patch", path: "/friendships/1" },
+      controller: "friendships", action: "update", id: "1")
+  end
+
+  test "friendships destroy route" do
+    assert_routing({ method: "delete", path: "/friendships/1" },
+      controller: "friendships", action: "destroy", id: "1")
+  end
+
+  # -- Conversation routes --
+
+  test "conversations index route" do
+    assert_routing "/conversations", controller: "conversations", action: "index"
+  end
+
+  test "conversations show route" do
+    assert_routing "/conversations/1", controller: "conversations", action: "show", id: "1"
+  end
+
+  test "conversations create route" do
+    assert_routing({ method: "post", path: "/conversations" },
+      controller: "conversations", action: "create")
+  end
+
+  # -- Message routes --
+
+  test "nested messages create route" do
+    assert_routing({ method: "post", path: "/conversations/1/messages" },
+      controller: "messages", action: "create", conversation_id: "1")
+  end
 end
