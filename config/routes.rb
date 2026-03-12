@@ -11,6 +11,12 @@ Rails.application.routes.draw do
 
   resources :profiles, only: [ :show, :edit, :update ], param: :id
 
+  resources :friendships, only: [ :index, :create, :update, :destroy ]
+
+  resources :conversations, only: [ :index, :show, :create ] do
+    resources :messages, only: [ :create ]
+  end
+
   # API endpoints for map
   get "api/shops", to: "api/shops#index"
 

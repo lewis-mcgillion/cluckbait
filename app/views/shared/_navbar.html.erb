@@ -10,6 +10,17 @@
     <div class="nav-center">
       <%= link_to "Discover", root_path, class: "nav-link #{'active' if current_page?(root_path)}" %>
       <%= link_to "All Shops", chicken_shops_path, class: "nav-link #{'active' if current_page?(chicken_shops_path)}" %>
+      <% if user_signed_in? %>
+        <%= link_to friendships_path, class: "nav-link #{'active' if current_page?(friendships_path)}" do %>
+          Friends
+          <% if current_user.pending_friend_requests_count > 0 %>
+            <span class="nav-badge"><%= current_user.pending_friend_requests_count %></span>
+          <% end %>
+        <% end %>
+        <%= link_to conversations_path, class: "nav-link #{'active' if current_page?(conversations_path)}" do %>
+          Messages
+        <% end %>
+      <% end %>
     </div>
 
     <div class="nav-right">

@@ -1,0 +1,30 @@
+<div class="chat-message <%= message.user == current_user ? 'chat-message-sent' : 'chat-message-received' %>">
+  <div class="chat-message-bubble">
+    <% if message.shareable.present? %>
+      <div class="shared-content">
+        <% if message.shareable_type == "ChickenShop" %>
+          <%= link_to chicken_shop_path(message.shareable), class: "shared-card" do %>
+            <span class="shared-card-icon">🍗</span>
+            <div class="shared-card-info">
+              <span class="shared-card-title"><%= message.shareable.name %></span>
+              <span class="shared-card-meta"><%= message.shareable.city %> · <%= message.shareable.average_rating %> ★</span>
+            </div>
+          <% end %>
+        <% elsif message.shareable_type == "Review" %>
+          <% review = message.shareable %>
+          <%= link_to chicken_shop_path(review.chicken_shop), class: "shared-card" do %>
+            <span class="shared-card-icon">⭐</span>
+            <div class="shared-card-info">
+              <span class="shared-card-title"><%= review.chicken_shop.name %></span>
+              <span class="shared-card-meta"><%= "★" * review.rating %> · "<%= truncate(review.title, length: 40) %>"</span>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+    <% if message.body.present? %>
+      <p class="chat-message-text"><%= message.body %></p>
+    <% end %>
+    <span class="chat-message-time"><%= message.created_at.strftime("%-I:%M %p") %></span>
+  </div>
+</div>

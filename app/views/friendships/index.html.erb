@@ -1,0 +1,105 @@
+<% content_for(:title) { "Friends — Cluckbait" } %>
+
+<section class="section">
+  <div class="container">
+    <div class="friends-page-header">
+      <h1 class="section-title">🤝 Friends</h1>
+    </div>
+
+    <% if @pending_requests.any? %>
+      <div class="friends-section">
+        <h2 class="subsection-title">📬 Friend Requests (<%= @pending_requests.count %>)</h2>
+        <div class="friends-grid">
+          <% @pending_requests.each do |friendship| %>
+            <div class="friend-card friend-card-pending">
+              <div class="friend-card-info">
+                <%= link_to profile_path(friendship.user), class: "friend-avatar-link" do %>
+                  <% if friendship.user.avatar.attached? %>
+                    <%= image_tag friendship.user.avatar, class: "friend-avatar" %>
+                  <% else %>
+                    <div class="friend-avatar-placeholder"><%= friendship.user.name[0].upcase %></div>
+                  <% end %>
+                <% end %>
+                <div class="friend-details">
+                  <%= link_to friendship.user.name, profile_path(friendship.user), class: "friend-name" %>
+                  <span class="friend-meta"><%= friendship.user.reviews_count %> reviews</span>
+                </div>
+              </div>
+              <div class="friend-card-actions">
+                <%= button_to "Accept", friendship_path(friendship), method: :patch, class: "btn btn-primary btn-sm" %>
+                <%= button_to "Decline", friendship_path(friendship), method: :delete, class: "btn btn-danger btn-sm" %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @sent_requests.any? %>
+      <div class="friends-section">
+        <h2 class="subsection-title">📤 Sent Requests (<%= @sent_requests.count %>)</h2>
+        <div class="friends-grid">
+          <% @sent_requests.each do |friendship| %>
+            <div class="friend-card friend-card-sent">
+              <div class="friend-card-info">
+                <%= link_to profile_path(friendship.friend), class: "friend-avatar-link" do %>
+                  <% if friendship.friend.avatar.attached? %>
+                    <%= image_tag friendship.friend.avatar, class: "friend-avatar" %>
+                  <% else %>
+                    <div class="friend-avatar-placeholder"><%= friendship.friend.name[0].upcase %></div>
+                  <% end %>
+                <% end %>
+                <div class="friend-details">
+                  <%= link_to friendship.friend.name, profile_path(friendship.friend), class: "friend-name" %>
+                  <span class="friend-meta">Pending...</span>
+                </div>
+              </div>
+              <div class="friend-card-actions">
+                <%= button_to "Cancel", friendship_path(friendship), method: :delete, class: "btn btn-outline btn-sm" %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="friends-section">
+      <h2 class="subsection-title">👥 Your Friends (<%= @friends.count %>)</h2>
+      <% if @friends.any? %>
+        <div class="friends-grid">
+          <% @friends.each do |friend| %>
+            <div class="friend-card">
+              <div class="friend-card-info">
+                <%= link_to profile_path(friend), class: "friend-avatar-link" do %>
+                  <% if friend.avatar.attached? %>
+                    <%= image_tag friend.avatar, class: "friend-avatar" %>
+                  <% else %>
+                    <div class="friend-avatar-placeholder"><%= friend.name[0].upcase %></div>
+                  <% end %>
+                <% end %>
+                <div class="friend-details">
+                  <%= link_to friend.name, profile_path(friend), class: "friend-name" %>
+                  <span class="friend-meta"><%= friend.reviews_count %> reviews · Avg <%= friend.average_rating_given %> ★</span>
+                </div>
+              </div>
+              <div class="friend-card-actions">
+                <%= button_to "Message", conversations_path(receiver_id: friend.id), method: :post, class: "btn btn-primary btn-sm" %>
+                <% friendship = current_user.friendship_with(friend) %>
+                <% if friendship %>
+                  <%= button_to "Remove", friendship_path(friendship), method: :delete, class: "btn btn-outline btn-sm", data: { turbo_confirm: "Remove #{friend.name} as a friend?" } %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="empty-state">
+          <span class="empty-icon">🤝</span>
+          <h3>No friends yet</h3>
+          <p>Visit other users' profiles to send friend requests!</p>
+          <%= link_to "Explore Shops", chicken_shops_path, class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>
