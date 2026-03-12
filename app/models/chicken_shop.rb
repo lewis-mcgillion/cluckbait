@@ -25,10 +25,11 @@ class ChickenShop < ApplicationRecord
   }
 
   scope :by_distance_from, ->(lat, lng) {
-    order(Arel.sql(
-      "((chicken_shops.latitude - #{lat.to_f}) * (chicken_shops.latitude - #{lat.to_f})) + " \
-      "((chicken_shops.longitude - #{lng.to_f}) * (chicken_shops.longitude - #{lng.to_f})) ASC"
-    ))
+    quoted_lat = Arel::Nodes.build_quoted(lat.to_f)
+    quoted_lng = Arel::Nodes.build_quoted(lng.to_f)
+    lat_diff = arel_table[:latitude] - quoted_lat
+    lng_diff = arel_table[:longitude] - quoted_lng
+    order((lat_diff * lat_diff) + (lng_diff * lng_diff))
   }
 
   def average_rating
@@ -44,11 +45,12 @@ class ChickenShop < ApplicationRecord
   end
 
   def rating_distribution
-    (1..5).map { |r| [ r, reviews.where(rating: r).count ] }.to_h
+    counts = reviews.group(:rating).count
+    (1..5).index_with { |r| counts.fetch(r, 0) }
   end
 
   def distance_from(lat, lng)
-    return nil unless lat && lng
+    return nil unless lat && lng && latitude && longitude
     rad = Math::PI / 180
     dlat = (latitude - lat) * rad
     dlng = (longitude - lng) * rad

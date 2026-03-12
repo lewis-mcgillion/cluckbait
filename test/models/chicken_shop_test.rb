@@ -56,6 +56,30 @@ class ChickenShopTest < ActiveSupport::TestCase
     assert_includes shop.errors[:longitude], "can't be blank"
   end
 
+  test "valid with blank website" do
+    assert build(:chicken_shop, website: "").valid?
+  end
+
+  test "valid with http website URL" do
+    assert build(:chicken_shop, website: "http://example.com").valid?
+  end
+
+  test "valid with https website URL" do
+    assert build(:chicken_shop, website: "https://example.com").valid?
+  end
+
+  test "invalid with website missing protocol" do
+    shop = build(:chicken_shop, website: "example.com")
+    assert_not shop.valid?
+    assert shop.errors[:website].any?
+  end
+
+  test "invalid with website using ftp protocol" do
+    shop = build(:chicken_shop, website: "ftp://example.com")
+    assert_not shop.valid?
+    assert shop.errors[:website].any?
+  end
+
   # -- Scopes --
 
   test "search_by_name filters by partial name match" do
@@ -184,5 +208,16 @@ class ChickenShopTest < ActiveSupport::TestCase
     shop = build(:chicken_shop)
     assert_nil shop.distance_from(nil, -0.1)
     assert_nil shop.distance_from(51.5, nil)
+  end
+
+  test "distance_from returns nil when shop latitude or longitude is nil" do
+    shop = build(:chicken_shop, latitude: nil, longitude: nil)
+    assert_nil shop.distance_from(51.5, -0.1)
+
+    shop_no_lat = build(:chicken_shop, latitude: nil, longitude: -0.1)
+    assert_nil shop_no_lat.distance_from(51.5, -0.1)
+
+    shop_no_lng = build(:chicken_shop, latitude: 51.5, longitude: nil)
+    assert_nil shop_no_lng.distance_from(51.5, -0.1)
   end
 end

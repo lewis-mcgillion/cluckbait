@@ -66,6 +66,42 @@ class Api::ShopsControllerTest < ActionDispatch::IntegrationTest
     assert_not_includes shop_names, "Wing Stop"
   end
 
+  test "index returns 422 for latitude out of range" do
+    get api_shops_path, params: { lat: "91", lng: "0" }, as: :json
+    assert_response :unprocessable_entity
+    body = JSON.parse(response.body)
+    assert_includes body["error"], "lat must be between -90 and 90"
+    assert_not_includes body["error"], "lng must be between -180 and 180"
+  end
+
+  test "index returns 422 for negative latitude out of range" do
+    get api_shops_path, params: { lat: "-91", lng: "0" }, as: :json
+    assert_response :unprocessable_entity
+  end
+
+  test "index returns 422 for longitude out of range" do
+    get api_shops_path, params: { lat: "0", lng: "181" }, as: :json
+    assert_response :unprocessable_entity
+    body = JSON.parse(response.body)
+    assert_includes body["error"], "lng must be between -180 and 180"
+    assert_not_includes body["error"], "lat must be between -90 and 90"
+  end
+
+  test "index returns 422 for negative longitude out of range" do
+    get api_shops_path, params: { lat: "0", lng: "-181" }, as: :json
+    assert_response :unprocessable_entity
+  end
+
+  test "index accepts valid boundary coordinates" do
+    get api_shops_path, params: { lat: "90", lng: "180" }, as: :json
+    assert_response :success
+  end
+
+  test "index accepts valid negative boundary coordinates" do
+    get api_shops_path, params: { lat: "-90", lng: "-180" }, as: :json
+    assert_response :success
+  end
+
   test "index returns empty array when no matches" do
     get api_shops_path, params: { search: "Nonexistent" }, as: :json
     shops = JSON.parse(response.body)

@@ -86,6 +86,11 @@ class UserTest < ActiveSupport::TestCase
     assert_equal "carol", user.name
   end
 
+  test "name returns fallback when email prefix is empty" do
+    user = build(:user, email: "@example.com", display_name: "")
+    assert_equal "?", user.name
+  end
+
   # -- #avatar_url --
 
   test "avatar_url returns nil when no avatar attached" do
