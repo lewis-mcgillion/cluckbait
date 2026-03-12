@@ -18,10 +18,14 @@ class FriendshipsController < ApplicationController
 
     @friendship = Friendship.new(user: current_user, friend: friend, status: :pending)
 
-    if @friendship.save
-      redirect_to profile_path(friend), notice: "Friend request sent to #{friend.name}! 🤝"
-    else
-      redirect_to profile_path(friend), alert: @friendship.errors.full_messages.join(", ")
+    begin
+      if @friendship.save
+        redirect_to profile_path(friend), notice: "Friend request sent to #{friend.name}! 🤝"
+      else
+        redirect_to profile_path(friend), alert: @friendship.errors.full_messages.join(", ")
+      end
+    rescue ActiveRecord::RecordNotUnique
+      redirect_to profile_path(friend), alert: "Friend request already exists."
     end
   end
 

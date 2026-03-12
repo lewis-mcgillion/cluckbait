@@ -21,13 +21,13 @@ class ConversationsController < ApplicationController
       return
     end
 
-    @conversation = Conversation.between(current_user, other_user).first
-    @conversation ||= Conversation.create(sender: current_user, receiver: other_user)
-
-    if @conversation.persisted?
-      redirect_to conversation_path(@conversation)
-    else
-      redirect_to friendships_path, alert: "Could not start conversation."
+    begin
+      @conversation = Conversation.between(current_user, other_user).first
+      @conversation ||= Conversation.create!(sender: current_user, receiver: other_user)
+    rescue ActiveRecord::RecordNotUnique
+      @conversation = Conversation.between(current_user, other_user).first!
     end
+
+    redirect_to conversation_path(@conversation)
   end
 end

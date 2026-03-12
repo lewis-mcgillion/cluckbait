@@ -33,19 +33,34 @@ export default class extends Controller {
         return
       }
 
-      this.shopResultsTarget.innerHTML = shops.slice(0, 10).map(shop => `
-        <button type="button" class="share-item"
-                data-action="click->share-panel#selectShop"
-                data-shareable-type="ChickenShop"
-                data-shareable-id="${shop.id}"
-                data-shareable-label="${shop.name}">
-          <span class="share-item-icon">🍗</span>
-          <div class="share-item-info">
-            <span class="share-item-title">${shop.name}</span>
-            <span class="share-item-meta">${shop.city} · ${shop.average_rating} ★</span>
-          </div>
-        </button>
-      `).join("")
+      this.shopResultsTarget.replaceChildren(...shops.slice(0, 10).map(shop => {
+        const btn = document.createElement("button")
+        btn.type = "button"
+        btn.className = "share-item"
+        btn.setAttribute("data-action", "click->share-panel#selectShop")
+        btn.setAttribute("data-shareable-type", "ChickenShop")
+        btn.setAttribute("data-shareable-id", shop.id)
+        btn.setAttribute("data-shareable-label", shop.name)
+
+        const icon = document.createElement("span")
+        icon.className = "share-item-icon"
+        icon.textContent = "🍗"
+
+        const info = document.createElement("div")
+        info.className = "share-item-info"
+
+        const title = document.createElement("span")
+        title.className = "share-item-title"
+        title.textContent = shop.name
+
+        const meta = document.createElement("span")
+        meta.className = "share-item-meta"
+        meta.textContent = `${shop.city} · ${shop.average_rating} ★`
+
+        info.append(title, meta)
+        btn.append(icon, info)
+        return btn
+      }))
     } catch (e) {
       this.shopResultsTarget.innerHTML = '<p class="text-muted share-hint">Error searching shops</p>'
     }

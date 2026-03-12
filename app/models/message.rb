@@ -3,8 +3,11 @@ class Message < ApplicationRecord
   belongs_to :user
   belongs_to :shareable, polymorphic: true, optional: true
 
+  ALLOWED_SHAREABLE_TYPES = %w[ChickenShop Review].freeze
+
   validates :body, presence: true, length: { maximum: 2000 }, unless: :shareable_present?
   validates :body, length: { maximum: 2000 }, if: :shareable_present?
+  validates :shareable_type, inclusion: { in: ALLOWED_SHAREABLE_TYPES }, allow_nil: true
   validate :user_is_participant
 
   scope :ordered, -> { order(created_at: :asc) }
