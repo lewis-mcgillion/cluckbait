@@ -54,4 +54,44 @@ class FriendshipsControllerTest < ActionDispatch::IntegrationTest
     get friendships_path
     assert_redirected_to new_user_session_path
   end
+
+  # -- Additional create tests --
+
+  test "create with already existing friendship redirects with alert" do
+    create(:friendship, user: @user, friend: @other_user)
+    assert_no_difference "Friendship.count" do
+      post friendships_path, params: { friend_id: @other_user.id }
+    end
+    assert_redirected_to profile_path(@other_user)
+    assert_equal "Friend request already exists.", flash[:alert]
+  end
+
+  # -- Additional destroy tests --
+
+  test "destroy also removes conversations between users" do
+    friendship = create(:friendship, :accepted, user: @user, friend: @other_user)
+    create(:conversation, sender: @user, receiver: @other_user)
+
+    assert_difference "Conversation.count", -1 do
+      delete friendship_path(friendship)
+    end
+  end
+
+  test "destroy redirects to friendships index" do
+    friendship = create(:friendship, :accepted, user: @user, friend: @other_user)
+    delete friendship_path(friendship)
+    assert_redirected_to friendships_path
+  end
+
+  test "create shows success notice" do
+    post friendships_path, params: { friend_id: @other_user.id }
+    assert_redirected_to profile_path(@other_user)
+    assert_match "Friend request sent", flash[:notice]
+  end
+
+  test "update shows acceptance notice" do
+    friendship = create(:friendship, user: @other_user, friend: @user)
+    patch friendship_path(friendship)
+    assert_match "You are now friends with", flash[:notice]
+  end
 end

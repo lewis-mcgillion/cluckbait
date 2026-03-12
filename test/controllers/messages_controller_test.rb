@@ -47,4 +47,34 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
     }
     assert_redirected_to new_user_session_path
   end
+
+  test "create with invalid params renders error" do
+    post conversation_messages_path(@conversation), params: {
+      message: { body: "" }
+    }
+    assert_response :unprocessable_entity
+  end
+
+  test "create with html format redirects on success" do
+    post conversation_messages_path(@conversation), params: {
+      message: { body: "Hello from HTML!" }
+    }
+    assert_redirected_to conversation_path(@conversation)
+  end
+
+  test "create with shareable and no body succeeds" do
+    shop = create(:chicken_shop)
+    assert_difference "Message.count", 1 do
+      post conversation_messages_path(@conversation), params: {
+        message: { body: "", shareable_type: "ChickenShop", shareable_id: shop.id }
+      }, as: :turbo_stream
+    end
+  end
+
+  test "create does not allow message with body over 2000 characters" do
+    post conversation_messages_path(@conversation), params: {
+      message: { body: "a" * 2001 }
+    }
+    assert_response :unprocessable_entity
+  end
 end

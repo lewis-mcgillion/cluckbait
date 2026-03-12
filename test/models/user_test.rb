@@ -128,4 +128,245 @@ class UserTest < ActiveSupport::TestCase
   test "average_rating_given returns 0 when no reviews" do
     assert_equal 0, create(:user).average_rating_given
   end
+
+  # -- Friendship associations --
+
+  test "has many sent_friendships" do
+    assert_respond_to build(:user), :sent_friendships
+  end
+
+  test "has many received_friendships" do
+    assert_respond_to build(:user), :received_friendships
+  end
+
+  test "destroying user destroys sent friendships" do
+    user = create(:user)
+    friend = create(:user)
+    create(:friendship, user: user, friend: friend)
+
+    assert_difference "Friendship.count", -1 do
+      user.destroy
+    end
+  end
+
+  test "destroying user destroys received friendships" do
+    user = create(:user)
+    friend = create(:user)
+    create(:friendship, user: friend, friend: user)
+
+    assert_difference "Friendship.count", -1 do
+      user.destroy
+    end
+  end
+
+  # -- Conversation associations --
+
+  test "has many sent_conversations" do
+    assert_respond_to build(:user), :sent_conversations
+  end
+
+  test "has many received_conversations" do
+    assert_respond_to build(:user), :received_conversations
+  end
+
+  test "has many messages" do
+    assert_respond_to build(:user), :messages
+  end
+
+  test "has many conversation_reads" do
+    assert_respond_to build(:user), :conversation_reads
+  end
+
+  test "destroying user destroys sent conversations" do
+    user = create(:user)
+    friend = create(:user)
+    create(:friendship, :accepted, user: user, friend: friend)
+    create(:conversation, sender: user, receiver: friend)
+
+    assert_difference "Conversation.count", -1 do
+      user.destroy
+    end
+  end
+
+  test "destroying user destroys messages" do
+    user = create(:user)
+    friend = create(:user)
+    create(:friendship, :accepted, user: user, friend: friend)
+    conversation = create(:conversation, sender: user, receiver: friend)
+    create(:message, conversation: conversation, user: user)
+
+    assert_difference "Message.count", -1 do
+      user.destroy
+    end
+  end
+
+  test "destroying user destroys conversation reads" do
+    user = create(:user)
+    # Verify the dependent: :destroy configuration through reflection
+    reflection = User.reflect_on_association(:conversation_reads)
+    assert_equal :destroy, reflection.options[:dependent]
+  end
+
+  # -- #friends --
+
+  test "friends returns accepted friends from both directions" do
+    user = create(:user)
+    friend1 = create(:user)
+    friend2 = create(:user)
+    pending_friend = create(:user)
+
+    create(:friendship, :accepted, user: user, friend: friend1)
+    create(:friendship, :accepted, user: friend2, friend: user)
+    create(:friendship, user: user, friend: pending_friend)
+
+    friends = user.friends
+    assert_includes friends, friend1
+    assert_includes friends, friend2
+    assert_not_includes friends, pending_friend
+  end
+
+  test "friends returns empty when no accepted friendships" do
+    user = create(:user)
+    other = create(:user)
+    create(:friendship, user: user, friend: other) # pending
+
+    assert_empty user.friends
+  end
+
+  # -- #pending_friend_requests --
+
+  test "pending_friend_requests returns pending requests received by user" do
+    user = create(:user)
+    requester = create(:user)
+    create(:friendship, user: requester, friend: user, status: :pending)
+
+    assert_equal 1, user.pending_friend_requests.count
+  end
+
+  test "pending_friend_requests excludes sent requests" do
+    user = create(:user)
+    other = create(:user)
+    create(:friendship, user: user, friend: other, status: :pending)
+
+    assert_equal 0, user.pending_friend_requests.count
+  end
+
+  # -- #pending_friend_requests_count --
+
+  test "pending_friend_requests_count returns correct count" do
+    user = create(:user)
+    create(:friendship, user: create(:user), friend: user, status: :pending)
+    create(:friendship, user: create(:user), friend: user, status: :pending)
+
+    assert_equal 2, user.pending_friend_requests_count
+  end
+
+  test "pending_friend_requests_count returns 0 when none pending" do
+    assert_equal 0, create(:user).pending_friend_requests_count
+  end
+
+  # -- #friendship_with --
+
+  test "friendship_with finds friendship where user is sender" do
+    user = create(:user)
+    friend = create(:user)
+    friendship = create(:friendship, user: user, friend: friend)
+
+    assert_equal friendship, user.friendship_with(friend)
+  end
+
+  test "friendship_with finds friendship where user is receiver" do
+    user = create(:user)
+    friend = create(:user)
+    friendship = create(:friendship, user: friend, friend: user)
+
+    assert_equal friendship, user.friendship_with(friend)
+  end
+
+  test "friendship_with returns nil when no friendship exists" do
+    user = create(:user)
+    stranger = create(:user)
+
+    assert_nil user.friendship_with(stranger)
+  end
+
+  # -- #friends_with? --
+
+  test "friends_with? returns true for accepted friendship" do
+    user = create(:user)
+    friend = create(:user)
+    create(:friendship, :accepted, user: user, friend: friend)
+
+    assert user.friends_with?(friend)
+  end
+
+  test "friends_with? returns false for pending friendship" do
+    user = create(:user)
+    friend = create(:user)
+    create(:friendship, user: user, friend: friend, status: :pending)
+
+    assert_not user.friends_with?(friend)
+  end
+
+  test "friends_with? returns false when no friendship" do
+    user = create(:user)
+    stranger = create(:user)
+
+    assert_not user.friends_with?(stranger)
+  end
+
+  # -- #conversations --
+
+  test "conversations returns conversations where user is sender or receiver" do
+    user = create(:user)
+    friend1 = create(:user)
+    friend2 = create(:user)
+    create(:friendship, :accepted, user: user, friend: friend1)
+    create(:friendship, :accepted, user: user, friend: friend2)
+    create(:conversation, sender: user, receiver: friend1)
+    create(:conversation, sender: friend2, receiver: user)
+
+    assert_equal 2, user.conversations.count
+  end
+
+  test "conversations excludes conversations user is not part of" do
+    user = create(:user)
+    other1 = create(:user)
+    other2 = create(:user)
+    create(:friendship, :accepted, user: other1, friend: other2)
+    create(:conversation, sender: other1, receiver: other2)
+
+    assert_equal 0, user.conversations.count
+  end
+
+  # -- #unread_conversations_count --
+
+  test "unread_conversations_count returns 0 with no messages" do
+    user = create(:user)
+    friend = create(:user)
+    create(:friendship, :accepted, user: user, friend: friend)
+    create(:conversation, sender: user, receiver: friend)
+
+    assert_equal 0, user.unread_conversations_count
+  end
+
+  test "unread_conversations_count counts conversations with unread messages from others" do
+    user = create(:user)
+    friend = create(:user)
+    create(:friendship, :accepted, user: user, friend: friend)
+    conversation = create(:conversation, sender: user, receiver: friend)
+    create(:message, conversation: conversation, user: friend, body: "Hello!")
+
+    assert_equal 1, user.unread_conversations_count
+  end
+
+  test "unread_conversations_count ignores own messages" do
+    user = create(:user)
+    friend = create(:user)
+    create(:friendship, :accepted, user: user, friend: friend)
+    conversation = create(:conversation, sender: user, receiver: friend)
+    create(:message, conversation: conversation, user: user, body: "Hello!")
+
+    assert_equal 0, user.unread_conversations_count
+  end
 end

@@ -58,4 +58,34 @@ class FriendshipTest < ActiveSupport::TestCase
 
     assert_equal 1, Friendship.pending_for(user).count
   end
+
+  # -- #other_user --
+
+  test "other_user returns friend when current_user is user" do
+    user = create(:user)
+    friend = create(:user)
+    friendship = create(:friendship, user: user, friend: friend)
+
+    assert_equal friend, friendship.other_user(user)
+  end
+
+  test "other_user returns user when current_user is friend" do
+    user = create(:user)
+    friend = create(:user)
+    friendship = create(:friendship, user: user, friend: friend)
+
+    assert_equal user, friendship.other_user(friend)
+  end
+
+  # -- Associations --
+
+  test "belongs to user" do
+    friendship = create(:friendship)
+    assert_instance_of User, friendship.user
+  end
+
+  test "belongs to friend" do
+    friendship = create(:friendship)
+    assert_instance_of User, friendship.friend
+  end
 end
