@@ -42,11 +42,11 @@ class ChickenShopsController < ApplicationController
     @review_sort = params[:review_sort].presence || "recent"
     @reviews = @chicken_shop.reviews.includes(:user, :reactions)
     @reviews = case @review_sort
-               when "highest_rated" then @reviews.highest_rated
-               when "lowest_rated" then @reviews.lowest_rated
-               when "most_helpful" then @reviews.by_most_helpful
-               else @reviews.recent
-               end
+    when "highest_rated" then @reviews.highest_rated
+    when "lowest_rated" then @reviews.lowest_rated
+    when "most_helpful" then @reviews.by_most_helpful
+    else @reviews.recent
+    end
     @review = Review.new
     @user_review = current_user ? @chicken_shop.reviews.find_by(user: current_user) : nil
     @wishlist_item = current_user ? current_user.wishlist_items.find_by(chicken_shop: @chicken_shop) : nil
