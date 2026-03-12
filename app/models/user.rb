@@ -4,6 +4,7 @@ class User < ApplicationRecord
 
   has_many :activities, dependent: :destroy
   has_many :reviews, dependent: :destroy
+  has_many :review_reactions, dependent: :destroy
   has_one_attached :avatar
 
   # Friendships

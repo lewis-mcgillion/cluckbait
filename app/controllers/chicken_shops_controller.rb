@@ -40,10 +40,11 @@ class ChickenShopsController < ApplicationController
   def show
     @chicken_shop = ChickenShop.find(params[:id])
     @review_sort = params[:review_sort].presence || "recent"
-    @reviews = @chicken_shop.reviews.includes(:user)
+    @reviews = @chicken_shop.reviews.includes(:user, :reactions)
     @reviews = case @review_sort
                when "highest_rated" then @reviews.highest_rated
                when "lowest_rated" then @reviews.lowest_rated
+               when "most_helpful" then @reviews.by_most_helpful
                else @reviews.recent
                end
     @review = Review.new

@@ -119,7 +119,7 @@
           <h2 class="reviews-heading">Reviews (<%= @reviews.count %>)</h2>
           <div class="review-sort-options" data-controller="search-filter">
             <span class="sort-label">Sort:</span>
-            <% [["recent", "🕐 Recent"], ["highest_rated", "⭐ Highest"], ["lowest_rated", "👎 Lowest"]].each do |value, label| %>
+            <% [["recent", "🕐 Recent"], ["highest_rated", "⭐ Highest"], ["lowest_rated", "👎 Lowest"], ["most_helpful", "👍 Most Helpful"]].each do |value, label| %>
               <%= link_to label,
                     chicken_shop_path(@chicken_shop, review_sort: value),
                     class: "sort-btn sort-btn-sm #{('sort-btn-active' if @review_sort == value)}",
