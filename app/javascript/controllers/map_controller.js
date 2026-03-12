@@ -97,8 +97,22 @@ export default class extends Controller {
 
         button.classList.remove("loading")
       },
-      () => {
-        alert("Unable to get your location. Please search manually.")
+      (error) => {
+        let message
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            message = "Location access was denied. Please allow location access in your browser settings."
+            break
+          case error.TIMEOUT:
+            message = "Location request timed out. Please try again."
+            break
+          case error.POSITION_UNAVAILABLE:
+            message = "Your location could not be determined. Please search manually."
+            break
+          default:
+            message = "Unable to get your location. Please search manually."
+        }
+        alert(message)
         button.classList.remove("loading")
       }
     )
