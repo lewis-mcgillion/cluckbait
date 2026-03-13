@@ -13,14 +13,10 @@ class MessagesController < ApplicationController
 
     if params[:message][:shareable_type].present? && params[:message][:shareable_id].present?
       shareable_class = SHAREABLE_CLASSES[params[:message][:shareable_type]]
-      if shareable_class
-        shareable = shareable_class.find_by(id: params[:message][:shareable_id])
-        if shareable
-          @message.shareable = shareable
-        else
-          @message.shareable_type = nil
-          @message.shareable_id = nil
-        end
+      shareable = shareable_class&.find_by(id: params[:message][:shareable_id])
+
+      if shareable
+        @message.shareable = shareable
       else
         @message.shareable_type = nil
         @message.shareable_id = nil
