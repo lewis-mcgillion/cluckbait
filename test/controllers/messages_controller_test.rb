@@ -77,4 +77,33 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
     }
     assert_response :unprocessable_entity
   end
+
+  test "create ignores disallowed shareable types" do
+    assert_difference "Message.count", 1 do
+      post conversation_messages_path(@conversation), params: {
+        message: { body: "Trying injection", shareable_type: "User", shareable_id: @user.id }
+      }, as: :turbo_stream
+    end
+    assert_nil Message.last.shareable
+  end
+
+  test "create ignores arbitrary class names as shareable type" do
+    assert_difference "Message.count", 1 do
+      post conversation_messages_path(@conversation), params: {
+        message: { body: "Trying injection", shareable_type: "Kernel", shareable_id: 1 }
+      }, as: :turbo_stream
+    end
+    assert_nil Message.last.shareable
+  end
+
+  test "create with shareable review" do
+    shop = create(:chicken_shop)
+    review = create(:review, user: @friend, chicken_shop: shop)
+    assert_difference "Message.count", 1 do
+      post conversation_messages_path(@conversation), params: {
+        message: { body: "Look at this review!", shareable_type: "Review", shareable_id: review.id }
+      }, as: :turbo_stream
+    end
+    assert_equal review, Message.last.shareable
+  end
 end
