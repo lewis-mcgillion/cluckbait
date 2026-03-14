@@ -106,4 +106,31 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
     end
     assert_equal review, Message.last.shareable
   end
+
+  test "create with non-existent shareable clears shareable" do
+    assert_difference "Message.count", 1 do
+      post conversation_messages_path(@conversation), params: {
+        message: { body: "Check this!", shareable_type: "ChickenShop", shareable_id: 999999 }
+      }, as: :turbo_stream
+    end
+    assert_nil Message.last.shareable
+  end
+
+  test "create with non-existent review shareable clears shareable" do
+    assert_difference "Message.count", 1 do
+      post conversation_messages_path(@conversation), params: {
+        message: { body: "Check this!", shareable_type: "Review", shareable_id: 999999 }
+      }, as: :turbo_stream
+    end
+    assert_nil Message.last.shareable
+  end
+
+  test "message body at exactly 2000 characters succeeds" do
+    assert_difference "Message.count", 1 do
+      post conversation_messages_path(@conversation), params: {
+        message: { body: "a" * 2000 }
+      }, as: :turbo_stream
+    end
+    assert_response :success
+  end
 end

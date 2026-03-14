@@ -88,4 +88,47 @@ class FriendshipTest < ActiveSupport::TestCase
     friendship = create(:friendship)
     assert_instance_of User, friendship.friend
   end
+
+  # -- Callback tests --
+
+  test "creating pending friendship creates friend_request notification" do
+    user = create(:user)
+    friend = create(:user)
+
+    assert_difference "Notification.where(action: 'friend_request').count", 1 do
+      create(:friendship, user: user, friend: friend)
+    end
+
+    notification = Notification.last
+    assert_equal friend, notification.user
+    assert_equal user, notification.actor
+    assert_equal "friend_request", notification.action
+  end
+
+  test "accepting friendship creates friend_accepted notification" do
+    friendship = create(:friendship)
+
+    assert_difference "Notification.where(action: 'friend_accepted').count", 1 do
+      friendship.accepted!
+    end
+
+    notification = Notification.last
+    assert_equal friendship.user, notification.user
+    assert_equal friendship.friend, notification.actor
+    assert_equal "friend_accepted", notification.action
+  end
+
+  test "accepting friendship creates activities for both users" do
+    friendship = create(:friendship)
+
+    assert_difference "Activity.where(action: 'became_friends').count", 2 do
+      friendship.accepted!
+    end
+  end
+
+  test "creating friendship does not create activity" do
+    assert_no_difference "Activity.where(action: 'became_friends').count" do
+      create(:friendship)
+    end
+  end
 end

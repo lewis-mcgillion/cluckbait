@@ -313,4 +313,20 @@ class ChickenShopTest < ActiveSupport::TestCase
     shops = ChickenShop.by_newest.to_a
     assert shops.index(new_shop) < shops.index(old_shop)
   end
+
+  # -- Missing association tests --
+
+  test "has many wishlist_items" do
+    assert_respond_to build(:chicken_shop), :wishlist_items
+  end
+
+  test "destroying shop destroys associated wishlist_items" do
+    shop = create(:chicken_shop)
+    user = create(:user)
+    create(:wishlist_item, user: user, chicken_shop: shop)
+
+    assert_difference "WishlistItem.count", -1 do
+      shop.destroy
+    end
+  end
 end

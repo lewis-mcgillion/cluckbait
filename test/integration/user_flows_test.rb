@@ -203,4 +203,123 @@ class UserFlowsTest < ActionDispatch::IntegrationTest
       delete friendship_path(friendship)
     end
   end
+
+  # -- Wishlist flow --
+
+  test "full flow: add shop to wishlist, mark visited, remove" do
+    user = create(:user)
+    shop = create(:chicken_shop, name: "Tasty Chicken")
+
+    sign_in user
+
+    # Add to wishlist
+    assert_difference "WishlistItem.count", 1 do
+      post wishlist_items_path, params: { chicken_shop_id: shop.id }
+    end
+
+    item = WishlistItem.last
+    assert_not item.visited
+    assert_redirected_to shop
+
+    # View wishlist
+    get wishlist_items_path
+    assert_response :success
+
+    # Mark as visited
+    patch wishlist_item_path(item)
+    assert item.reload.visited
+
+    # Remove from wishlist
+    assert_difference "WishlistItem.count", -1 do
+      delete wishlist_item_path(item)
+    end
+  end
+
+  # -- Notification flow --
+
+  test "full flow: trigger notifications, view, mark as read" do
+    user1 = create(:user, display_name: "Alice")
+    user2 = create(:user, display_name: "Bob")
+
+    # User1 sends friend request to User2 (creates notification)
+    sign_in user1
+    post friendships_path, params: { friend_id: user2.id }
+
+    # User2 sees the notification
+    sign_out user1
+    sign_in user2
+
+    assert_equal 1, user2.unread_notifications_count
+
+    # View notifications
+    get notifications_path
+    assert_response :success
+
+    # Mark notification as read
+    notification = Notification.where(user: user2).last
+    patch mark_as_read_notification_path(notification)
+    assert_equal 0, user2.reload.unread_notifications_count
+  end
+
+  # -- Activity feed flow --
+
+  test "full flow: user sees friend activities" do
+    user1 = create(:user, display_name: "Alice")
+    user2 = create(:user, display_name: "Bob")
+
+    # Become friends
+    create(:friendship, :accepted, user: user1, friend: user2)
+
+    # User2 creates a review (which creates an activity)
+    shop = create(:chicken_shop, name: "Great Place")
+    create(:review, user: user2, chicken_shop: shop)
+
+    # User1 views activity feed
+    sign_in user1
+    get activities_path
+    assert_response :success
+  end
+
+  # -- Review reactions flow --
+
+  test "full flow: user reacts to a review" do
+    user1 = create(:user)
+    user2 = create(:user)
+    shop = create(:chicken_shop)
+    review = create(:review, user: user2, chicken_shop: shop)
+
+    sign_in user1
+
+    # Add reaction
+    assert_difference "ReviewReaction.count", 1 do
+      post review_reactions_path(review), params: { kind: "thumbs_up" }
+    end
+
+    # Toggle off reaction
+    assert_difference "ReviewReaction.count", -1 do
+      post review_reactions_path(review), params: { kind: "thumbs_up" }
+    end
+  end
+
+  test "wishlist shows filtered items" do
+    user = create(:user)
+    shop1 = create(:chicken_shop, name: "Shop A")
+    shop2 = create(:chicken_shop, name: "Shop B")
+    create(:wishlist_item, user: user, chicken_shop: shop1, visited: false)
+    create(:wishlist_item, user: user, chicken_shop: shop2, visited: true)
+
+    sign_in user
+
+    # View want_to_try filter
+    get wishlist_items_path(filter: "want_to_try")
+    assert_response :success
+
+    # View visited filter
+    get wishlist_items_path(filter: "visited")
+    assert_response :success
+
+    # View all
+    get wishlist_items_path(filter: "all")
+    assert_response :success
+  end
 end
