@@ -4,6 +4,6 @@
 
 <%= turbo_stream.update "review-form" do %>
   <div class="sidebar-card">
-    <p class="text-muted">✅ You've already reviewed this shop.</p>
+    <p class="text-muted"><%= t("chicken_shops.show.already_reviewed") %></p>
   </div>
 <% end %>

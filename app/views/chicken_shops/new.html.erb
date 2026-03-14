@@ -1,9 +1,9 @@
-<% content_for(:title, "Add a Chicken Shop | Cluckbait") %>
+<% content_for(:title, t("chicken_shops.new.title")) %>
 
 <section class="section">
   <div class="container container-narrow">
-    <h1 class="page-title">Add a Chicken Shop 🍗</h1>
-    <p class="page-subtitle">Know a great spot? Add it to the map and help the community discover amazing chicken.</p>
+    <h1 class="page-title"><%= t("chicken_shops.new.heading") %></h1>
+    <p class="page-subtitle"><%= t("chicken_shops.new.subtitle") %></p>
 
     <%= form_with(model: @chicken_shop, class: "auth-form new-shop-form") do |f| %>
       <% if @chicken_shop.errors.any? %>
@@ -16,15 +16,15 @@
       <% end %>
 
       <div class="form-section">
-        <h2 class="form-section-title">📍 Location</h2>
-        <p class="form-section-hint">Click the map to place the shop, or use your current location. You can drag the marker to adjust.</p>
+        <h2 class="form-section-title"><%= t("chicken_shops.new.location_section") %></h2>
+        <p class="form-section-hint"><%= t("chicken_shops.new.location_hint") %></p>
 
         <div data-controller="map-picker">
           <div class="map-picker-controls">
             <button type="button" class="btn btn-outline btn-sm" data-action="click->map-picker#locate">
-              📍 Use My Location
+              <%= t("chicken_shops.new.use_my_location") %>
             </button>
-            <span class="map-picker-coords" data-map-picker-target="coordinates">No location selected</span>
+            <span class="map-picker-coords" data-map-picker-target="coordinates"><%= t("chicken_shops.new.no_location") %></span>
           </div>
 
           <div class="map-picker-container" data-map-picker-target="container"></div>
@@ -35,60 +35,60 @@
       </div>
 
       <div class="form-section">
-        <h2 class="form-section-title">🏪 Shop Details</h2>
+        <h2 class="form-section-title"><%= t("chicken_shops.new.shop_details") %></h2>
 
         <div class="form-group">
-          <label class="form-label">Name *</label>
-          <%= f.text_field :name, class: "form-input", placeholder: "e.g. Cluck Palace", autofocus: true %>
+          <label class="form-label"><%= t("chicken_shops.new.name_label") %></label>
+          <%= f.text_field :name, class: "form-input", placeholder: t("chicken_shops.new.name_placeholder"), autofocus: true %>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Address *</label>
-          <%= f.text_field :address, class: "form-input", placeholder: "e.g. 42 High Street" %>
+          <label class="form-label"><%= t("chicken_shops.new.address_label") %></label>
+          <%= f.text_field :address, class: "form-input", placeholder: t("chicken_shops.new.address_placeholder") %>
         </div>
 
         <div class="form-row">
           <div class="form-group form-group-half">
-            <label class="form-label">City *</label>
-            <%= f.text_field :city, class: "form-input", placeholder: "e.g. London" %>
+            <label class="form-label"><%= t("chicken_shops.new.city_label") %></label>
+            <%= f.text_field :city, class: "form-input", placeholder: t("chicken_shops.new.city_placeholder") %>
           </div>
 
           <div class="form-group form-group-half">
-            <label class="form-label">Postcode</label>
-            <%= f.text_field :postcode, class: "form-input", placeholder: "e.g. SW1A 1AA" %>
+            <label class="form-label"><%= t("chicken_shops.new.postcode_label") %></label>
+            <%= f.text_field :postcode, class: "form-input", placeholder: t("chicken_shops.new.postcode_placeholder") %>
           </div>
         </div>
       </div>
 
       <div class="form-section">
-        <h2 class="form-section-title">📞 Contact & Info</h2>
+        <h2 class="form-section-title"><%= t("chicken_shops.new.contact_section") %></h2>
 
         <div class="form-group">
-          <label class="form-label">Phone</label>
-          <%= f.text_field :phone, class: "form-input", placeholder: "e.g. 020 1234 5678" %>
+          <label class="form-label"><%= t("chicken_shops.new.phone_label") %></label>
+          <%= f.text_field :phone, class: "form-input", placeholder: t("chicken_shops.new.phone_placeholder") %>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Website</label>
-          <%= f.text_field :website, class: "form-input", placeholder: "e.g. https://cluckpalace.co.uk" %>
+          <label class="form-label"><%= t("chicken_shops.new.website_label") %></label>
+          <%= f.text_field :website, class: "form-input", placeholder: t("chicken_shops.new.website_placeholder") %>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Description</label>
-          <%= f.text_area :description, class: "form-input form-textarea", rows: 4, placeholder: "Tell us about this place – what makes their chicken special?" %>
+          <label class="form-label"><%= t("chicken_shops.new.description_label") %></label>
+          <%= f.text_area :description, class: "form-input form-textarea", rows: 4, placeholder: t("chicken_shops.new.description_placeholder") %>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Photo</label>
+          <label class="form-label"><%= t("chicken_shops.new.photo_label") %></label>
           <%= f.file_field :image, class: "form-file-input", accept: "image/*" %>
         </div>
       </div>
 
-      <%= f.submit "Add Chicken Shop 🍗", class: "btn btn-primary btn-block btn-lg" %>
+      <%= f.submit t("chicken_shops.new.submit"), class: "btn btn-primary btn-block btn-lg" %>
     <% end %>
 
     <div class="form-footer">
-      <%= link_to "← Back to shops", chicken_shops_path, class: "form-link" %>
+      <%= link_to t("chicken_shops.new.back"), chicken_shops_path, class: "form-link" %>
     </div>
   </div>
 </section>

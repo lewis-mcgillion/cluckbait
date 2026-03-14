@@ -1,4 +1,4 @@
-<% content_for(:title) { "Chat with #{@conversation.other_user(current_user).name} — Cluckbait" } %>
+<% content_for(:title) { t("conversations.show.title", name: @conversation.other_user(current_user).name) } %>
 <% other = @conversation.other_user(current_user) %>
 
 <section class="section">
@@ -7,7 +7,7 @@
       <!-- Chat Header -->
       <div class="chat-header">
         <%= link_to conversations_path, class: "chat-back" do %>
-          ← Back
+          <%= t("conversations.show.back") %>
         <% end %>
         <div class="chat-header-user">
           <%= link_to profile_path(other), class: "chat-header-link" do %>
@@ -29,7 +29,7 @@
           <% end %>
         <% else %>
           <div class="chat-empty">
-            <p>Start your conversation with <%= other.name %>! 🍗</p>
+            <p><%= t("conversations.show.start_conversation", name: other.name) %></p>
           </div>
         <% end %>
       </div>
@@ -39,18 +39,18 @@
         <!-- Share Panel -->
         <div class="share-panel" id="share-panel" style="display: none;" data-controller="share-panel">
           <div class="share-panel-header">
-            <span>Share something</span>
+            <span><%= t("conversations.show.share_something") %></span>
             <button class="share-panel-close" data-action="click->share-panel#close">✕</button>
           </div>
           <div class="share-panel-tabs">
-            <button class="share-tab active" data-action="click->share-panel#switchTab" data-tab="shops">🍗 Shops</button>
-            <button class="share-tab" data-action="click->share-panel#switchTab" data-tab="reviews">⭐ Reviews</button>
+            <button class="share-tab active" data-action="click->share-panel#switchTab" data-tab="shops"><%= t("conversations.show.shops_tab") %></button>
+            <button class="share-tab" data-action="click->share-panel#switchTab" data-tab="reviews"><%= t("conversations.show.reviews_tab") %></button>
           </div>
           <div class="share-panel-content" data-share-panel-target="content">
             <div class="share-tab-pane active" data-tab="shops" data-share-panel-target="shopsPane">
-              <input type="text" class="share-search" placeholder="Search shops..." data-action="input->share-panel#searchShops" data-share-panel-target="shopSearch">
+              <input type="text" class="share-search" placeholder="<%= t("conversations.show.search_shops") %>" data-action="input->share-panel#searchShops" data-share-panel-target="shopSearch">
               <div class="share-items" data-share-panel-target="shopResults">
-                <p class="text-muted share-hint">Type to search for a shop to share</p>
+                <p class="text-muted share-hint"><%= t("conversations.show.search_hint") %></p>
               </div>
             </div>
             <div class="share-tab-pane" data-tab="reviews" data-share-panel-target="reviewsPane">
@@ -73,15 +73,15 @@
           <%= f.hidden_field :shareable_type, data: { message_form_target: "shareableType" } %>
           <%= f.hidden_field :shareable_id, data: { message_form_target: "shareableId" } %>
           <div class="chat-input-row">
-            <button type="button" class="chat-share-btn" data-action="click->message-form#toggleShare" title="Share a shop or review">📎</button>
+            <button type="button" class="chat-share-btn" data-action="click->message-form#toggleShare" title="<%= t("conversations.show.share_tooltip") %>">📎</button>
             <div class="chat-input-wrapper">
               <div class="chat-share-preview" data-message-form-target="sharePreview" style="display: none;">
                 <span data-message-form-target="sharePreviewText"></span>
                 <button type="button" class="share-preview-remove" data-action="click->message-form#clearShare">✕</button>
               </div>
-              <%= f.text_field :body, class: "chat-input", placeholder: "Type a message...", autocomplete: "off", data: { message_form_target: "input" } %>
+              <%= f.text_field :body, class: "chat-input", placeholder: t("conversations.show.type_message"), autocomplete: "off", data: { message_form_target: "input" } %>
             </div>
-            <%= f.submit "Send", class: "btn btn-primary chat-send-btn" %>
+            <%= f.submit t("shared.send"), class: "btn btn-primary chat-send-btn" %>
           </div>
         <% end %>
       </div>

@@ -1,9 +1,9 @@
-<% content_for(:title) { "Messages — Cluckbait" } %>
+<% content_for(:title) { t("conversations.title") } %>
 
 <section class="section">
   <div class="container">
     <div class="messages-page-header">
-      <h1 class="section-title">💬 Messages</h1>
+      <h1 class="section-title"><%= t("conversations.heading") %></h1>
     </div>
 
     <% if @conversations.any? %>
@@ -23,7 +23,7 @@
               <div class="conversation-header">
                 <span class="conversation-name"><%= other.name %></span>
                 <% if last_msg %>
-                  <span class="conversation-time"><%= time_ago_in_words(last_msg.created_at) %> ago</span>
+                  <span class="conversation-time"><%= time_ago_in_words(last_msg.created_at) %> <%= t("shared.ago") %></span>
                 <% end %>
               </div>
               <% if last_msg %>
@@ -34,7 +34,7 @@
                   <%= truncate(last_msg.body || "Shared a #{last_msg.shareable_type&.underscore&.humanize&.downcase}", length: 60) %>
                 </p>
               <% else %>
-                <p class="conversation-snippet text-muted">No messages yet</p>
+                <p class="conversation-snippet text-muted"><%= t("conversations.no_messages_yet") %></p>
               <% end %>
             </div>
           <% end %>
@@ -44,9 +44,9 @@
     <% else %>
       <div class="empty-state">
         <span class="empty-icon">💬</span>
-        <h3>No conversations yet</h3>
-        <p>Start a conversation with one of your friends!</p>
-        <%= link_to "View Friends", friendships_path, class: "btn btn-primary" %>
+        <h3><%= t("conversations.no_conversations") %></h3>
+        <p><%= t("conversations.no_conversations_hint") %></p>
+        <%= link_to t("conversations.view_friends"), friendships_path, class: "btn btn-primary" %>
       </div>
     <% end %>
   </div>

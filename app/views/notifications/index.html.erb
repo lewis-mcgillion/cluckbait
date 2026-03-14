@@ -1,11 +1,11 @@
-<% content_for(:title) { "Notifications — Cluckbait" } %>
+<% content_for(:title) { t("notifications.title") } %>
 
 <section class="section">
   <div class="container container-narrow">
     <div class="notifications-header">
-      <h1 class="section-title">🔔 Notifications</h1>
+      <h1 class="section-title"><%= t("notifications.heading") %></h1>
       <% if @notifications.any? { |n| n.unread? } %>
-        <%= button_to "Mark all as read", mark_all_as_read_notifications_path, class: "btn btn-outline btn-sm" %>
+        <%= button_to t("notifications.mark_all_read"), mark_all_as_read_notifications_path, class: "btn btn-outline btn-sm" %>
       <% end %>
     </div>
 
@@ -18,8 +18,8 @@
       <% else %>
         <div class="empty-state">
           <span class="empty-icon">🔔</span>
-          <h3>No notifications yet</h3>
-          <p>When something happens — friend requests, messages, and more — you'll see it here.</p>
+          <h3><%= t("notifications.no_notifications") %></h3>
+          <p><%= t("notifications.no_notifications_hint") %></p>
         </div>
       <% end %>
     </div>

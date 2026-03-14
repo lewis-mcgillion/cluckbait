@@ -1,15 +1,15 @@
 <div id="wishlist_button_<%= shop.id %>" class="wishlist-button-wrapper">
   <% if !user_signed_in? %>
     <%= link_to new_user_session_path, class: "btn btn-outline wishlist-btn" do %>
-      🔖 Save to Wishlist
+      <%= t("wishlist.save_to_wishlist") %>
     <% end %>
   <% elsif wishlist_item.present? %>
     <%= button_to wishlist_item_path(wishlist_item), method: :delete, class: "btn btn-primary wishlist-btn wishlist-btn-saved" do %>
-      ✓ Saved
+      <%= t("wishlist.saved") %>
     <% end %>
   <% else %>
     <%= button_to wishlist_items_path(chicken_shop_id: shop.id), method: :post, class: "btn btn-outline wishlist-btn" do %>
-      🔖 Save to Wishlist
+      <%= t("wishlist.save_to_wishlist") %>
     <% end %>
   <% end %>
 </div>

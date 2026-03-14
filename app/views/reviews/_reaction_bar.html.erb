@@ -43,7 +43,7 @@
                 action: "click->reaction#toggle",
                 reaction_target: "button"
               } do %>
-          👍 Helpful
+          👍 <%= t("reviews.helpful") %>
         <% end %>
 
         <%= button_to review_reactions_path(review, kind: "not_helpful"),
@@ -59,7 +59,7 @@
       <% end %>
 
       <% if helpful_count > 0 %>
-        <span class="helpful-text"><%= helpful_count %> <%= helpful_count == 1 ? "person" : "people" %> found this helpful</span>
+        <span class="helpful-text"><%= t("reviews.person_found_helpful", count: helpful_count) %></span>
       <% end %>
     </div>
   </div>

@@ -1,18 +1,18 @@
-<% content_for(:title) { "My Wishlist — Cluckbait" } %>
+<% content_for(:title) { t("wishlist.title") } %>
 
 <div class="page-header">
   <div class="container">
-    <h1 class="page-title">🔖 My Wishlist</h1>
-    <p class="page-subtitle">Chicken shops you want to try</p>
+    <h1 class="page-title"><%= t("wishlist.heading") %></h1>
+    <p class="page-subtitle"><%= t("wishlist.subtitle") %></p>
   </div>
 </div>
 
 <section class="section">
   <div class="container">
     <div class="wishlist-tabs">
-      <%= link_to "All", wishlist_items_path, class: "wishlist-tab #{'active' if @filter == 'all'}" %>
-      <%= link_to "Want to Try", wishlist_items_path(filter: "want_to_try"), class: "wishlist-tab #{'active' if @filter == 'want_to_try'}" %>
-      <%= link_to "Visited", wishlist_items_path(filter: "visited"), class: "wishlist-tab #{'active' if @filter == 'visited'}" %>
+      <%= link_to t("wishlist.tab_all"), wishlist_items_path, class: "wishlist-tab #{'active' if @filter == 'all'}" %>
+      <%= link_to t("wishlist.tab_want_to_try"), wishlist_items_path(filter: "want_to_try"), class: "wishlist-tab #{'active' if @filter == 'want_to_try'}" %>
+      <%= link_to t("wishlist.tab_visited"), wishlist_items_path(filter: "visited"), class: "wishlist-tab #{'active' if @filter == 'visited'}" %>
     </div>
 
     <% if @wishlist_items.any? %>
@@ -36,22 +36,22 @@
                 <h3 class="shop-card-name"><%= item.chicken_shop.name %></h3>
                 <p class="shop-card-location">📍 <%= item.chicken_shop.city %><%= ", #{item.chicken_shop.postcode}" if item.chicken_shop.postcode.present? %></p>
                 <div class="shop-card-stats">
-                  <span class="shop-reviews-count"><%= item.chicken_shop.reviews_count %> reviews</span>
+                  <span class="shop-reviews-count"><%= t("chicken_shops.card.reviews", count: item.chicken_shop.reviews_count) %></span>
                   <span class="shop-card-stars"><%= "★" * item.chicken_shop.average_rating.round %><%= "☆" * (5 - item.chicken_shop.average_rating.round) %></span>
                 </div>
               </div>
             <% end %>
             <div class="wishlist-card-actions">
               <% if item.visited? %>
-                <span class="wishlist-visited-badge">✅ Visited</span>
+                <span class="wishlist-visited-badge"><%= t("wishlist.visited") %></span>
               <% else %>
-                <span class="wishlist-pending-badge">🍗 Want to Try</span>
+                <span class="wishlist-pending-badge"><%= t("wishlist.want_to_try") %></span>
               <% end %>
               <%= button_to wishlist_item_path(item), method: :patch, class: "btn btn-sm btn-outline wishlist-toggle-btn" do %>
-                <%= item.visited? ? "Mark Unvisited" : "Mark Visited ✅" %>
+                <%= item.visited? ? t("wishlist.mark_unvisited") : t("wishlist.mark_visited") %>
               <% end %>
-              <%= button_to wishlist_item_path(item), method: :delete, class: "btn btn-sm btn-danger wishlist-remove-btn", data: { turbo_confirm: "Remove from wishlist?" } do %>
-                Remove
+              <%= button_to wishlist_item_path(item), method: :delete, class: "btn btn-sm btn-danger wishlist-remove-btn", data: { turbo_confirm: t("wishlist.remove_confirm") } do %>
+                <%= t("shared.remove") %>
               <% end %>
             </div>
             <% if item.notes.present? %>
@@ -66,9 +66,9 @@
     <% else %>
       <div class="empty-state">
         <span class="empty-icon">🔖</span>
-        <h3><%= @filter == "visited" ? "No visited shops yet" : @filter == "want_to_try" ? "No shops on your list" : "Your wishlist is empty" %></h3>
-        <p>Discover chicken shops and save the ones you want to try!</p>
-        <%= link_to "Explore Shops", chicken_shops_path, class: "btn btn-primary" %>
+        <h3><%= @filter == "visited" ? t("wishlist.empty_visited") : @filter == "want_to_try" ? t("wishlist.empty_want_to_try") : t("wishlist.empty_all") %></h3>
+        <p><%= t("wishlist.empty_hint") %></p>
+        <%= link_to t("shared.explore_shops"), chicken_shops_path, class: "btn btn-primary" %>
       </div>
     <% end %>
   </div>

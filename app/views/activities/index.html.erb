@@ -1,9 +1,9 @@
-<% content_for(:title) { "Activity Feed — Cluckbait" } %>
+<% content_for(:title) { t("activities.title") } %>
 
 <div class="page-header">
   <div class="container">
-    <h1 class="page-title">What's Happening</h1>
-    <p class="page-subtitle">See what your friends have been up to</p>
+    <h1 class="page-title"><%= t("activities.heading") %></h1>
+    <p class="page-subtitle"><%= t("activities.subtitle") %></p>
   </div>
 </div>
 
@@ -15,15 +15,15 @@
 
     <% if @activities.size == 20 %>
       <div class="activity-load-more">
-        <%= link_to "Load more", activities_path(page: @page + 1), class: "btn btn-outline" %>
+        <%= link_to t("activities.load_more"), activities_path(page: @page + 1), class: "btn btn-outline" %>
       </div>
     <% end %>
   <% else %>
     <div class="empty-state">
       <div class="empty-state-icon">📡</div>
-      <h3>No activity yet</h3>
-      <p class="text-muted">When your friends post reviews or make new connections, you'll see it here.</p>
-      <%= link_to "Find Friends", friendships_path, class: "btn btn-primary" %>
+      <h3><%= t("activities.no_activity") %></h3>
+      <p class="text-muted"><%= t("activities.no_activity_hint") %></p>
+      <%= link_to t("activities.find_friends"), friendships_path, class: "btn btn-primary" %>
     </div>
   <% end %>
 </div>

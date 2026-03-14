@@ -1,12 +1,12 @@
-<% content_for(:title) { "All Chicken Shops — Cluckbait" } %>
+<% content_for(:title) { t("chicken_shops.index.title") } %>
 
 <section class="page-header">
   <div class="container">
-    <h1 class="page-title">🍗 All Chicken Shops</h1>
-    <p class="page-subtitle">Browse every chicken shop in our database</p>
+    <h1 class="page-title"><%= t("chicken_shops.index.heading") %></h1>
+    <p class="page-subtitle"><%= t("chicken_shops.index.subtitle") %></p>
     <% if user_signed_in? %>
       <%= link_to new_chicken_shop_path, class: "btn btn-primary btn-sm page-header-action" do %>
-        + Add Shop
+        <%= t("chicken_shops.index.add_shop") %>
       <% end %>
     <% end %>
   </div>
@@ -20,28 +20,28 @@
           <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
           </svg>
-          <%= text_field_tag :search, params[:search], placeholder: "Search by name...", class: "search-input", "aria-label": "Search shops by name", data: { action: "input->search-filter#debounceSubmit" } %>
+          <%= text_field_tag :search, params[:search], placeholder: t("chicken_shops.index.search_name_placeholder"), class: "search-input", "aria-label": t("chicken_shops.index.search_name_aria"), data: { action: "input->search-filter#debounceSubmit" } %>
         </div>
         <div class="search-box">
           <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
           </svg>
-          <%= text_field_tag :city, params[:city], placeholder: "Filter by city...", class: "search-input", "aria-label": "Filter shops by city", data: { action: "input->search-filter#debounceSubmit" } %>
+          <%= text_field_tag :city, params[:city], placeholder: t("chicken_shops.index.filter_city_placeholder"), class: "search-input", "aria-label": t("chicken_shops.index.filter_city_aria"), data: { action: "input->search-filter#debounceSubmit" } %>
         </div>
         <%= hidden_field_tag :sort, params[:sort], data: { shop_sort_target: "sortField", search_filter_target: "sortField" } %>
         <%= hidden_field_tag :lat, params[:lat], data: { shop_sort_target: "latField" } %>
         <%= hidden_field_tag :lng, params[:lng], data: { shop_sort_target: "lngField" } %>
-        <%= submit_tag "Search", class: "btn btn-primary" %>
+        <%= submit_tag t("shared.search"), class: "btn btn-primary" %>
 
         <button type="button" class="btn btn-outline filter-toggle-btn" data-action="click->search-filter#toggleFilters" data-search-filter-target="toggleBtn">
-          🔽 Filters
+          <%= t("chicken_shops.index.filters") %>
           <% if @active_filters > 0 %>
             <span class="filter-count-badge"><%= @active_filters %></span>
           <% end %>
         </button>
 
         <% if params[:search].present? || params[:city].present? || params[:rating_min].present? || params[:min_reviews].present? || params[:has_photos] == "1" %>
-          <%= link_to "Clear All", chicken_shops_path, class: "btn btn-outline" %>
+          <%= link_to t("chicken_shops.index.clear_all"), chicken_shops_path, class: "btn btn-outline" %>
         <% end %>
       <% end %>
     </div>
@@ -57,14 +57,14 @@
         <%= hidden_field_tag :lng, params[:lng] %>
 
         <div class="filter-group">
-          <label class="filter-label">⭐ Minimum Rating</label>
+          <label class="filter-label"><%= t("chicken_shops.index.min_rating") %></label>
           <div class="filter-rating-buttons">
             <% ["", "3", "4", "4.5"].each do |val| %>
               <button type="button"
                       class="filter-chip <%= 'filter-chip--active' if params[:rating_min].to_s == val %>"
                       data-action="click->search-filter#setRating"
                       data-value="<%= val %>">
-                <%= val.present? ? "#{val}+ ★" : "Any" %>
+                <%= val.present? ? "#{val}+ ★" : t("chicken_shops.index.any") %>
               </button>
             <% end %>
           </div>
@@ -73,9 +73,9 @@
         </div>
 
         <div class="filter-group">
-          <label class="filter-label">💬 Minimum Reviews</label>
+          <label class="filter-label"><%= t("chicken_shops.index.min_reviews") %></label>
           <select name="min_reviews" class="filter-select" data-action="change->search-filter#submitFilters">
-            <option value="">Any</option>
+            <option value=""><%= t("chicken_shops.index.any") %></option>
             <option value="5" <%= 'selected' if params[:min_reviews] == '5' %>>5+</option>
             <option value="10" <%= 'selected' if params[:min_reviews] == '10' %>>10+</option>
             <option value="25" <%= 'selected' if params[:min_reviews] == '25' %>>25+</option>
@@ -85,12 +85,12 @@
         <div class="filter-group">
           <label class="filter-label filter-checkbox-label">
             <%= check_box_tag :has_photos, "1", params[:has_photos] == "1", class: "filter-checkbox", data: { action: "change->search-filter#submitFilters" } %>
-            📸 Has Photos
+            <%= t("chicken_shops.index.has_photos") %>
           </label>
         </div>
 
         <div class="filter-actions">
-          <%= submit_tag "Apply Filters", class: "btn btn-primary btn-sm" %>
+          <%= submit_tag t("chicken_shops.index.apply_filters"), class: "btn btn-primary btn-sm" %>
         </div>
       <% end %>
     </div>
@@ -98,7 +98,7 @@
     <!-- Active Filter Tags -->
     <% if @active_filters > 0 %>
       <div class="active-filters">
-        <span class="active-filters-label">Active filters:</span>
+        <span class="active-filters-label"><%= t("chicken_shops.index.active_filters") %></span>
         <% if params[:search].present? %>
           <span class="filter-tag">
             🔍 "<%= params[:search] %>"
@@ -113,19 +113,19 @@
         <% end %>
         <% if params[:rating_min].present? %>
           <span class="filter-tag">
-            ⭐ <%= params[:rating_min] %>+ stars
+            ⭐ <%= params[:rating_min] %><%= t("chicken_shops.index.stars_suffix") %>
             <%= link_to "✕", chicken_shops_path(request.query_parameters.except("rating_min", "rating_max")), class: "filter-tag-remove" %>
           </span>
         <% end %>
         <% if params[:min_reviews].present? %>
           <span class="filter-tag">
-            💬 <%= params[:min_reviews] %>+ reviews
+            💬 <%= params[:min_reviews] %><%= t("chicken_shops.index.reviews_suffix") %>
             <%= link_to "✕", chicken_shops_path(request.query_parameters.except("min_reviews")), class: "filter-tag-remove" %>
           </span>
         <% end %>
         <% if params[:has_photos] == "1" %>
           <span class="filter-tag">
-            📸 Has photos
+            📸 <%= t("chicken_shops.index.has_photos_label") %>
             <%= link_to "✕", chicken_shops_path(request.query_parameters.except("has_photos")), class: "filter-tag-remove" %>
           </span>
         <% end %>
@@ -134,43 +134,43 @@
 
     <div class="sort-bar">
       <div class="sort-bar-left">
-        <span class="sort-label">Sort by:</span>
+        <span class="sort-label"><%= t("chicken_shops.index.sort_by") %></span>
         <div class="sort-buttons">
           <button type="button"
                   class="sort-btn <%= 'sort-btn-active' unless @sort.present? %>"
                   data-action="click->shop-sort#sortBy"
                   data-sort-value="">
-            🔤 Name
+            <%= t("chicken_shops.index.sort_name") %>
           </button>
           <button type="button"
                   class="sort-btn <%= 'sort-btn-active' if @sort == 'highest_rated' %>"
                   data-action="click->shop-sort#sortBy"
                   data-sort-value="highest_rated">
-            ⭐ Highest Rated
+            <%= t("chicken_shops.index.sort_highest") %>
           </button>
           <button type="button"
                   class="sort-btn <%= 'sort-btn-active' if @sort == 'most_popular' %>"
                   data-action="click->shop-sort#sortBy"
                   data-sort-value="most_popular">
-            🔥 Most Popular
+            <%= t("chicken_shops.index.sort_popular") %>
           </button>
           <button type="button"
                   class="sort-btn <%= 'sort-btn-active' if @sort == 'newest' %>"
                   data-action="click->shop-sort#sortBy"
                   data-sort-value="newest">
-            🆕 Newest
+            <%= t("chicken_shops.index.sort_newest") %>
           </button>
           <button type="button"
                   class="sort-btn <%= 'sort-btn-active' if @sort == 'distance' %>"
                   data-action="click->shop-sort#sortByDistance"
                   data-sort-value="distance"
                   data-shop-sort-target="distanceBtn">
-            📍 Nearest to Me
+            <%= t("chicken_shops.index.sort_nearest") %>
           </button>
         </div>
       </div>
       <div class="results-count">
-        Showing <strong><%= @chicken_shops.length %></strong> of <strong><%= @total_count %></strong> shop<%= "s" unless @total_count == 1 %>
+        <%= t("chicken_shops.index.showing") %> <strong><%= @chicken_shops.length %></strong> <%= t("chicken_shops.index.of") %> <strong><%= @total_count %></strong> <%= t("chicken_shops.index.shop", count: @total_count) %>
       </div>
     </div>
 
@@ -189,8 +189,8 @@
     <% else %>
       <div class="empty-state">
         <span class="empty-icon">🔍</span>
-        <h3>No shops found</h3>
-        <p>Try adjusting your filters or <%= link_to "browse all shops", chicken_shops_path %>.</p>
+        <h3><%= t("chicken_shops.index.no_shops") %></h3>
+        <p><%= t("chicken_shops.index.no_shops_hint") %> <%= link_to t("chicken_shops.index.heading"), chicken_shops_path %>.</p>
       </div>
     <% end %>
   </div>
