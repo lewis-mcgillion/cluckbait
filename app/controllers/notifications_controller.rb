@@ -2,7 +2,7 @@ class NotificationsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @page = [ (params[:page] || 1).to_i, 1 ].max
+    @page = [(params[:page] || 1).to_i, 1].max
     @per_page = 25
     fetched = current_user.notifications.recent_first.includes(:actor, :notifiable)
                 .limit(@per_page + 1).offset((@page - 1) * @per_page).to_a

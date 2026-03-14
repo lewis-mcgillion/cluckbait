@@ -16,7 +16,7 @@ class ActivitiesController < ApplicationController
   private
 
   def current_page
-    [ (params[:page].to_i), 1 ].max
+    [(params[:page].to_i), 1].max
   end
 
   def page_offset

@@ -8,7 +8,8 @@ class ChickenShop < ApplicationRecord
   validates :city, presence: true
   validates :latitude, presence: true
   validates :longitude, presence: true
-  validates :website, format: { with: /\Ahttps?:\/\/\S+\z/i, message: "must start with http:// or https://" }, allow_blank: true
+  validates :website, format: { with: /\Ahttps?:\/\/\S+\z/i, message: "must start with http:// or https://" },
+allow_blank: true
 
   scope :search_by_name, ->(query) {
     where(arel_table[:name].matches("%#{sanitize_sql_like(query)}%")) if query.present?
@@ -73,7 +74,7 @@ class ChickenShop < ApplicationRecord
   end
 
   def full_address
-    [ address, city, postcode ].compact.join(", ")
+    [address, city, postcode].compact.join(", ")
   end
 
   def rating_distribution
@@ -92,13 +93,13 @@ class ChickenShop < ApplicationRecord
 
   def self.avg_rating_expr
     Arel::Nodes::NamedFunction.new("COALESCE", [
-      Arel::Nodes::NamedFunction.new("AVG", [ Review.arel_table[:rating] ]),
+      Arel::Nodes::NamedFunction.new("AVG", [Review.arel_table[:rating]]),
       Arel::Nodes.build_quoted(0)
     ])
   end
 
   def self.review_count_expr
-    Arel::Nodes::NamedFunction.new("COUNT", [ Review.arel_table[:id] ])
+    Arel::Nodes::NamedFunction.new("COUNT", [Review.arel_table[:id]])
   end
 
   def self.select_with_stats

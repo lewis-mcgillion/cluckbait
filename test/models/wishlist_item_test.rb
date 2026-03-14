@@ -61,7 +61,7 @@ class WishlistItemTest < ActiveSupport::TestCase
 
   test "visited defaults to false" do
     item = create(:wishlist_item)
-    assert_equal false, item.visited
+    refute item.visited
   end
 
   test "notes are optional" do

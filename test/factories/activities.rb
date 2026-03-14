@@ -10,7 +10,7 @@ FactoryBot.define do
 
     trait :friendship_activity do
       action { "became_friends" }
-      association :trackable, factory: [ :friendship, :accepted ]
+      association :trackable, factory: [:friendship, :accepted]
     end
   end
 end

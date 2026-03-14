@@ -8,6 +8,6 @@ class CreateReviewReactions < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :review_reactions, [ :user_id, :review_id, :kind ], unique: true
+    add_index :review_reactions, [:user_id, :review_id, :kind], unique: true
   end
 end

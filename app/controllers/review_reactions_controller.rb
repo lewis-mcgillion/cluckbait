@@ -21,7 +21,8 @@ class ReviewReactionsController < ApplicationController
         "review_#{@review.id}_reactions",
         partial: "reviews/reaction_bar",
         locals: { review: @review.reload, current_user: current_user }
-      ) }
+      )
+      }
       format.html { redirect_back fallback_location: @review.chicken_shop }
     end
   end
