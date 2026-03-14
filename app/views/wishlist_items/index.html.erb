@@ -1,12 +1,14 @@
 <% content_for(:title) { "My Wishlist — Cluckbait" } %>
 
+<div class="page-header">
+  <div class="container">
+    <h1 class="page-title">🔖 My Wishlist</h1>
+    <p class="page-subtitle">Chicken shops you want to try</p>
+  </div>
+</div>
+
 <section class="section">
   <div class="container">
-    <div class="page-header">
-      <h1 class="page-title">🔖 My Wishlist</h1>
-      <p class="page-subtitle">Chicken shops you want to try</p>
-    </div>
-
     <div class="wishlist-tabs">
       <%= link_to "All", wishlist_items_path, class: "wishlist-tab #{'active' if @filter == 'all'}" %>
       <%= link_to "Want to Try", wishlist_items_path(filter: "want_to_try"), class: "wishlist-tab #{'active' if @filter == 'want_to_try'}" %>
