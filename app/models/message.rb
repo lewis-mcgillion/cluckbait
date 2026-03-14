@@ -5,8 +5,7 @@ class Message < ApplicationRecord
 
   ALLOWED_SHAREABLE_TYPES = %w[ChickenShop Review].freeze
 
-  validates :body, presence: true, length: { maximum: 2000 }, unless: :shareable_present?
-  validates :body, length: { maximum: 2000 }, if: :shareable_present?
+  validates :body, presence: true, length: { maximum: 2000 }
   validates :shareable_type, inclusion: { in: ALLOWED_SHAREABLE_TYPES }, allow_nil: true
   validate :user_is_participant
 

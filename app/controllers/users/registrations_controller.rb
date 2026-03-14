@@ -2,8 +2,16 @@ module Users
   class RegistrationsController < Devise::RegistrationsController
     protected
 
+    def after_sign_up_path_for(_resource)
+      root_path
+    end
+
     def update_resource(resource, params)
-      resource.update_without_password(params)
+      if params[:password].present? || (params[:email].present? && params[:email] != resource.email)
+        resource.update_with_password(params)
+      else
+        resource.update_without_password(params.except(:current_password))
+      end
     end
 
     private
