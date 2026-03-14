@@ -4,13 +4,17 @@ module Api
 
     def index
       shops = ChickenShop.left_joins(:reviews)
-                         .select("chicken_shops.*, COALESCE(AVG(reviews.rating), 0) as avg_rating, COUNT(reviews.id) as review_count")
-                         .group("chicken_shops.id")
+                         .select_with_stats
+                         .group(:id)
 
       if params[:search].present?
-        term = ActiveRecord::Base.sanitize_sql_like(params[:search])
-        shops = shops.where("name LIKE ? OR city LIKE ? OR postcode LIKE ?",
-          "%#{term}%", "%#{term}%", "%#{term}%")
+        term = "%#{ActiveRecord::Base.sanitize_sql_like(params[:search])}%"
+        table = ChickenShop.arel_table
+        shops = shops.where(
+          table[:name].matches(term)
+            .or(table[:city].matches(term))
+            .or(table[:postcode].matches(term))
+        )
       end
 
       if params[:lat].present? && params[:lng].present?
@@ -28,8 +32,8 @@ module Api
 
         # Simple distance filter (~30 miles)
         shops = shops.where(
-          "latitude BETWEEN ? AND ? AND longitude BETWEEN ? AND ?",
-          lat - 0.5, lat + 0.5, lng - 0.8, lng + 0.8
+          latitude: (lat - 0.5)..(lat + 0.5),
+          longitude: (lng - 0.8)..(lng + 0.8)
         )
       end
 

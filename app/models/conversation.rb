@@ -26,7 +26,10 @@ class Conversation < ApplicationRecord
   def must_be_friends
     return if sender_id.blank? || receiver_id.blank?
 
-    unless Friendship.accepted.for_user(sender).where("user_id = ? OR friend_id = ?", receiver_id, receiver_id).exists?
+    unless Friendship.accepted
+             .where(user_id: sender_id, friend_id: receiver_id)
+             .or(Friendship.accepted.where(user_id: receiver_id, friend_id: sender_id))
+             .exists?
       errors.add(:base, "You can only message friends")
     end
   end
