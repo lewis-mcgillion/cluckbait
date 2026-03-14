@@ -3,19 +3,26 @@
     <div class="reaction-emojis">
       <% { "fire" => "🔥", "thumbs_up" => "👍", "heart_eyes" => "😍", "laugh" => "😂" }.each do |kind, emoji| %>
         <% count = review.reactions.where(kind: kind).count %>
-        <% active = defined?(current_user) && current_user && review.reactions.exists?(user: current_user, kind: kind) %>
-        <%= button_to review_reactions_path(review, kind: kind),
-              method: :post,
-              class: "reaction-btn #{'reaction-btn--active' if active}",
-              data: {
-                turbo_stream: true,
-                action: "click->reaction#toggle",
-                reaction_target: "button"
-              } do %>
-          <span class="reaction-emoji"><%= emoji %></span>
-          <% if count > 0 %>
-            <span class="reaction-count" data-reaction-target="count"><%= count %></span>
+        <% if defined?(current_user) && current_user %>
+          <% active = review.reactions.exists?(user: current_user, kind: kind) %>
+          <%= button_to review_reactions_path(review, kind: kind),
+                method: :post,
+                class: "reaction-btn #{'reaction-btn--active' if active}",
+                data: {
+                  turbo_stream: true,
+                  action: "click->reaction#toggle",
+                  reaction_target: "button"
+                } do %>
+            <span class="reaction-emoji"><%= emoji %></span>
+            <% if count > 0 %>
+              <span class="reaction-count" data-reaction-target="count"><%= count %></span>
+            <% end %>
           <% end %>
+        <% elsif count > 0 %>
+          <span class="reaction-btn reaction-btn--disabled">
+            <span class="reaction-emoji"><%= emoji %></span>
+            <span class="reaction-count"><%= count %></span>
+          </span>
         <% end %>
       <% end %>
     </div>
@@ -23,29 +30,32 @@
     <div class="reaction-helpful">
       <% helpful_count = review.reactions.where(kind: "helpful").count %>
       <% not_helpful_count = review.reactions.where(kind: "not_helpful").count %>
-      <% user_helpful = defined?(current_user) && current_user && review.reactions.exists?(user: current_user, kind: "helpful") %>
-      <% user_not_helpful = defined?(current_user) && current_user && review.reactions.exists?(user: current_user, kind: "not_helpful") %>
 
-      <%= button_to review_reactions_path(review, kind: "helpful"),
-            method: :post,
-            class: "helpful-btn #{'helpful-btn--active' if user_helpful}",
-            data: {
-              turbo_stream: true,
-              action: "click->reaction#toggle",
-              reaction_target: "button"
-            } do %>
-        👍 Helpful
-      <% end %>
+      <% if defined?(current_user) && current_user %>
+        <% user_helpful = review.reactions.exists?(user: current_user, kind: "helpful") %>
+        <% user_not_helpful = review.reactions.exists?(user: current_user, kind: "not_helpful") %>
 
-      <%= button_to review_reactions_path(review, kind: "not_helpful"),
-            method: :post,
-            class: "helpful-btn helpful-btn--down #{'helpful-btn--active' if user_not_helpful}",
-            data: {
-              turbo_stream: true,
-              action: "click->reaction#toggle",
-              reaction_target: "button"
-            } do %>
-        👎
+        <%= button_to review_reactions_path(review, kind: "helpful"),
+              method: :post,
+              class: "helpful-btn #{'helpful-btn--active' if user_helpful}",
+              data: {
+                turbo_stream: true,
+                action: "click->reaction#toggle",
+                reaction_target: "button"
+              } do %>
+          👍 Helpful
+        <% end %>
+
+        <%= button_to review_reactions_path(review, kind: "not_helpful"),
+              method: :post,
+              class: "helpful-btn helpful-btn--down #{'helpful-btn--active' if user_not_helpful}",
+              data: {
+                turbo_stream: true,
+                action: "click->reaction#toggle",
+                reaction_target: "button"
+              } do %>
+          👎
+        <% end %>
       <% end %>
 
       <% if helpful_count > 0 %>
