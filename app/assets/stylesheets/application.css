@@ -406,10 +406,10 @@ img { max-width: 100%; height: auto; display: block; }
   background: linear-gradient(to top, rgba(15,15,15,0.95) 0%, rgba(15,15,15,0.3) 100%);
   display: flex; align-items: flex-end;
 }
-.shop-hero-content { padding-bottom: 2rem; }
+.shop-hero-content { padding-bottom: 2rem; text-align: center; }
 .shop-name { font-family: var(--font-display); font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; }
 .shop-address { color: var(--text-secondary); font-size: 1.05rem; margin-bottom: 1rem; }
-.shop-meta { display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; }
+.shop-meta { display: flex; align-items: center; justify-content: center; gap: 2rem; flex-wrap: wrap; }
 .shop-rating-large { display: flex; align-items: center; gap: 0.5rem; }
 .rating-number {
   font-family: var(--font-display);
@@ -1484,6 +1484,19 @@ turbo-frame { display: contents; }
   cursor: pointer;
   font-size: 0.85rem;
   transition: all 0.2s ease;
+}
+
+.reaction-btn--disabled {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: default;
+  font-size: 0.85rem;
 }
 
 .reaction-emoji {

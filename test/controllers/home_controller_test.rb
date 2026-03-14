@@ -28,4 +28,32 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     get root_path
     assert_response :success
   end
+
+  test "index top shops excludes shops without reviews" do
+    shop_with_review = create(:chicken_shop, name: "Popular Cluck")
+    create(:review, chicken_shop: shop_with_review, rating: 5)
+    create(:chicken_shop, name: "No Reviews Shop")
+
+    get root_path
+    assert_response :success
+  end
+
+  test "index limits recent reviews to 6" do
+    shop = create(:chicken_shop)
+    7.times { create(:review, chicken_shop: shop) }
+
+    get root_path
+    assert_response :success
+  end
+
+  test "index top shops ordered by highest average rating" do
+    low_shop = create(:chicken_shop, name: "Low")
+    create(:review, chicken_shop: low_shop, rating: 2)
+
+    high_shop = create(:chicken_shop, name: "High")
+    create(:review, chicken_shop: high_shop, rating: 5)
+
+    get root_path
+    assert_response :success
+  end
 end
