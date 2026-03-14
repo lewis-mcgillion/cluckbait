@@ -73,7 +73,9 @@ class ActivityTest < ActiveSupport::TestCase
     shop = create(:chicken_shop)
 
     assert_difference "Activity.count", 1 do
-      create(:review, user: user, chicken_shop: shop)
+      perform_enqueued_jobs do
+        create(:review, user: user, chicken_shop: shop)
+      end
     end
 
     activity = Activity.last
@@ -86,7 +88,9 @@ class ActivityTest < ActiveSupport::TestCase
     friendship = create(:friendship)
 
     assert_difference "Activity.count", 2 do
-      friendship.accepted!
+      perform_enqueued_jobs do
+        friendship.accepted!
+      end
     end
 
     activities = Activity.where(action: "became_friends", trackable: friendship)

@@ -1,6 +1,6 @@
 class Review < ApplicationRecord
-  belongs_to :user
-  belongs_to :chicken_shop
+  belongs_to :user, counter_cache: true
+  belongs_to :chicken_shop, counter_cache: true
 
   has_many :reactions, class_name: "ReviewReaction", dependent: :destroy
   has_many_attached :photos
@@ -38,7 +38,8 @@ class Review < ApplicationRecord
   end
 
   def helpful_score
-    reactions.where(kind: "helpful").count - reactions.where(kind: "not_helpful").count
+    counts = reactions.where(kind: %w[helpful not_helpful]).group(:kind).count
+    counts.fetch("helpful", 0) - counts.fetch("not_helpful", 0)
   end
 
   def rating_label
@@ -70,6 +71,6 @@ class Review < ApplicationRecord
   end
 
   def create_activity
-    Activity.create!(user: user, action: "posted_review", trackable: self)
+    CreateActivityJob.perform_later(user_id: user_id, action: "posted_review", trackable_type: "Review", trackable_id: id)
   end
 end

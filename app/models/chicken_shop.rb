@@ -68,10 +68,6 @@ class ChickenShop < ApplicationRecord
     reviews.average(:rating)&.round(1) || 0
   end
 
-  def reviews_count
-    reviews.count
-  end
-
   def full_address
     [ address, city, postcode ].compact.join(", ")
   end

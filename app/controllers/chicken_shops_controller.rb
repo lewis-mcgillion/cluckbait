@@ -1,4 +1,6 @@
 class ChickenShopsController < ApplicationController
+  PER_PAGE = 24
+
   def index
     @chicken_shops = ChickenShop.all
     @chicken_shops = @chicken_shops.search_by_name(params[:search]) if params[:search].present?
@@ -33,6 +35,11 @@ class ChickenShopsController < ApplicationController
     else
       @chicken_shops = @chicken_shops.order(:name)
     end
+
+    @page = [ (params[:page].to_i), 1 ].max
+    @total_count = ChickenShop.from(@chicken_shops, :chicken_shops).count
+    @total_pages = [(@total_count.to_f / PER_PAGE).ceil, 1].max
+    @chicken_shops = @chicken_shops.limit(PER_PAGE).offset((@page - 1) * PER_PAGE)
 
     @active_filters = active_filter_count
   end

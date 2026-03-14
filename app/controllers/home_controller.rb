@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   def index
-    @chicken_shops = ChickenShop.all
+    @chicken_shops = ChickenShop.select(:id, :name, :latitude, :longitude)
     @recent_reviews = Review.includes(:user, :chicken_shop).recent.limit(6)
     @top_shops = ChickenShop.left_joins(:reviews)
                             .select_with_stats
