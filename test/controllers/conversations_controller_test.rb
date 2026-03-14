@@ -73,4 +73,15 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
     get conversation_path(conversation)
     assert_equal 0, @user.unread_conversations_count
   end
+
+  test "create with non-existent receiver returns not found" do
+    post conversations_path, params: { receiver_id: 999999 }
+    assert_response :not_found
+  end
+
+  test "show with empty conversation renders successfully" do
+    conversation = create(:conversation, sender: @user, receiver: @friend)
+    get conversation_path(conversation)
+    assert_response :success
+  end
 end

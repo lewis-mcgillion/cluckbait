@@ -97,4 +97,54 @@ class RoutingTest < ActionDispatch::IntegrationTest
     assert_routing({ method: "post", path: "/conversations/1/messages" },
       controller: "messages", action: "create", conversation_id: "1")
   end
+
+  # -- Activity routes --
+
+  test "activities index route" do
+    assert_routing "/activities", controller: "activities", action: "index"
+  end
+
+  # -- Notification routes --
+
+  test "notifications index route" do
+    assert_routing "/notifications", controller: "notifications", action: "index"
+  end
+
+  test "notifications mark_as_read route" do
+    assert_routing({ method: "patch", path: "/notifications/1/mark_as_read" },
+      controller: "notifications", action: "mark_as_read", id: "1")
+  end
+
+  test "notifications mark_all_as_read route" do
+    assert_routing({ method: "post", path: "/notifications/mark_all_as_read" },
+      controller: "notifications", action: "mark_all_as_read")
+  end
+
+  # -- Wishlist routes --
+
+  test "wishlist_items index route" do
+    assert_routing "/wishlist_items", controller: "wishlist_items", action: "index"
+  end
+
+  test "wishlist_items create route" do
+    assert_routing({ method: "post", path: "/wishlist_items" },
+      controller: "wishlist_items", action: "create")
+  end
+
+  test "wishlist_items update route" do
+    assert_routing({ method: "patch", path: "/wishlist_items/1" },
+      controller: "wishlist_items", action: "update", id: "1")
+  end
+
+  test "wishlist_items destroy route" do
+    assert_routing({ method: "delete", path: "/wishlist_items/1" },
+      controller: "wishlist_items", action: "destroy", id: "1")
+  end
+
+  # -- Review reaction routes --
+
+  test "nested review reactions create route" do
+    assert_routing({ method: "post", path: "/reviews/1/reactions" },
+      controller: "review_reactions", action: "create", review_id: "1")
+  end
 end

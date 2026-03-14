@@ -8,6 +8,14 @@ export default class extends Controller {
 
   connect() {
     this.markers = []
+    this.disconnected = false
+
+    if (typeof L === "undefined") {
+      console.warn("Leaflet not loaded yet, retrying...")
+      this.retryTimeout = setTimeout(() => this.connect(), 100)
+      return
+    }
+
     this.initMap()
     this.loadShops()
   }
@@ -49,6 +57,8 @@ export default class extends Controller {
         return r.json()
       })
       .then(shops => {
+        if (this.disconnected || !this.map) return
+
         this.clearMarkers()
         shops.forEach(shop => {
           const stars = "★".repeat(Math.round(shop.average_rating)) + "☆".repeat(5 - Math.round(shop.average_rating))
@@ -77,8 +87,8 @@ export default class extends Controller {
         }
       })
       .catch(error => {
+        if (this.disconnected) return
         console.error("Failed to load shops:", error)
-        alert("Unable to load chicken shops. Please try again later.")
       })
   }
 
@@ -97,6 +107,8 @@ export default class extends Controller {
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
+        if (this.disconnected || !this.map) return
+
         const lat = position.coords.latitude
         const lng = position.coords.longitude
         this.map.setView([lat, lng], 12)
@@ -135,8 +147,11 @@ export default class extends Controller {
   }
 
   disconnect() {
+    this.disconnected = true
+    clearTimeout(this.retryTimeout)
     if (this.map) {
       this.map.remove()
+      this.map = null
     }
   }
 }

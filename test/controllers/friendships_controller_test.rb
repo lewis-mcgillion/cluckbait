@@ -94,4 +94,30 @@ class FriendshipsControllerTest < ActionDispatch::IntegrationTest
     patch friendship_path(friendship)
     assert_match "You are now friends with", flash[:notice]
   end
+
+  test "create with non-existent user returns not found" do
+    post friendships_path, params: { friend_id: 999999 }
+    assert_response :not_found
+  end
+
+  test "destroy with friendship not involving current user returns not found" do
+    third = create(:user)
+    fourth = create(:user)
+    friendship = create(:friendship, user: third, friend: fourth)
+
+    delete friendship_path(friendship)
+    assert_response :not_found
+  end
+
+  test "index shows sent requests" do
+    create(:friendship, user: @user, friend: @other_user, status: :pending)
+    get friendships_path
+    assert_response :success
+  end
+
+  test "index shows pending received requests" do
+    create(:friendship, user: @other_user, friend: @user, status: :pending)
+    get friendships_path
+    assert_response :success
+  end
 end

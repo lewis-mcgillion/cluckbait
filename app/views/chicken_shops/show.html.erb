@@ -122,6 +122,7 @@
 
       <!-- Right column: Reviews -->
       <div class="shop-reviews">
+        <%= turbo_frame_tag "reviews_list" do %>
         <div class="reviews-header">
           <h2 class="reviews-heading">Reviews (<%= @reviews.count %>)</h2>
           <div class="review-sort-options" data-controller="search-filter">
@@ -134,8 +135,6 @@
             <% end %>
           </div>
         </div>
-
-        <%= turbo_frame_tag "reviews_list" do %>
           <% if @reviews.any? %>
             <% @reviews.each do |review| %>
               <%= render "reviews/review_card", review: review, chicken_shop: @chicken_shop %>
