@@ -2287,3 +2287,98 @@ turbo-frame { display: contents; }
     gap: 0;
   }
 }
+
+/* Language selector */
+.language-selector {
+  display: flex;
+  align-items: center;
+}
+
+.language-select {
+  appearance: none;
+  background: var(--surface, #1a1a2e);
+  color: var(--text-secondary, #ccc);
+  border: 1px solid var(--border, #333);
+  border-radius: 6px;
+  padding: 0.4rem 2rem 0.4rem 0.6rem;
+  font-size: 0.9rem;
+  font-family: inherit;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23999' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  max-width: 200px;
+  transition: border-color var(--transition);
+}
+
+.language-select:hover,
+.language-select:focus {
+  border-color: var(--primary, #e67e22);
+  outline: none;
+}
+
+/* RTL support */
+[dir="rtl"] {
+  text-align: right;
+}
+
+[dir="rtl"] .nav-container {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .nav-center {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .nav-right {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .footer-links {
+  direction: rtl;
+}
+
+[dir="rtl"] .search-box {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .search-input {
+  text-align: right;
+}
+
+[dir="rtl"] .form-input,
+[dir="rtl"] .form-textarea {
+  text-align: right;
+}
+
+[dir="rtl"] .profile-header {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .profile-stats {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .friend-card {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .review-header {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .chat-message-sent {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .chat-input-row {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .sort-buttons {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .btn {
+  direction: ltr;
+}

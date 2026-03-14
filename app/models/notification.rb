@@ -46,17 +46,18 @@ class Notification < ApplicationRecord
   end
 
   def target_path
+    helpers = Rails.application.routes.url_helpers
     case action
     when "friend_request", "friend_accepted"
-      Rails.application.routes.url_helpers.friendships_path
+      helpers.friendships_path(locale: nil)
     when "new_message"
       if notifiable.is_a?(Message) && notifiable.conversation
-        Rails.application.routes.url_helpers.conversation_path(notifiable.conversation)
+        helpers.conversation_path(notifiable.conversation, locale: nil)
       else
-        Rails.application.routes.url_helpers.conversations_path
+        helpers.conversations_path(locale: nil)
       end
     else
-      Rails.application.routes.url_helpers.notifications_path
+      helpers.notifications_path(locale: nil)
     end
   end
 end

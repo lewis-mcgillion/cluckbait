@@ -25,6 +25,7 @@ class User < ApplicationRecord
 
   validates :display_name, presence: true, length: { maximum: 50 }
   validates :bio, length: { maximum: 500 }
+  validates :locale, inclusion: { in: I18n.available_locales.map(&:to_s) }, allow_nil: true
 
   def name
     display_name.presence || email.split("@").first.presence || "?"
