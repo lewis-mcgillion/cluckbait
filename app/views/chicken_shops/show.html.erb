@@ -124,7 +124,7 @@
       <div class="shop-reviews">
         <%= turbo_frame_tag "reviews_list" do %>
         <div class="reviews-header">
-          <h2 class="reviews-heading">Reviews (<%= @reviews.count %>)</h2>
+          <h2 class="reviews-heading">Reviews (<%= @chicken_shop.reviews_count %>)</h2>
           <div class="review-sort-options" data-controller="search-filter">
             <span class="sort-label">Sort:</span>
             <% [["recent", "🕐 Recent"], ["highest_rated", "⭐ Highest"], ["lowest_rated", "👎 Lowest"], ["most_helpful", "👍 Most Helpful"]].each do |value, label| %>
@@ -139,6 +139,7 @@
             <% @reviews.each do |review| %>
               <%= render "reviews/review_card", review: review, chicken_shop: @chicken_shop %>
             <% end %>
+            <%= render "shared/pagination" %>
           <% else %>
             <div class="empty-state">
               <span class="empty-icon">📝</span>

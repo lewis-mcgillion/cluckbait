@@ -2,7 +2,12 @@ class ConversationsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @conversations = current_user.conversations.ordered.includes(:sender, :receiver, :messages)
+    @page = [ (params[:page] || 1).to_i, 1 ].max
+    @per_page = 25
+    fetched = current_user.conversations.ordered.includes(:sender, :receiver, :messages)
+                .limit(@per_page + 1).offset((@page - 1) * @per_page).to_a
+    @has_next_page = fetched.length > @per_page
+    @conversations = @has_next_page ? fetched.first(@per_page) : fetched
   end
 
   def show
