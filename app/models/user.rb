@@ -36,17 +36,14 @@ class User < ApplicationRecord
     end
   end
 
-  def reviews_count
-    reviews.count
-  end
-
   def average_rating_given
     reviews.average(:rating)&.round(1) || 0
   end
 
   def friends
-    accepted_friend_ids = Friendship.accepted_for(self).pluck(:user_id, :friend_id).flatten.uniq - [ id ]
-    User.where(id: accepted_friend_ids)
+    sent_ids = Friendship.accepted.where(user_id: id).select(:friend_id)
+    received_ids = Friendship.accepted.where(friend_id: id).select(:user_id)
+    User.where(id: sent_ids).or(User.where(id: received_ids))
   end
 
   def pending_friend_requests

@@ -31,11 +31,12 @@ class Message < ApplicationRecord
     recipient = conversation.other_user(user)
     return unless recipient
 
-    Notification.create(
-      user: recipient,
-      actor: user,
+    CreateNotificationJob.perform_later(
+      user_id: recipient.id,
+      actor_id: user_id,
       action: "new_message",
-      notifiable: self
+      notifiable_type: "Message",
+      notifiable_id: id
     )
   end
 end

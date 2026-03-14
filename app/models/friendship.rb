@@ -30,29 +30,31 @@ class Friendship < ApplicationRecord
   end
 
   def create_accepted_activity
-    Activity.create!(user: user, action: "became_friends", trackable: self)
-    Activity.create!(user: friend, action: "became_friends", trackable: self)
+    CreateActivityJob.perform_later(user_id: user_id, action: "became_friends", trackable_type: "Friendship", trackable_id: id)
+    CreateActivityJob.perform_later(user_id: friend_id, action: "became_friends", trackable_type: "Friendship", trackable_id: id)
   end
 
   def notify_friend_request
     return unless pending?
 
-    Notification.create(
-      user: friend,
-      actor: user,
+    CreateNotificationJob.perform_later(
+      user_id: friend_id,
+      actor_id: user_id,
       action: "friend_request",
-      notifiable: self
+      notifiable_type: "Friendship",
+      notifiable_id: id
     )
   end
 
   def notify_friend_accepted
     return unless accepted?
 
-    Notification.create(
-      user: user,
-      actor: friend,
+    CreateNotificationJob.perform_later(
+      user_id: user_id,
+      actor_id: friend_id,
       action: "friend_accepted",
-      notifiable: self
+      notifiable_type: "Friendship",
+      notifiable_id: id
     )
   end
 end

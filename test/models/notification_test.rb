@@ -121,7 +121,9 @@ class NotificationTest < ActiveSupport::TestCase
     friend = create(:user)
 
     assert_difference "Notification.count", 1 do
-      create(:friendship, user: user, friend: friend)
+      perform_enqueued_jobs do
+        create(:friendship, user: user, friend: friend)
+      end
     end
 
     notification = Notification.last
@@ -134,7 +136,9 @@ class NotificationTest < ActiveSupport::TestCase
     friendship = create(:friendship)
 
     assert_difference "Notification.count", 1 do
-      friendship.accepted!
+      perform_enqueued_jobs do
+        friendship.accepted!
+      end
     end
 
     notification = Notification.last
@@ -150,7 +154,9 @@ class NotificationTest < ActiveSupport::TestCase
     conversation = create(:conversation, sender: user1, receiver: user2)
 
     assert_difference "Notification.count", 1 do
-      create(:message, conversation: conversation, user: user1)
+      perform_enqueued_jobs do
+        create(:message, conversation: conversation, user: user1)
+      end
     end
 
     notification = Notification.last
