@@ -1,6 +1,6 @@
 class WishlistItemsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_wishlist_item, only: [ :update, :destroy ]
+  before_action :set_wishlist_item, only: [:update, :destroy]
 
   def index
     @filter = params[:filter] || "all"
@@ -11,7 +11,7 @@ class WishlistItemsController < ApplicationController
     else @wishlist_items
     end
 
-    @page = [ (params[:page] || 1).to_i, 1 ].max
+    @page = [(params[:page] || 1).to_i, 1].max
     @per_page = 25
     fetched = @wishlist_items.limit(@per_page + 1).offset((@page - 1) * @per_page).to_a
     @has_next_page = fetched.length > @per_page
@@ -20,7 +20,8 @@ class WishlistItemsController < ApplicationController
 
   def create
     @chicken_shop = ChickenShop.find(params[:chicken_shop_id])
-    @wishlist_item = current_user.wishlist_items.build(chicken_shop: @chicken_shop, visited: false, notes: wishlist_params[:notes])
+    @wishlist_item = current_user.wishlist_items.build(chicken_shop: @chicken_shop, visited: false,
+notes: wishlist_params[:notes])
 
     if @wishlist_item.save
       respond_to do |format|
@@ -41,7 +42,10 @@ class WishlistItemsController < ApplicationController
 
     respond_to do |format|
       format.turbo_stream
-      format.html { redirect_to wishlist_items_path, notice: @wishlist_item.visited? ? "Marked as visited! ✅" : "Moved back to Want to Try" }
+      format.html {
+        redirect_to wishlist_items_path,
+       notice: @wishlist_item.visited? ? "Marked as visited! ✅" : "Moved back to Want to Try"
+      }
     end
   end
 

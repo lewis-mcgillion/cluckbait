@@ -138,7 +138,7 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
   test "create with photo upload" do
     sign_in @user
 
-    file = Tempfile.new([ "test_image", ".jpg" ])
+    file = Tempfile.new(["test_image", ".jpg"])
     file.write("fake image data")
     file.rewind
 
@@ -150,7 +150,7 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
           rating: 5,
           title: "With photo",
           body: "Check this out!",
-          photos: [ photo ]
+          photos: [photo]
         }
       }
     end

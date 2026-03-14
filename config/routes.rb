@@ -6,27 +6,27 @@ Rails.application.routes.draw do
 
   root "home#index"
 
-  resources :chicken_shops, only: [ :index, :show, :new, :create ] do
-    resources :reviews, only: [ :create, :destroy ]
+  resources :chicken_shops, only: [:index, :show, :new, :create] do
+    resources :reviews, only: [:create, :destroy]
   end
 
   resources :reviews, only: [] do
-    resources :reactions, only: [ :create ], controller: "review_reactions"
+    resources :reactions, only: [:create], controller: "review_reactions"
   end
 
-  resources :profiles, only: [ :show, :edit, :update ], param: :id
+  resources :profiles, only: [:show, :edit, :update], param: :id
 
-  resources :wishlist_items, only: [ :index, :create, :update, :destroy ]
+  resources :wishlist_items, only: [:index, :create, :update, :destroy]
 
-  resources :friendships, only: [ :index, :create, :update, :destroy ]
+  resources :friendships, only: [:index, :create, :update, :destroy]
 
-  resources :activities, only: [ :index ]
+  resources :activities, only: [:index]
 
-  resources :conversations, only: [ :index, :show, :create ] do
-    resources :messages, only: [ :create ]
+  resources :conversations, only: [:index, :show, :create] do
+    resources :messages, only: [:create]
   end
 
-  resources :notifications, only: [ :index ] do
+  resources :notifications, only: [:index] do
     member do
       patch :mark_as_read
     end
@@ -40,5 +40,5 @@ Rails.application.routes.draw do
   # Fallback for sign-out via GET (when JS/Turbo is unavailable)
   get "users/sign_out", to: redirect("/")
 
-  get "up" => "rails/health#show", as: :rails_health_check
+  get "up" => "rails/health#show", :as => :rails_health_check
 end

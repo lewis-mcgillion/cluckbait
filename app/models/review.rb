@@ -22,7 +22,7 @@ class Review < ApplicationRecord
       .when(reactions_table[:kind].eq("not_helpful")).then(-1)
       .else(0)
     score = Arel::Nodes::NamedFunction.new("COALESCE", [
-      Arel::Nodes::NamedFunction.new("SUM", [ helpful_case ]),
+      Arel::Nodes::NamedFunction.new("SUM", [helpful_case]),
       Arel::Nodes.build_quoted(0)
     ])
 

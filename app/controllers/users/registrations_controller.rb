@@ -21,7 +21,8 @@ module Users
     end
 
     def account_update_params
-      params.require(:user).permit(:email, :password, :password_confirmation, :current_password, :display_name, :bio, :avatar)
+      params.require(:user).permit(:email, :password, :password_confirmation, :current_password, :display_name, :bio,
+:avatar)
     end
   end
 end

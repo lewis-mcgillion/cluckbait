@@ -58,12 +58,12 @@ class ActivityTest < ActiveSupport::TestCase
 
     a1 = create(:activity, user: user1, action: "posted_review")
     a2 = create(:activity, user: user2, action: "posted_review")
-    _a3 = create(:activity, user: user3, action: "posted_review")
+    a3 = create(:activity, user: user3, action: "posted_review")
 
-    results = Activity.for_users([ user1, user2 ])
+    results = Activity.for_users([user1, user2])
     assert_includes results, a1
     assert_includes results, a2
-    assert_not_includes results, _a3
+    assert_not_includes results, a3
   end
 
   # -- Callbacks --

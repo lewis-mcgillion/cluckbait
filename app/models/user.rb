@@ -45,7 +45,7 @@ class User < ApplicationRecord
   end
 
   def friends
-    accepted_friend_ids = Friendship.accepted_for(self).pluck(:user_id, :friend_id).flatten.uniq - [ id ]
+    accepted_friend_ids = Friendship.accepted_for(self).pluck(:user_id, :friend_id).flatten.uniq - [id]
     User.where(id: accepted_friend_ids)
   end
 
@@ -106,9 +106,19 @@ class User < ApplicationRecord
   end
 
   def unread_conversations_count
-    conversations.where(
-      "EXISTS (SELECT 1 FROM messages WHERE messages.conversation_id = conversations.id AND messages.user_id != ? AND messages.created_at > COALESCE((SELECT last_read_at FROM conversation_reads WHERE conversation_reads.conversation_id = conversations.id AND conversation_reads.user_id = ?), '1970-01-01'))",
-      id, id
-    ).count
+    unread_sql = <<~SQL.squish
+      EXISTS (
+        SELECT 1 FROM messages
+        WHERE messages.conversation_id = conversations.id
+          AND messages.user_id != ?
+          AND messages.created_at > COALESCE(
+            (SELECT last_read_at FROM conversation_reads
+             WHERE conversation_reads.conversation_id = conversations.id
+               AND conversation_reads.user_id = ?),
+            '1970-01-01'
+          )
+      )
+    SQL
+    conversations.where(unread_sql, id, id).count
   end
 end

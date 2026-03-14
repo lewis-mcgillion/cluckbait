@@ -9,6 +9,6 @@ class CreateMessages < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :messages, [ :shareable_type, :shareable_id ]
+    add_index :messages, [:shareable_type, :shareable_id]
   end
 end

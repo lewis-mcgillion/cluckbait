@@ -1,8 +1,41 @@
-# Omakase Ruby styling for Rails
-inherit_gem: { rubocop-rails-omakase: rubocop.yml }
+# GitHub Ruby styling for Rails
+# https://github.com/github/rubocop-github/blob/main/STYLEGUIDE.md
+inherit_gem:
+  rubocop-github:
+    - config/default.yml
+    - config/rails.yml
+  rubocop-minitest:
+    - config/default.yml
 
-# Overwrite or add rules to create your own house style
-#
-# # Use `[a, [b, c]]` not `[ a, [ b, c ] ]`
-# Layout/SpaceInsideArrayLiteralBrackets:
-#   Enabled: false
+plugins:
+  - rubocop-minitest
+  - rubocop-performance
+  - rubocop-rails
+
+AllCops:
+  TargetRubyVersion: 3.4
+  TargetRailsVersion: 8.0
+  NewCops: disable
+  SuggestExtensions: false
+  Exclude:
+    - bin/**/*
+    - node_modules/**/*
+    - vendor/**/*
+    - tmp/**/*
+    - db/schema.rb
+
+# Match github/github: 118 char line length for PR diff readability
+Layout/LineLength:
+  Enabled: true
+  Max: 118
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+# These cops expect explicit full-path render calls (github/github monolith convention).
+# Standard Rails `render :action` is fine for this codebase.
+GitHub/RailsControllerRenderPathsExist:
+  Enabled: false
+
+GitHub/RailsControllerRenderLiteral:
+  Enabled: false

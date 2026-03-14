@@ -5,5 +5,5 @@ class ReviewReaction < ApplicationRecord
   belongs_to :review
 
   validates :kind, presence: true, inclusion: { in: KINDS }
-  validates :kind, uniqueness: { scope: [ :user_id, :review_id ], message: "already reacted with this kind" }
+  validates :kind, uniqueness: { scope: [:user_id, :review_id], message: "already reacted with this kind" }
 end

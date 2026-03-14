@@ -1,5 +1,5 @@
 class ChickenShopsController < ApplicationController
-  before_action :authenticate_user!, only: [ :new, :create ]
+  before_action :authenticate_user!, only: [:new, :create]
 
   def new
     @chicken_shop = ChickenShop.new
@@ -52,7 +52,7 @@ class ChickenShopsController < ApplicationController
 
     @active_filters = active_filter_count
 
-    @page = [ (params[:page] || 1).to_i, 1 ].max
+    @page = [(params[:page] || 1).to_i, 1].max
     @per_page = 25
     @total_count = @chicken_shops.count
     fetched = @chicken_shops.limit(@per_page + 1).offset((@page - 1) * @per_page).to_a
@@ -71,7 +71,7 @@ class ChickenShopsController < ApplicationController
     else reviews.recent
     end
 
-    @page = [ (params[:page] || 1).to_i, 1 ].max
+    @page = [(params[:page] || 1).to_i, 1].max
     @per_page = 25
     fetched = reviews.limit(@per_page + 1).offset((@page - 1) * @per_page).to_a
     @has_next_page = fetched.length > @per_page
@@ -85,7 +85,8 @@ class ChickenShopsController < ApplicationController
   private
 
   def chicken_shop_params
-    params.require(:chicken_shop).permit(:name, :address, :city, :postcode, :phone, :website, :description, :latitude, :longitude, :image)
+    params.require(:chicken_shop).permit(:name, :address, :city, :postcode, :phone, :website, :description,
+:latitude, :longitude, :image)
   end
 
   def active_filter_count
