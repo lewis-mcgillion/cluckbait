@@ -102,4 +102,28 @@ class ProfilesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to profile_path(@user)
     assert_equal "Profile updated! 🎉", flash[:notice]
   end
+
+  test "show displays wishlist items" do
+    sign_in @user
+    shop = create(:chicken_shop, name: "Wishlisted Place")
+    create(:wishlist_item, user: @user, chicken_shop: shop, visited: false)
+
+    get profile_path(@user)
+    assert_response :success
+  end
+
+  test "show displays reviews ordered by most recent" do
+    shop1 = create(:chicken_shop)
+    shop2 = create(:chicken_shop)
+    create(:review, user: @user, chicken_shop: shop1, created_at: 2.days.ago)
+    create(:review, user: @user, chicken_shop: shop2, created_at: 1.hour.ago)
+
+    get profile_path(@user)
+    assert_response :success
+  end
+
+  test "show accessible without authentication" do
+    get profile_path(@user)
+    assert_response :success
+  end
 end

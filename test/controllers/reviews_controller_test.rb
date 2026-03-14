@@ -125,4 +125,61 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
     delete chicken_shop_review_path(@shop, review)
     assert_response :not_found
   end
+
+  test "create with non-existent chicken shop returns not found" do
+    sign_in @user
+
+    post chicken_shop_reviews_path(chicken_shop_id: 999999), params: {
+      review: { rating: 5, title: "Test", body: "Test body" }
+    }
+    assert_response :not_found
+  end
+
+  test "create with photo uploads" do
+    sign_in @user
+
+    assert_difference "Review.count", 1 do
+      post chicken_shop_reviews_path(@shop), params: {
+        review: {
+          rating: 5,
+          title: "With photo",
+          body: "Check this out!",
+          photos: [ fixture_file_upload(Rails.root.join("test/fixtures/files/test_image.jpg"), "image/jpeg") ]
+        }
+      }
+    end
+  end if File.exist?(Rails.root.join("test/fixtures/files/test_image.jpg"))
+
+  test "create with missing title fails" do
+    sign_in @user
+
+    assert_no_difference "Review.count" do
+      post chicken_shop_reviews_path(@shop), params: {
+        review: { rating: 5, title: "", body: "Some body text" }
+      }
+    end
+    assert_response :unprocessable_entity
+  end
+
+  test "create with missing body fails" do
+    sign_in @user
+
+    assert_no_difference "Review.count" do
+      post chicken_shop_reviews_path(@shop), params: {
+        review: { rating: 5, title: "Some title", body: "" }
+      }
+    end
+    assert_response :unprocessable_entity
+  end
+
+  test "create with missing rating fails" do
+    sign_in @user
+
+    assert_no_difference "Review.count" do
+      post chicken_shop_reviews_path(@shop), params: {
+        review: { rating: nil, title: "Some title", body: "Some body" }
+      }
+    end
+    assert_response :unprocessable_entity
+  end
 end

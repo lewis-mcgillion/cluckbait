@@ -357,4 +357,148 @@ class UserTest < ActiveSupport::TestCase
 
     assert_equal 0, user.unread_conversations_count
   end
+
+  # -- Missing association tests --
+
+  test "has many activities" do
+    assert_respond_to build(:user), :activities
+  end
+
+  test "destroying user destroys associated activities" do
+    user = create(:user)
+    shop = create(:chicken_shop)
+    create(:review, user: user, chicken_shop: shop) # creates activity via callback
+
+    assert Activity.where(user: user).any?
+    assert_difference "Activity.count", -1 do
+      user.destroy
+    end
+  end
+
+  test "has many review_reactions" do
+    assert_respond_to build(:user), :review_reactions
+  end
+
+  test "destroying user destroys associated review_reactions" do
+    user = create(:user)
+    review = create(:review)
+    create(:review_reaction, user: user, review: review)
+
+    assert_difference "ReviewReaction.count", -1 do
+      user.destroy
+    end
+  end
+
+  test "has many notifications" do
+    assert_respond_to build(:user), :notifications
+  end
+
+  test "destroying user destroys associated notifications" do
+    user = create(:user)
+    create(:notification, user: user)
+
+    assert_difference "Notification.count", -1 do
+      user.destroy
+    end
+  end
+
+  # -- acceptable_avatar validation --
+
+  test "acceptable_avatar rejects non-image content types" do
+    user = build(:user)
+    user.avatar.attach(
+      io: StringIO.new("not an image"),
+      filename: "document.pdf",
+      content_type: "application/pdf"
+    )
+
+    assert_not user.valid?
+    assert user.errors[:avatar].any?
+  end
+
+  test "acceptable_avatar allows valid image types" do
+    user = build(:user)
+    user.avatar.attach(
+      io: StringIO.new("fake image"),
+      filename: "avatar.jpg",
+      content_type: "image/jpeg"
+    )
+
+    assert user.valid?
+  end
+
+  test "acceptable_avatar allows png" do
+    user = build(:user)
+    user.avatar.attach(
+      io: StringIO.new("fake png"),
+      filename: "avatar.png",
+      content_type: "image/png"
+    )
+
+    assert user.valid?
+  end
+
+  test "acceptable_avatar allows gif" do
+    user = build(:user)
+    user.avatar.attach(
+      io: StringIO.new("fake gif"),
+      filename: "avatar.gif",
+      content_type: "image/gif"
+    )
+
+    assert user.valid?
+  end
+
+  test "acceptable_avatar allows webp" do
+    user = build(:user)
+    user.avatar.attach(
+      io: StringIO.new("fake webp"),
+      filename: "avatar.webp",
+      content_type: "image/webp"
+    )
+
+    assert user.valid?
+  end
+
+  test "acceptable_avatar rejects files over 5MB" do
+    user = build(:user)
+    large_content = "a" * (6.megabytes)
+    user.avatar.attach(
+      io: StringIO.new(large_content),
+      filename: "large.jpg",
+      content_type: "image/jpeg"
+    )
+
+    assert_not user.valid?
+    assert user.errors[:avatar].any?
+  end
+
+  test "user is valid without avatar" do
+    user = build(:user)
+    assert_not user.avatar.attached?
+    assert user.valid?
+  end
+
+  # -- #unread_notifications_count --
+
+  test "unread_notifications_count returns count of unread notifications" do
+    user = create(:user)
+    create(:notification, user: user)
+    create(:notification, user: user)
+    create(:notification, :read, user: user)
+
+    assert_equal 2, user.unread_notifications_count
+  end
+
+  test "unread_notifications_count returns 0 when all are read" do
+    user = create(:user)
+    create(:notification, :read, user: user)
+
+    assert_equal 0, user.unread_notifications_count
+  end
+
+  test "unread_notifications_count returns 0 when no notifications" do
+    user = create(:user)
+    assert_equal 0, user.unread_notifications_count
+  end
 end

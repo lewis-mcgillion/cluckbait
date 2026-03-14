@@ -150,4 +150,106 @@ class ReviewTest < ActiveSupport::TestCase
   test "rating_label returns Poor for 1" do
     assert_equal "Poor", build(:review, rating: 1).rating_label
   end
+
+  # -- Associations --
+
+  test "has many reactions" do
+    assert_respond_to build(:review), :reactions
+  end
+
+  test "destroying review destroys associated reactions" do
+    review = create(:review)
+    create(:review_reaction, review: review)
+
+    assert_difference "ReviewReaction.count", -1 do
+      review.destroy
+    end
+  end
+
+  # -- Scopes --
+
+  test "lowest_rated scope orders by rating ascending" do
+    shop = create(:chicken_shop)
+    high = create(:review, chicken_shop: shop, rating: 5)
+    low = create(:review, chicken_shop: shop, rating: 1)
+
+    results = Review.lowest_rated.to_a
+    assert results.index(low) < results.index(high)
+  end
+
+  # -- acceptable_photos validation --
+
+  test "acceptable_photos rejects non-image content types" do
+    review = build(:review)
+    review.photos.attach(
+      io: StringIO.new("not a real pdf"),
+      filename: "document.pdf",
+      content_type: "application/pdf"
+    )
+
+    assert_not review.valid?
+    assert review.errors[:photos].any?
+  end
+
+  test "acceptable_photos allows valid image types" do
+    review = build(:review)
+    review.photos.attach(
+      io: StringIO.new("fake image"),
+      filename: "photo.jpg",
+      content_type: "image/jpeg"
+    )
+
+    assert review.valid?
+  end
+
+  test "acceptable_photos allows png images" do
+    review = build(:review)
+    review.photos.attach(
+      io: StringIO.new("fake png"),
+      filename: "photo.png",
+      content_type: "image/png"
+    )
+
+    assert review.valid?
+  end
+
+  test "acceptable_photos allows webp images" do
+    review = build(:review)
+    review.photos.attach(
+      io: StringIO.new("fake webp"),
+      filename: "photo.webp",
+      content_type: "image/webp"
+    )
+
+    assert review.valid?
+  end
+
+  test "acceptable_photos rejects files over 10MB" do
+    review = build(:review)
+    large_content = "a" * (11.megabytes)
+    review.photos.attach(
+      io: StringIO.new(large_content),
+      filename: "large.jpg",
+      content_type: "image/jpeg"
+    )
+
+    assert_not review.valid?
+    assert review.errors[:photos].any?
+  end
+
+  test "review is valid without photos" do
+    review = build(:review)
+    assert review.valid?
+  end
+
+  # -- create_activity callback --
+
+  test "creating a review creates an activity" do
+    assert_difference "Activity.count", 1 do
+      create(:review)
+    end
+
+    activity = Activity.last
+    assert_equal "posted_review", activity.action
+  end
 end

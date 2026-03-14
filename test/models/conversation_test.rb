@@ -134,4 +134,22 @@ class ConversationTest < ActiveSupport::TestCase
     conversation = create(:conversation, sender: user1, receiver: user2)
     assert_instance_of User, conversation.receiver
   end
+
+  # -- Missing association tests --
+
+  test "has many conversation_reads" do
+    assert_respond_to Conversation.new, :conversation_reads
+  end
+
+  test "destroying conversation destroys associated conversation_reads" do
+    user1 = create(:user)
+    user2 = create(:user)
+    Friendship.create!(user: user1, friend: user2, status: :accepted)
+    conversation = create(:conversation, sender: user1, receiver: user2)
+    ConversationRead.mark_read!(user1, conversation)
+
+    assert_difference "ConversationRead.count", -1 do
+      conversation.destroy
+    end
+  end
 end
