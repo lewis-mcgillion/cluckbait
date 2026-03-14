@@ -54,6 +54,7 @@ class ChickenShopsController < ApplicationController
 
     @page = [ (params[:page] || 1).to_i, 1 ].max
     @per_page = 25
+    @total_count = @chicken_shops.count
     fetched = @chicken_shops.limit(@per_page + 1).offset((@page - 1) * @per_page).to_a
     @has_next_page = fetched.length > @per_page
     @chicken_shops = @has_next_page ? fetched.first(@per_page) : fetched

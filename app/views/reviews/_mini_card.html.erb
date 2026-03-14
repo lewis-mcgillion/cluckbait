@@ -3,7 +3,7 @@
     <div class="review-stars"><%= "★" * review.rating %><%= "☆" * (5 - review.rating) %></div>
     <span class="review-badge"><%= review.rating_label %></span>
   </div>
-  <h4 class="review-card-title"><%= review.title %></h4>
+  <h3 class="review-card-title"><%= review.title %></h3>
   <p class="review-card-body"><%= truncate(review.body, length: 120) %></p>
   <div class="review-card-footer">
     <div class="review-author">

@@ -76,9 +76,12 @@
 <!-- CTA Section -->
 <section class="section cta-section">
   <div class="container text-center">
-    <h2 class="section-title">Ready to rate some chicken? 🍗</h2>
-    <p class="section-subtitle">Join thousands of chicken burger enthusiasts sharing their honest reviews</p>
-    <% unless user_signed_in? %>
+    <% if user_signed_in? %>
+      <h2 class="section-title">Ready to rate some chicken? 🍗</h2>
+      <p class="section-subtitle">Find your next favourite chicken burger and share your honest review</p>
+    <% else %>
+      <h2 class="section-title">Ready to rate some chicken? 🍗</h2>
+      <p class="section-subtitle">Join thousands of chicken burger enthusiasts sharing their honest reviews</p>
       <%= link_to "Create Free Account", new_user_registration_path, class: "btn btn-primary btn-lg" %>
     <% end %>
     <%= link_to "Browse All Shops", chicken_shops_path, class: "btn btn-outline btn-lg" %>

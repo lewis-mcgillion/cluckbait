@@ -380,12 +380,12 @@ img { max-width: 100%; height: auto; display: block; }
   transition: all 0.2s ease; white-space: nowrap;
 }
 .sort-btn:hover {
-  border-color: var(--primary); color: var(--primary);
-  background: rgba(255, 165, 0, 0.08);
+  border-color: var(--accent); color: var(--accent);
+  background: rgba(255, 107, 53, 0.08);
 }
 .sort-btn-active {
-  border-color: var(--primary); color: var(--primary);
-  background: rgba(255, 165, 0, 0.12);
+  border-color: var(--accent); color: var(--accent);
+  background: rgba(255, 107, 53, 0.12);
   font-weight: 600;
 }
 .sort-btn:disabled {

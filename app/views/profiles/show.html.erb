@@ -22,7 +22,7 @@
             <span class="stat-label">Reviews</span>
           </div>
           <div class="stat">
-            <span class="stat-number"><%= @user.average_rating_given %></span>
+            <span class="stat-number"><%= @user.average_rating_given || "—" %></span>
             <span class="stat-label">Avg Rating</span>
           </div>
           <div class="stat">

@@ -125,8 +125,8 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 4.0, user.average_rating_given
   end
 
-  test "average_rating_given returns 0 when no reviews" do
-    assert_equal 0, create(:user).average_rating_given
+  test "average_rating_given returns nil when no reviews" do
+    assert_nil create(:user).average_rating_given
   end
 
   # -- Friendship associations --
