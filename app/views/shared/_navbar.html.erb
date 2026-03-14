@@ -1,4 +1,4 @@
-<nav class="navbar">
+<nav class="navbar" data-controller="mobile-nav">
   <div class="nav-container">
     <div class="nav-left">
       <%= link_to root_path, class: "nav-logo" do %>
@@ -7,7 +7,13 @@
       <% end %>
     </div>
 
-    <div class="nav-center">
+    <button class="nav-hamburger" data-action="click->mobile-nav#toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+
+    <div class="nav-center" data-mobile-nav-target="menu">
       <%= link_to "Discover", root_path, class: "nav-link #{'active' if current_page?(root_path)}" %>
       <% if user_signed_in? %>
         <%= link_to "Feed", activities_path, class: "nav-link #{'active' if current_page?(activities_path)}" %>
