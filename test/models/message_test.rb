@@ -13,10 +13,10 @@ class MessageTest < ActiveSupport::TestCase
     assert message.valid?
   end
 
-  test "valid message with shareable and no body" do
+  test "message with shareable requires body" do
     shop = create(:chicken_shop)
     message = build(:message, conversation: @conversation, user: @sender, body: nil, shareable: shop)
-    assert message.valid?
+    assert_not message.valid?
   end
 
   test "invalid without body and without shareable" do
@@ -62,13 +62,13 @@ class MessageTest < ActiveSupport::TestCase
 
   test "valid shareable_type ChickenShop" do
     shop = create(:chicken_shop)
-    message = build(:message, conversation: @conversation, user: @sender, shareable: shop, body: nil)
+    message = build(:message, conversation: @conversation, user: @sender, shareable: shop, body: "Check this out!")
     assert message.valid?
   end
 
   test "valid shareable_type Review" do
     review = create(:review)
-    message = build(:message, conversation: @conversation, user: @sender, shareable: review, body: nil)
+    message = build(:message, conversation: @conversation, user: @sender, shareable: review, body: "Check this out!")
     assert message.valid?
   end
 

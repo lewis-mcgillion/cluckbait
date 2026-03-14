@@ -53,12 +53,12 @@
         <!-- Rating Distribution -->
         <div class="sidebar-card">
           <h3>Rating Breakdown</h3>
-          <div class="rating-bars">
+          <div class="rating-bars" data-controller="rating-bars">
             <% @chicken_shop.rating_distribution.reverse_each do |rating, count| %>
               <div class="rating-bar-row">
                 <span class="rating-bar-label"><%= rating %> ★</span>
                 <div class="rating-bar-track">
-                  <div class="rating-bar-fill" style="width: <%= @chicken_shop.reviews_count > 0 ? (count.to_f / @chicken_shop.reviews_count * 100).round : 0 %>%"></div>
+                  <div class="rating-bar-fill" data-width="<%= @chicken_shop.reviews_count > 0 ? (count.to_f / @chicken_shop.reviews_count * 100).round : 0 %>"></div>
                 </div>
                 <span class="rating-bar-count"><%= count %></span>
               </div>

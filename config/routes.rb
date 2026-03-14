@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: {
-    registrations: "users/registrations"
+    registrations: "users/registrations",
+    passwords: "users/passwords"
   }
 
   root "home#index"
@@ -34,8 +35,10 @@ Rails.application.routes.draw do
     end
   end
 
-  # API endpoints for map
   get "api/shops", to: "api/shops#index"
+
+  # Fallback for sign-out via GET (when JS/Turbo is unavailable)
+  get "users/sign_out", to: redirect("/")
 
   get "up" => "rails/health#show", as: :rails_health_check
 end
