@@ -299,6 +299,7 @@ img { max-width: 100%; height: auto; display: block; }
   font-weight: 700;
 }
 .page-subtitle { color: var(--text-secondary); margin-top: 0.25rem; }
+.page-header-action { margin-top: 1rem; }
 
 /* ===== Shops Grid ===== */
 .shops-grid {
@@ -2131,4 +2132,87 @@ turbo-frame { display: contents; }
   background: var(--accent);
   color: #fff;
   box-shadow: 0 2px 12px var(--accent-glow);
+}
+
+/* =========================================
+   New Chicken Shop Form
+   ========================================= */
+
+.new-shop-form {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.form-section {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.form-section:last-of-type {
+  border-bottom: none;
+}
+
+.form-section-title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.form-section-hint {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.form-group-half {
+  flex: 1;
+}
+
+/* Map Picker */
+
+.map-picker-container {
+  width: 100%;
+  height: 360px;
+  border-radius: var(--radius);
+  border: 2px solid var(--border);
+  overflow: hidden;
+  cursor: crosshair;
+}
+
+.map-picker-container .leaflet-container {
+  cursor: crosshair;
+}
+
+.map-picker-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.map-picker-coords {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  transition: color var(--transition);
+}
+
+.map-picker-coords.has-value {
+  color: var(--success);
+  font-weight: 500;
+}
+
+@media (max-width: 600px) {
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
 }

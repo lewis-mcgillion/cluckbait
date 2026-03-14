@@ -1,4 +1,20 @@
 class ChickenShopsController < ApplicationController
+  before_action :authenticate_user!, only: [ :new, :create ]
+
+  def new
+    @chicken_shop = ChickenShop.new
+  end
+
+  def create
+    @chicken_shop = ChickenShop.new(chicken_shop_params)
+
+    if @chicken_shop.save
+      redirect_to @chicken_shop, notice: "Chicken shop was successfully added! 🍗"
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
   def index
     @chicken_shops = ChickenShop.all
     @chicken_shops = @chicken_shops.search_by_name(params[:search]) if params[:search].present?
@@ -59,6 +75,10 @@ class ChickenShopsController < ApplicationController
   end
 
   private
+
+  def chicken_shop_params
+    params.require(:chicken_shop).permit(:name, :address, :city, :postcode, :phone, :website, :description, :latitude, :longitude, :image)
+  end
 
   def active_filter_count
     count = 0

@@ -191,4 +191,119 @@ class ChickenShopsControllerTest < ActionDispatch::IntegrationTest
     get chicken_shop_path(shop)
     assert_response :success
   end
+
+  # -- #new --
+
+  test "new requires authentication" do
+    get new_chicken_shop_path
+    assert_response :redirect
+    assert_redirected_to new_user_session_path
+  end
+
+  test "new renders successfully for signed in user" do
+    sign_in create(:user)
+    get new_chicken_shop_path
+    assert_response :success
+  end
+
+  test "new displays form fields" do
+    sign_in create(:user)
+    get new_chicken_shop_path
+    assert_response :success
+    assert_select "form"
+    assert_select "input[name='chicken_shop[name]']"
+    assert_select "input[name='chicken_shop[address]']"
+    assert_select "input[name='chicken_shop[city]']"
+    assert_select "input[name='chicken_shop[latitude]']"
+    assert_select "input[name='chicken_shop[longitude]']"
+  end
+
+  # -- #create --
+
+  test "create requires authentication" do
+    post chicken_shops_path, params: { chicken_shop: { name: "Test Shop" } }
+    assert_response :redirect
+    assert_redirected_to new_user_session_path
+  end
+
+  test "create with valid params creates a shop and redirects" do
+    sign_in create(:user)
+
+    assert_difference("ChickenShop.count", 1) do
+      post chicken_shops_path, params: {
+        chicken_shop: {
+          name: "Cluck Palace",
+          address: "42 High Street",
+          city: "London",
+          postcode: "SW1A 1AA",
+          latitude: 51.5074,
+          longitude: -0.1278,
+          phone: "020 1234 5678",
+          website: "https://cluckpalace.co.uk",
+          description: "Amazing chicken burgers"
+        }
+      }
+    end
+
+    shop = ChickenShop.last
+    assert_equal "Cluck Palace", shop.name
+    assert_equal "London", shop.city
+    assert_redirected_to chicken_shop_path(shop)
+    assert_equal "Chicken shop was successfully added! 🍗", flash[:notice]
+  end
+
+  test "create with missing required fields renders errors" do
+    sign_in create(:user)
+
+    assert_no_difference("ChickenShop.count") do
+      post chicken_shops_path, params: {
+        chicken_shop: {
+          name: "",
+          address: "",
+          city: "",
+          latitude: "",
+          longitude: ""
+        }
+      }
+    end
+
+    assert_response :unprocessable_entity
+  end
+
+  test "create with invalid website format renders errors" do
+    sign_in create(:user)
+
+    assert_no_difference("ChickenShop.count") do
+      post chicken_shops_path, params: {
+        chicken_shop: {
+          name: "Test Shop",
+          address: "123 Street",
+          city: "London",
+          latitude: 51.5,
+          longitude: -0.1,
+          website: "not-a-url"
+        }
+      }
+    end
+
+    assert_response :unprocessable_entity
+  end
+
+  test "create with only required fields succeeds" do
+    sign_in create(:user)
+
+    assert_difference("ChickenShop.count", 1) do
+      post chicken_shops_path, params: {
+        chicken_shop: {
+          name: "Minimal Shop",
+          address: "1 Test Rd",
+          city: "Manchester",
+          latitude: 53.4808,
+          longitude: -2.2426
+        }
+      }
+    end
+
+    assert_redirected_to chicken_shop_path(ChickenShop.last)
+  end
 end

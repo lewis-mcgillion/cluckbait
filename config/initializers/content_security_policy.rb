@@ -19,7 +19,7 @@ Rails.application.configure do
     policy.object_src  :none
     policy.script_src  :self, "https://unpkg.com"
     policy.style_src   :self, "https://unpkg.com", "https://fonts.googleapis.com"
-    policy.connect_src :self
+    policy.connect_src :self, "https://unpkg.com"
   end
 
   # Generate per-request nonces for importmap inline scripts and inline styles.

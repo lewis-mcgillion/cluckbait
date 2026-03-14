@@ -4,6 +4,11 @@
   <div class="container">
     <h1 class="page-title">🍗 All Chicken Shops</h1>
     <p class="page-subtitle">Browse every chicken shop in our database</p>
+    <% if user_signed_in? %>
+      <%= link_to new_chicken_shop_path, class: "btn btn-primary btn-sm page-header-action" do %>
+        + Add Shop
+      <% end %>
+    <% end %>
   </div>
 </section>
 
