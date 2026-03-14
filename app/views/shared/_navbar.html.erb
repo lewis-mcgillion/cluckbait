@@ -7,24 +7,24 @@
       <% end %>
     </div>
 
-    <button class="nav-hamburger" data-action="click->mobile-nav#toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+    <button class="nav-hamburger" data-action="click->mobile-nav#toggle" aria-label="<%= t('navbar.toggle_menu') %>" aria-expanded="false">
       <span class="hamburger-line"></span>
       <span class="hamburger-line"></span>
       <span class="hamburger-line"></span>
     </button>
 
     <div class="nav-center" data-mobile-nav-target="menu">
-      <%= link_to "Home", root_path, class: "nav-link #{'active' if current_page?(root_path)}" %>
+      <%= link_to t("navbar.home"), root_path, class: "nav-link #{'active' if current_page?(root_path)}" %>
       <% if user_signed_in? %>
-        <%= link_to "Feed", activities_path, class: "nav-link #{'active' if current_page?(activities_path)}" %>
+        <%= link_to t("navbar.feed"), activities_path, class: "nav-link #{'active' if current_page?(activities_path)}" %>
       <% end %>
-      <%= link_to "All Shops", chicken_shops_path, class: "nav-link #{'active' if current_page?(chicken_shops_path)}" %>
+      <%= link_to t("navbar.all_shops"), chicken_shops_path, class: "nav-link #{'active' if current_page?(chicken_shops_path)}" %>
       <% if user_signed_in? %>
         <% wishlist = current_user.wishlist_count %>
         <% pending_friends = current_user.pending_friend_requests_count %>
         <% unread_convos = current_user.unread_conversations_count %>
         <%= link_to wishlist_items_path, class: "nav-link #{'active' if current_page?(wishlist_items_path)}" do %>
-          Wishlist
+          <%= t("navbar.wishlist") %>
           <span id="wishlist_nav_count">
             <% if wishlist > 0 %>
               <span class="nav-badge"><%= wishlist %></span>
@@ -32,13 +32,13 @@
           </span>
         <% end %>
         <%= link_to friendships_path, class: "nav-link #{'active' if current_page?(friendships_path)}" do %>
-          Friends
+          <%= t("navbar.friends") %>
           <% if pending_friends > 0 %>
             <span class="nav-badge"><%= pending_friends %></span>
           <% end %>
         <% end %>
         <%= link_to conversations_path, class: "nav-link #{'active' if current_page?(conversations_path)}" do %>
-          Messages
+          <%= t("navbar.messages") %>
           <% if unread_convos > 0 %>
             <span class="nav-badge"><%= unread_convos %></span>
           <% end %>
@@ -63,11 +63,11 @@
             <% end %>
             <span class="nav-username"><%= current_user.name %></span>
           <% end %>
-          <%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete, turbo: false }, class: "nav-link nav-signout" %>
+          <%= link_to t("shared.sign_out"), destroy_user_session_path, data: { turbo_method: :delete, turbo: false }, class: "nav-link nav-signout" %>
         </div>
       <% else %>
-        <%= link_to "Sign in", new_user_session_path, class: "nav-link" %>
-        <%= link_to "Join", new_user_registration_path, class: "btn btn-primary btn-sm" %>
+        <%= link_to t("shared.sign_in"), new_user_session_path, class: "nav-link" %>
+        <%= link_to t("shared.join"), new_user_registration_path, class: "btn btn-primary btn-sm" %>
       <% end %>
     </div>
   </div>

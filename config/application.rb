@@ -16,12 +16,19 @@ module Cluckbait
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks])
 
-    # Configuration for the application, engines, and railties goes here.
-    #
-    # These settings can be overridden in specific environments using the files
-    # in config/environments, which are processed later.
-    #
-    # config.time_zone = "Central Time (US & Canada)"
-    # config.eager_load_paths << Rails.root.join("extras")
+    # i18n configuration
+    config.i18n.default_locale = :en
+    config.i18n.available_locales = [
+      :en, :zh, :hi, :es, :fr, :ar, :pt, :ru, :ja,
+      :de, :jv, :ko, :vi, :tr, :ur, :it,
+      :th, :fa, :pl, :su, :ha, :my,
+      :uk, :ms, :tl, :nl, :ro, :yo, :ig, :am, :cs, :el,
+      :hu, :sv, :he, :sw, :id, :ne, :si, :ps, :cy, :ga,
+      :bg, :hr, :da, :et, :fi, :is, :lv, :lt, :mk, :mt,
+      :nb, :sk, :sl, :sq, :sr, :be, :bs, :ka, :hy, :az,
+      :ca, :eu, :gl, :gd, :lb
+    ]
+    config.i18n.fallbacks = true
+    config.i18n.load_path += Dir[Rails.root.join("config", "locales", "**", "*.{rb,yml}")]
   end
 end

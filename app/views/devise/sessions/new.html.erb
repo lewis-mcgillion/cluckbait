@@ -1,9 +1,9 @@
-<% content_for(:title) { "Sign In — Cluckbait" } %>
+<% content_for(:title) { t("devise.sessions.title") } %>
 
 <div class="devise-container">
   <div class="devise-card">
-    <h1 class="devise-title">Welcome back 🍗</h1>
-    <p class="devise-subtitle">Sign in to your Cluckbait account</p>
+    <h1 class="devise-title"><%= t("devise.sessions.heading") %></h1>
+    <p class="devise-subtitle"><%= t("devise.sessions.subtitle") %></p>
 
     <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "auth-form", data: { turbo: false } }) do |f| %>
       <div class="form-group">
@@ -23,7 +23,7 @@
         </div>
       <% end %>
 
-      <%= f.submit "Sign In", class: "btn btn-primary btn-block btn-lg" %>
+      <%= f.submit t("devise.sessions.submit"), class: "btn btn-primary btn-block btn-lg" %>
     <% end %>
 
     <div class="devise-links">

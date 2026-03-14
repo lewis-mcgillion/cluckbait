@@ -17,22 +17,22 @@
         <h3 class="shop-card-name"><%= @wishlist_item.chicken_shop.name %></h3>
         <p class="shop-card-location">📍 <%= @wishlist_item.chicken_shop.city %><%= ", #{@wishlist_item.chicken_shop.postcode}" if @wishlist_item.chicken_shop.postcode.present? %></p>
         <div class="shop-card-stats">
-          <span class="shop-reviews-count"><%= @wishlist_item.chicken_shop.reviews_count %> reviews</span>
+          <span class="shop-reviews-count"><%= t("chicken_shops.card.reviews", count: @wishlist_item.chicken_shop.reviews_count) %></span>
           <span class="shop-card-stars"><%= "★" * @wishlist_item.chicken_shop.average_rating.round %><%= "☆" * (5 - @wishlist_item.chicken_shop.average_rating.round) %></span>
         </div>
       </div>
     <% end %>
     <div class="wishlist-card-actions">
       <% if @wishlist_item.visited? %>
-        <span class="wishlist-visited-badge">✅ Visited</span>
+        <span class="wishlist-visited-badge"><%= t("wishlist.visited") %></span>
       <% else %>
-        <span class="wishlist-pending-badge">🍗 Want to Try</span>
+        <span class="wishlist-pending-badge"><%= t("wishlist.want_to_try") %></span>
       <% end %>
       <%= button_to wishlist_item_path(@wishlist_item), method: :patch, class: "btn btn-sm btn-outline wishlist-toggle-btn" do %>
-        <%= @wishlist_item.visited? ? "Mark Unvisited" : "Mark Visited ✅" %>
+        <%= @wishlist_item.visited? ? t("wishlist.mark_unvisited") : t("wishlist.mark_visited") %>
       <% end %>
-      <%= button_to wishlist_item_path(@wishlist_item), method: :delete, class: "btn btn-sm btn-danger wishlist-remove-btn", data: { turbo_confirm: "Remove from wishlist?" } do %>
-        Remove
+      <%= button_to wishlist_item_path(@wishlist_item), method: :delete, class: "btn btn-sm btn-danger wishlist-remove-btn", data: { turbo_confirm: t("wishlist.remove_confirm") } do %>
+        <%= t("shared.remove") %>
       <% end %>
     </div>
     <% if @wishlist_item.notes.present? %>

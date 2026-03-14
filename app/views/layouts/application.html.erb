@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<%= I18n.locale %>" dir="<%= text_direction %>">
   <head>
-    <title><%= content_for(:title) || "Cluckbait" %></title>
-    <meta name="description" content="<%= content_for(:meta_description) || "Discover, rate and review the best chicken burger shops across the UK. Join the Cluckbait community today." %>">
+    <title><%= content_for(:title) || t("shared.cluckbait") %></title>
+    <meta name="description" content="<%= content_for(:meta_description) || t("home.meta_description") %>">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">

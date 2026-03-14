@@ -3,14 +3,14 @@
     <span class="notification-icon"><%= notification.icon %></span>
     <div class="notification-content">
       <p class="notification-text"><%= notification.message_text %></p>
-      <span class="notification-time"><%= time_ago_in_words(notification.created_at) %> ago</span>
+      <span class="notification-time"><%= time_ago_in_words(notification.created_at) %> <%= t("shared.ago") %></span>
     </div>
     <% if notification.unread? %>
       <span class="notification-dot"></span>
     <% end %>
   <% end %>
   <% if notification.unread? %>
-    <%= button_to mark_as_read_notification_path(notification), method: :patch, class: "notification-mark-btn", data: { turbo_stream: true }, title: "Mark as read" do %>
+    <%= button_to mark_as_read_notification_path(notification), method: :patch, class: "notification-mark-btn", data: { turbo_stream: true }, title: t("notifications.mark_as_read") do %>
       ✓
     <% end %>
   <% end %>
