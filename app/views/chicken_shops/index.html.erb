@@ -179,6 +179,25 @@
           <% end %>
         <% end %>
       </div>
+
+      <% if @page > 1 || @has_next_page %>
+        <nav class="pagination" aria-label="Pages">
+          <% base_params = request.query_parameters.except("page") %>
+          <% if @page > 1 %>
+            <%= link_to "← Previous", chicken_shops_path(base_params.merge(page: @page - 1)), class: "pagination-btn" %>
+          <% else %>
+            <span class="pagination-btn pagination-btn--disabled">← Previous</span>
+          <% end %>
+
+          <span class="pagination-info">Page <%= @page %></span>
+
+          <% if @has_next_page %>
+            <%= link_to "Next →", chicken_shops_path(base_params.merge(page: @page + 1)), class: "pagination-btn" %>
+          <% else %>
+            <span class="pagination-btn pagination-btn--disabled">Next →</span>
+          <% end %>
+        </nav>
+      <% end %>
     <% else %>
       <div class="empty-state">
         <span class="empty-icon">🔍</span>
