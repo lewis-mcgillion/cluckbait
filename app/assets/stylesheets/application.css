@@ -1,32 +1,98 @@
-/* ===== Cluckbait — Modern Dark Theme ===== */
+/* ================================================================
+   Cluckbait — Design System & Styles
+   ================================================================
+
+   Table of Contents:
+
+    1. Design Tokens (CSS Variables)
+    2. Reset & Base Styles
+    3. Layout Utilities
+    4. Buttons
+    5. Navigation
+    6. Flash Messages
+    7. Hero Section
+    8. Search
+    9. Map
+   10. Sections & Page Headers
+   11. Shop Cards & Grid
+   12. Filters & Sort
+   13. Shop Detail Page
+   14. Sidebar Cards
+   15. Rating Components
+   16. Reviews
+   17. Empty State
+   18. CTA Section
+   19. Forms
+   20. Profile
+   21. Footer
+   22. Responsive (Primary)
+   23. Devise (Auth Views)
+   24. Third-Party Overrides
+   25. Friends & Social
+   26. Messaging & Chat
+   27. Advanced Filters
+   28. Review Reactions
+   29. Activity Feed
+   30. Notifications
+   31. Wishlist
+   32. Pagination
+   33. New Shop Form
+
+   ================================================================ */
+
+/* ----- 1. Design Tokens ----- */
 
 :root {
+  /* Backgrounds */
   --bg-primary: #0f0f0f;
   --bg-secondary: #1a1a1a;
   --bg-card: #222222;
   --bg-card-hover: #2a2a2a;
   --bg-input: #1e1e1e;
+
+  /* Text */
   --text-primary: #f5f5f5;
   --text-secondary: #a0a0a0;
   --text-muted: #666;
+
+  /* Brand / Accent */
   --accent: #ff6b35;
   --accent-hover: #ff8555;
   --accent-glow: rgba(255, 107, 53, 0.3);
+  --accent-subtle: rgba(255, 107, 53, 0.15);
+
+  /* Status */
   --success: #4ecb71;
+  --success-subtle: rgba(78, 203, 113, 0.15);
   --danger: #ef4444;
+  --danger-hover: #dc2626;
   --warning: #f59e0b;
+
+  /* Borders */
   --border: #333;
   --border-light: #444;
+
+  /* Radii */
   --radius: 12px;
   --radius-sm: 8px;
   --radius-lg: 16px;
+
+  /* Shadows */
   --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.6);
+
+  /* Typography */
   --font-display: 'Space Grotesk', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
+
+  /* Layout */
   --max-width: 1200px;
+
+  /* Motion */
   --transition: 0.2s ease;
 }
+
+/* ----- 2. Reset & Base Styles ----- */
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -56,13 +122,15 @@ a:hover { color: var(--accent-hover); }
 
 img { max-width: 100%; height: auto; display: block; }
 
+/* ----- 3. Layout Utilities ----- */
+
 .container { max-width: var(--max-width); margin: 0 auto; padding: 0 1.5rem; }
 .container-narrow { max-width: 640px; }
 .text-center { text-align: center; }
 .text-muted { color: var(--text-secondary); }
 .hidden { display: none !important; }
 
-/* ===== Buttons ===== */
+/* ----- 4. Buttons ----- */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -99,7 +167,7 @@ img { max-width: 100%; height: auto; display: block; }
   color: var(--accent);
 }
 .btn-danger { background: var(--danger); color: #fff; }
-.btn-danger:hover { background: #dc2626; color: #fff; }
+.btn-danger:hover { background: var(--danger-hover); color: #fff; }
 .btn-accent { background: var(--accent); color: #fff; }
 .btn-sm { padding: 0.4rem 0.9rem; font-size: 0.8rem; }
 .btn-lg { padding: 0.85rem 2rem; font-size: 1rem; }
@@ -109,7 +177,7 @@ img { max-width: 100%; height: auto; display: block; }
 
 @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 0.8; } }
 
-/* ===== Navbar ===== */
+/* ----- 5. Navigation ----- */
 .navbar {
   position: sticky;
   top: 0;
@@ -183,7 +251,7 @@ img { max-width: 100%; height: auto; display: block; }
 .nav-hamburger.active .hamburger-line:nth-child(2) { opacity: 0; }
 .nav-hamburger.active .hamburger-line:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-/* ===== Flash Messages ===== */
+/* ----- 6. Flash Messages ----- */
 .flash {
   display: flex; align-items: center; justify-content: space-between;
   padding: 0.75rem 1.5rem;
@@ -201,7 +269,7 @@ img { max-width: 100%; height: auto; display: block; }
 .flash-fade { opacity: 0; transition: opacity 0.5s ease; }
 @keyframes slideDown { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-/* ===== Hero Section ===== */
+/* ----- 7. Hero Section ----- */
 .hero {
   background: linear-gradient(135deg, var(--bg-primary) 0%, #1a0e08 100%);
   padding: 5rem 1.5rem 2rem;
@@ -237,7 +305,7 @@ img { max-width: 100%; height: auto; display: block; }
 }
 .hero-search { max-width: 560px; margin: 0 auto; }
 
-/* ===== Search Box ===== */
+/* ----- 8. Search ----- */
 .search-box {
   display: flex;
   align-items: center;
@@ -262,7 +330,7 @@ img { max-width: 100%; height: auto; display: block; }
 }
 .search-input::placeholder { color: var(--text-muted); }
 
-/* ===== Map ===== */
+/* ----- 9. Map ----- */
 .map-section { padding: 0 1.5rem 3rem; }
 .main-map {
   max-width: var(--max-width);
@@ -289,10 +357,10 @@ img { max-width: 100%; height: auto; display: block; }
 .map-popup { font-family: var(--font-body); }
 .map-popup h3 { font-family: var(--font-display); font-size: 1rem; margin-bottom: 0.25rem; }
 .map-popup h3 a { color: var(--accent); }
-.popup-address { font-size: 0.8rem; color: #666; margin-bottom: 0.3rem; }
+.popup-address { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.3rem; }
 .popup-rating { display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.5rem; }
 .popup-stars { color: var(--accent); font-size: 0.85rem; }
-.popup-count { font-size: 0.75rem; color: #888; }
+.popup-count { font-size: 0.75rem; color: var(--text-secondary); }
 .popup-link {
   display: inline-block;
   font-size: 0.8rem;
@@ -300,7 +368,7 @@ img { max-width: 100%; height: auto; display: block; }
   color: var(--accent);
 }
 
-/* ===== Sections ===== */
+/* ----- 10. Sections & Page Headers ----- */
 .section { padding: 4rem 0; }
 .section-dark { background: var(--bg-secondary); }
 .section-header { text-align: center; margin-bottom: 2.5rem; }
@@ -325,7 +393,7 @@ img { max-width: 100%; height: auto; display: block; }
 .page-subtitle { color: var(--text-secondary); margin-top: 0.25rem; }
 .page-header-action { margin-top: 1rem; }
 
-/* ===== Shops Grid ===== */
+/* ----- 11. Shop Cards & Grid ----- */
 .shops-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -378,49 +446,82 @@ img { max-width: 100%; height: auto; display: block; }
 .shop-reviews-count { font-size: 0.8rem; color: var(--text-secondary); }
 .shop-card-stars { color: var(--accent); font-size: 0.85rem; letter-spacing: 1px; }
 
-/* ===== Filter Bar ===== */
+/* ----- 12. Filters & Sort ----- */
 .shops-filter-bar { margin-bottom: 1rem; }
 .filter-form { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: stretch; }
 .filter-form .search-box { flex: 1; min-width: 200px; }
 
-
-/* ===== Sort Bar ===== */
 .sort-bar {
-  display: flex; align-items: center; gap: 0.75rem;
-  margin-bottom: 1.5rem; flex-wrap: wrap;
-  padding: 0.75rem 1rem; background: var(--card-bg);
-  border-radius: var(--radius); border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  padding: 0.75rem 1rem;
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
 }
+
+.sort-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.results-count {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.results-count strong {
+  color: var(--accent);
+}
+
 .sort-label {
   color: var(--text-secondary); font-size: 0.85rem;
   font-weight: 600; white-space: nowrap;
 }
 .sort-buttons { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
 .sort-btn {
-  padding: 0.45rem 0.9rem; border-radius: var(--radius);
-  border: 1px solid var(--border); background: transparent;
-  color: var(--text-secondary); cursor: pointer;
-  font-size: 0.8rem; font-weight: 500;
-  transition: all 0.2s ease; white-space: nowrap;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: all var(--transition);
+  white-space: nowrap;
+  text-decoration: none;
 }
+
 .sort-btn:hover {
-  border-color: var(--accent); color: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent);
   background: rgba(255, 107, 53, 0.08);
 }
+
 .sort-btn-active {
-  border-color: var(--accent); color: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent);
   background: rgba(255, 107, 53, 0.12);
   font-weight: 600;
 }
+
 .sort-btn:disabled {
   opacity: 0.6; cursor: wait;
 }
 .shop-card-distance {
-  color: var(--primary); font-size: 0.8rem;
+  color: var(--accent); font-size: 0.8rem;
   font-weight: 600; margin-top: 0.35rem;
 }
 
-/* ===== Shop Show Page ===== */
+/* ----- 13. Shop Detail Page ----- */
 .shop-hero { position: relative; height: 320px; overflow: hidden; }
 .shop-hero-bg { position: absolute; inset: 0; }
 .shop-hero-img { width: 100%; height: 100%; object-fit: cover; }
@@ -446,7 +547,7 @@ img { max-width: 100%; height: auto; display: block; }
 
 .shop-layout { display: grid; grid-template-columns: 1fr 1.5fr; gap: 2rem; align-items: start; }
 
-/* ===== Sidebar Cards ===== */
+/* ----- 14. Sidebar Cards ----- */
 .sidebar-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -462,7 +563,7 @@ img { max-width: 100%; height: auto; display: block; }
 }
 .sidebar-card p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.7; }
 
-/* ===== Rating Bars ===== */
+/* ----- 15. Rating Components ----- */
 .rating-bar-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; }
 .rating-bar-label { font-size: 0.8rem; width: 30px; color: var(--text-secondary); text-align: right; }
 .rating-bar-track { flex: 1; height: 8px; background: var(--bg-input); border-radius: 99px; overflow: hidden; }
@@ -481,7 +582,7 @@ img { max-width: 100%; height: auto; display: block; }
 .star-rating-input .star.active { color: var(--accent); }
 .star-rating-input .star.hover { color: var(--warning); transform: scale(1.15); }
 
-/* ===== Reviews ===== */
+/* ----- 16. Reviews ----- */
 .reviews-heading {
   font-family: var(--font-display);
   font-size: 1.3rem;
@@ -537,7 +638,7 @@ img { max-width: 100%; height: auto; display: block; }
   font-weight: 600;
   padding: 0.2rem 0.5rem;
   border-radius: 99px;
-  background: rgba(255,107,53,0.15);
+  background: var(--accent-subtle);
   color: var(--accent);
 }
 .review-card-title { font-family: var(--font-display); font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem; }
@@ -549,23 +650,39 @@ img { max-width: 100%; height: auto; display: block; }
 .review-shop-link { font-size: 0.8rem; color: var(--text-muted); }
 .review-shop-link:hover { color: var(--accent); }
 
-/* ===== CTA Section ===== */
+/* ----- 17. Empty State ----- */
+
+.empty-state {
+  text-align: center;
+  padding: 4rem 1rem;
+  color: var(--text-secondary);
+}
+.empty-icon { font-size: 3rem; display: block; margin-bottom: 1rem; }
+.empty-state h3 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+.empty-state p {
+  margin-bottom: 1.5rem;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.empty-state-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+/* ----- 18. CTA Section ----- */
 .cta-section {
   background: linear-gradient(135deg, var(--bg-secondary) 0%, #1a0e08 100%);
   border-top: 1px solid var(--border);
 }
 .cta-section .btn { margin: 0 0.5rem; }
 
-/* ===== Empty State ===== */
-.empty-state {
-  text-align: center;
-  padding: 3rem 1rem;
-  color: var(--text-secondary);
-}
-.empty-icon { font-size: 3rem; display: block; margin-bottom: 1rem; }
-.empty-state h3 { font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--text-primary); }
-
-/* ===== Forms ===== */
+/* ----- 19. Forms ----- */
 .form-group { margin-bottom: 1.25rem; }
 .form-label { display: block; font-weight: 500; font-size: 0.85rem; margin-bottom: 0.4rem; color: var(--text-secondary); }
 .form-input {
@@ -624,7 +741,7 @@ img { max-width: 100%; height: auto; display: block; }
   font-size: 1.5rem; font-weight: 700;
 }
 
-/* ===== Profile ===== */
+/* ----- 20. Profile ----- */
 .profile-hero { background: var(--bg-secondary); padding: 3rem 0; border-bottom: 1px solid var(--border); }
 .profile-header { display: flex; align-items: flex-start; gap: 2rem; }
 .profile-avatar-large { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent); }
@@ -642,7 +759,7 @@ img { max-width: 100%; height: auto; display: block; }
 .stat-number { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--accent); }
 .stat-label { font-size: 0.8rem; color: var(--text-muted); }
 
-/* ===== Footer ===== */
+/* ----- 21. Footer ----- */
 .footer {
   background: var(--bg-secondary);
   border-top: 1px solid var(--border);
@@ -660,7 +777,7 @@ img { max-width: 100%; height: auto; display: block; }
 .footer-bottom { border-top: 1px solid var(--border); padding-top: 1.5rem; }
 .footer-bottom p { font-size: 0.8rem; color: var(--text-muted); }
 
-/* ===== Responsive ===== */
+/* ----- 22. Responsive (Primary) ----- */
 @media (max-width: 768px) {
   .nav-hamburger { display: flex; }
   .nav-center {
@@ -694,7 +811,7 @@ img { max-width: 100%; height: auto; display: block; }
   .reviews-grid { grid-template-columns: 1fr; }
 }
 
-/* ===== Devise View Styling ===== */
+/* ----- 23. Devise (Auth Views) ----- */
 .devise-container {
   max-width: 420px;
   margin: 4rem auto;
@@ -727,7 +844,7 @@ img { max-width: 100%; height: auto; display: block; }
 }
 .devise-links a { display: block; margin-bottom: 0.4rem; }
 
-/* ===== Leaflet Overrides ===== */
+/* ----- 24. Third-Party Overrides ----- */
 .leaflet-popup-content-wrapper {
   background: var(--bg-card) !important;
   color: var(--text-primary) !important;
@@ -741,7 +858,7 @@ img { max-width: 100%; height: auto; display: block; }
 /* Fix for Turbo frames */
 turbo-frame { display: contents; }
 
-/* ===== Friends & Messaging ===== */
+/* ----- 25. Friends & Social ----- */
 
 /* Navbar badge */
 .nav-badge {
@@ -854,6 +971,8 @@ turbo-frame { display: contents; }
 .friend-status-badge.pending {
   color: var(--warning);
 }
+
+/* ----- 26. Messaging & Chat ----- */
 
 /* Conversations List */
 .messages-page-header { margin-bottom: 2rem; }
@@ -1275,7 +1394,7 @@ turbo-frame { display: contents; }
   .profile-actions .btn { width: 100%; text-align: center; }
 }
 
-/* ===== Advanced Filters ===== */
+/* ----- 27. Advanced Filters ----- */
 .filter-toggle-btn {
   position: relative;
 }
@@ -1425,8 +1544,8 @@ turbo-frame { display: contents; }
   align-items: center;
   gap: 0.4rem;
   padding: 0.3rem 0.7rem;
-  background: rgba(255, 107, 53, 0.15);
-  border: 1px solid rgba(255, 107, 53, 0.3);
+  background: var(--accent-subtle);
+  border: 1px solid var(--accent-glow);
   border-radius: 2rem;
   font-size: 0.8rem;
   color: var(--accent);
@@ -1451,33 +1570,7 @@ turbo-frame { display: contents; }
   color: #fff !important;
 }
 
-/* Sort bar enhancements */
-.sort-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-
-.sort-bar-left {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
-
-.results-count {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-}
-
-.results-count strong {
-  color: var(--accent);
-}
-
-/* Review sort (show page) */
-/* ======================== Review Reactions ======================== */
+/* ----- 28. Review Reactions ----- */
 .reaction-bar {
   margin-top: 1rem;
   padding-top: 0.75rem;
@@ -1513,30 +1606,13 @@ turbo-frame { display: contents; }
 }
 
 .reaction-btn--active {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0.35rem 0.75rem;
-  border: 1px solid var(--accent);
-  border-radius: 999px;
-  background: rgba(255, 107, 53, 0.15);
+  border-color: var(--accent);
+  background: var(--accent-subtle);
   color: var(--accent);
-  cursor: pointer;
-  font-size: 0.85rem;
-  transition: all 0.2s ease;
 }
 
 .reaction-btn--disabled {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0.35rem 0.75rem;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: transparent;
-  color: var(--text-secondary);
   cursor: default;
-  font-size: 0.85rem;
 }
 
 .reaction-emoji {
@@ -1589,7 +1665,7 @@ turbo-frame { display: contents; }
 
 .helpful-btn--active {
   border-color: var(--accent);
-  background: rgba(255, 107, 53, 0.15);
+  background: var(--accent-subtle);
   color: var(--accent);
 }
 
@@ -1619,6 +1695,15 @@ turbo-frame { display: contents; }
   font-size: 0.75rem;
 }
 
+.reviews-header .reviews-heading {
+  margin-bottom: 0;
+}
+
+.reviews-sort {
+  display: flex;
+  gap: 0.25rem;
+}
+
 @media (max-width: 768px) {
   .advanced-filters-form {
     flex-direction: column;
@@ -1634,7 +1719,7 @@ turbo-frame { display: contents; }
   }
 }
 
-/* ===== Activity Feed ===== */
+/* ----- 29. Activity Feed ----- */
 .activity-feed {
   max-width: 640px;
   margin: 0 auto;
@@ -1656,9 +1741,13 @@ turbo-frame { display: contents; }
   border-color: var(--accent);
 }
 
-.activity-card-avatar,
+.activity-card-avatar {
+  flex-shrink: 0;
+}
+
 .activity-card-avatars {
   flex-shrink: 0;
+  display: flex;
 }
 
 .activity-avatar {
@@ -1681,9 +1770,6 @@ turbo-frame { display: contents; }
   font-size: 1.1rem;
 }
 
-.activity-card-avatars {
-  display: flex;
-}
 .activity-avatar-overlap {
   margin-left: -12px;
   border: 2px solid var(--bg-card);
@@ -1693,7 +1779,7 @@ turbo-frame { display: contents; }
   flex: 1;
 }
 
-/* ===== Notifications ===== */
+/* ----- 30. Notifications ----- */
 .notifications-header {
   display: flex;
   align-items: center;
@@ -1781,7 +1867,7 @@ turbo-frame { display: contents; }
   margin-bottom: 0.35rem;
 }
 .activity-rating .star {
-  color: var(--text-muted, #555);
+  color: var(--text-muted);
   font-size: 0.9rem;
 }
 .activity-rating .star.filled {
@@ -1805,7 +1891,7 @@ turbo-frame { display: contents; }
 
 .activity-timestamp {
   font-size: 0.8rem;
-  color: var(--text-muted, #666);
+  color: var(--text-muted);
 }
 
 .activity-load-more {
@@ -1813,66 +1899,13 @@ turbo-frame { display: contents; }
   padding: 2rem 0;
 }
 
-.empty-state {
-  text-align: center;
-  padding: 4rem 1rem;
-}
-.empty-state-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-}
-.empty-state h3 {
-  font-family: var(--font-display);
-  font-size: 1.4rem;
-  margin-bottom: 0.5rem;
-}
-.empty-state p {
-  margin-bottom: 1.5rem;
-  max-width: 400px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 @media (max-width: 640px) {
   .activity-card { padding: 1rem; }
-  .activity-avatar, .activity-avatar-placeholder { width: 36px; height: 36px; font-size: 0.9rem; }
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+  .activity-avatar,
+  .activity-avatar-placeholder { width: 36px; height: 36px; font-size: 0.9rem; }
 }
 
-.reviews-header .reviews-heading {
-  margin-bottom: 0;
-}
-
-.reviews-sort {
-  display: flex;
-  gap: 0.25rem;
-}
-
-.sort-btn {
-  padding: 0.35rem 0.75rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: transparent;
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-size: 0.8rem;
-  transition: all 0.2s ease;
-}
-
-.sort-btn:hover {
-  border-color: var(--accent);
-  color: #fff;
-}
-
-.sort-btn--active {
-  border-color: var(--accent);
-}
-
-/* ==========================================================================
-   Wishlist
-   ========================================================================== */
+/* ----- 31. Wishlist ----- */
 
 .wishlist-button-wrapper {
   margin-top: 1rem;
@@ -2047,8 +2080,8 @@ turbo-frame { display: contents; }
 }
 
 .wishlist-remove-btn:hover {
-  border-color: #e74c3c;
-  color: #e74c3c;
+  border-color: var(--danger);
+  color: var(--danger);
 }
 
 /* Wishlist badges on profile */
@@ -2063,12 +2096,12 @@ turbo-frame { display: contents; }
 }
 
 .wishlist-visited-badge {
-  background: rgba(46, 204, 113, 0.15);
-  color: #2ecc71;
+  background: var(--success-subtle);
+  color: var(--success);
 }
 
 .wishlist-pending-badge {
-  background: rgba(255, 107, 53, 0.15);
+  background: var(--accent-subtle);
   color: var(--accent);
 }
 
@@ -2115,7 +2148,7 @@ turbo-frame { display: contents; }
   font-size: 1.1rem;
 }
 
-/* Pagination */
+/* ----- 32. Pagination ----- */
 .pagination {
   display: flex;
   justify-content: center;
@@ -2174,9 +2207,7 @@ turbo-frame { display: contents; }
   box-shadow: 0 2px 12px var(--accent-glow);
 }
 
-/* =========================================
-   New Chicken Shop Form
-   ========================================= */
+/* ----- 33. New Shop Form ----- */
 
 .new-shop-form {
   max-width: 640px;
