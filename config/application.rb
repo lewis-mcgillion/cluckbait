@@ -23,7 +23,10 @@ module Cluckbait
       :de, :jv, :ko, :vi, :tr, :ur, :it,
       :th, :fa, :pl, :su, :ha, :my,
       :uk, :ms, :tl, :nl, :ro, :yo, :ig, :am, :cs, :el,
-      :hu, :sv, :he, :sw, :id, :ne, :si, :ps, :cy, :ga
+      :hu, :sv, :he, :sw, :id, :ne, :si, :ps, :cy, :ga,
+      :bg, :hr, :da, :et, :fi, :is, :lv, :lt, :mk, :mt,
+      :nb, :sk, :sl, :sq, :sr, :be, :bs, :ka, :hy, :az,
+      :ca, :eu, :gl, :gd, :lb
     ]
     config.i18n.fallbacks = true
     config.i18n.load_path += Dir[Rails.root.join("config", "locales", "**", "*.{rb,yml}")]

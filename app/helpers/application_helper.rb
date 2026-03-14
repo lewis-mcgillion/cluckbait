@@ -41,7 +41,32 @@ module ApplicationHelper
     si: "සිංහල",
     ps: "پښتو",
     cy: "Cymraeg",
-    ga: "Gaeilge"
+    ga: "Gaeilge",
+    bg: "Български",
+    hr: "Hrvatski",
+    da: "Dansk",
+    et: "Eesti",
+    fi: "Suomi",
+    is: "Íslenska",
+    lv: "Latviešu",
+    lt: "Lietuvių",
+    mk: "Македонски",
+    mt: "Malti",
+    nb: "Norsk bokmål",
+    sk: "Slovenčina",
+    sl: "Slovenščina",
+    sq: "Shqip",
+    sr: "Српски",
+    be: "Беларуская",
+    bs: "Bosanski",
+    ka: "ქართული",
+    hy: "Հայերեն",
+    az: "Azərbaycan",
+    ca: "Català",
+    eu: "Euskara",
+    gl: "Galego",
+    gd: "Gàidhlig",
+    lb: "Lëtzebuergesch"
   }.freeze
 
   RTL_LOCALES = %i[ar ur fa he ps].freeze

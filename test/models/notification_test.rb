@@ -188,7 +188,8 @@ class NotificationTest < ActiveSupport::TestCase
     message = create(:message, conversation: conversation, user: user1)
 
     notification = build(:notification, action: "new_message", notifiable: message)
-    assert_equal Rails.application.routes.url_helpers.conversation_path(conversation, locale: nil), notification.target_path
+    assert_equal Rails.application.routes.url_helpers.conversation_path(conversation, locale: nil),
+notification.target_path
   end
 
   test "target_path returns conversations_path for new_message with nil notifiable" do
