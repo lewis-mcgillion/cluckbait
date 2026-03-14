@@ -8,6 +8,7 @@ export default class extends Controller {
 
   connect() {
     this.markers = []
+    this.abortController = null
     this.initMap()
     this.loadShops()
   }
@@ -42,8 +43,11 @@ export default class extends Controller {
   }
 
   loadShops(params = {}) {
+    if (this.abortController) this.abortController.abort()
+    this.abortController = new AbortController()
+
     const queryString = new URLSearchParams(params).toString()
-    fetch("/api/shops?" + queryString)
+    fetch("/api/shops?" + queryString, { signal: this.abortController.signal })
       .then(r => {
         if (!r.ok) throw new Error(`Server error: ${r.status} ${r.statusText}`)
         return r.json()
@@ -77,6 +81,7 @@ export default class extends Controller {
         }
       })
       .catch(error => {
+        if (error.name === "AbortError") return
         console.error("Failed to load shops:", error)
         alert("Unable to load chicken shops. Please try again later.")
       })
@@ -135,6 +140,7 @@ export default class extends Controller {
   }
 
   disconnect() {
+    if (this.abortController) this.abortController.abort()
     if (this.map) {
       this.map.remove()
     }
