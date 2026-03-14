@@ -2,17 +2,24 @@ class MessagesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_conversation
 
+  SHAREABLE_CLASSES = {
+    "ChickenShop" => ChickenShop,
+    "Review" => Review
+  }.freeze
+
   def create
     @message = @conversation.messages.build(message_params)
     @message.user = current_user
 
     if params[:message][:shareable_type].present? && params[:message][:shareable_id].present?
-      shareable_type = params[:message][:shareable_type]
-      if Message::ALLOWED_SHAREABLE_TYPES.include?(shareable_type)
-        shareable = shareable_type.constantize.find_by(id: params[:message][:shareable_id])
-        if shareable
-          @message.shareable = shareable
-        end
+      shareable_class = SHAREABLE_CLASSES[params[:message][:shareable_type]]
+      shareable = shareable_class&.find_by(id: params[:message][:shareable_id])
+
+      if shareable
+        @message.shareable = shareable
+      else
+        @message.shareable_type = nil
+        @message.shareable_id = nil
       end
     end
 

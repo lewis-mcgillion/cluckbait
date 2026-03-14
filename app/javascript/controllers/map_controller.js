@@ -35,6 +35,12 @@ export default class extends Controller {
     this.markers = []
   }
 
+  escapeHtml(str) {
+    const div = document.createElement("div")
+    div.textContent = str
+    return div.innerHTML
+  }
+
   loadShops(params = {}) {
     const queryString = new URLSearchParams(params).toString()
     fetch("/api/shops?" + queryString)
@@ -46,17 +52,20 @@ export default class extends Controller {
         this.clearMarkers()
         shops.forEach(shop => {
           const stars = "★".repeat(Math.round(shop.average_rating)) + "☆".repeat(5 - Math.round(shop.average_rating))
+          const name = this.escapeHtml(shop.name)
+          const address = this.escapeHtml(shop.address)
+          const url = encodeURI(shop.url)
           const marker = L.marker([shop.latitude, shop.longitude], { icon: this.chickenIcon })
             .addTo(this.map)
             .bindPopup(`
               <div class="map-popup">
-                <h3><a href="${shop.url}">${shop.name}</a></h3>
-                <p class="popup-address">${shop.address}</p>
+                <h3><a href="${url}">${name}</a></h3>
+                <p class="popup-address">${address}</p>
                 <div class="popup-rating">
                   <span class="popup-stars">${stars}</span>
                   <span class="popup-count">${shop.average_rating} (${shop.reviews_count} reviews)</span>
                 </div>
-                <a href="${shop.url}" class="popup-link">View Reviews →</a>
+                <a href="${url}" class="popup-link">View Reviews →</a>
               </div>
             `)
           this.markers.push(marker)
