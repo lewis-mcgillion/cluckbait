@@ -54,7 +54,7 @@
             <% end %>
             <span class="nav-username"><%= current_user.name %></span>
           <% end %>
-          <%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete }, class: "nav-link nav-signout" %>
+          <%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete, turbo: false }, class: "nav-link nav-signout" %>
         </div>
       <% else %>
         <%= link_to "Sign in", new_user_session_path, class: "nav-link" %>

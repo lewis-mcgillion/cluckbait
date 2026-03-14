@@ -19,8 +19,8 @@ class Users::RegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "ChickenLover", user.display_name
   end
 
-  test "sign up without display_name creates user" do
-    assert_difference "User.count", 1 do
+  test "sign up without display_name fails" do
+    assert_no_difference "User.count" do
       post user_registration_path, params: {
         user: {
           email: "noname@example.com",
@@ -29,7 +29,7 @@ class Users::RegistrationsControllerTest < ActionDispatch::IntegrationTest
         }
       }
     end
-    assert_redirected_to root_path
+    assert_response :unprocessable_entity
   end
 
   test "sign up with invalid email fails" do
@@ -91,13 +91,28 @@ class Users::RegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "New bio", user.bio
   end
 
-  test "update email without requiring current password" do
-    user = create(:user, email: "old@example.com")
+  test "update email requires current password" do
+    user = create(:user, email: "old@example.com", password: "password123")
     sign_in user
 
     put user_registration_path, params: {
       user: {
         email: "new@example.com"
+      }
+    }
+
+    user.reload
+    assert_equal "old@example.com", user.email
+  end
+
+  test "update email succeeds with current password" do
+    user = create(:user, email: "old@example.com", password: "password123")
+    sign_in user
+
+    put user_registration_path, params: {
+      user: {
+        email: "new@example.com",
+        current_password: "password123"
       }
     }
 

@@ -5,7 +5,7 @@
     <h1 class="devise-title">Welcome back 🍗</h1>
     <p class="devise-subtitle">Sign in to your Cluckbait account</p>
 
-    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "auth-form" }) do |f| %>
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "auth-form", data: { turbo: false } }) do |f| %>
       <div class="form-group">
         <%= f.label :email, class: "form-label" %>
         <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-input", placeholder: "you@example.com" %>

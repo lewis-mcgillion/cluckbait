@@ -23,7 +23,7 @@ class User < ApplicationRecord
   has_many :conversation_reads, dependent: :destroy
   has_many :notifications, dependent: :destroy
 
-  validates :display_name, length: { maximum: 50 }
+  validates :display_name, presence: true, length: { maximum: 50 }
   validates :bio, length: { maximum: 500 }
 
   def name

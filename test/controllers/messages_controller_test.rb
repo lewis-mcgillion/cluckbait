@@ -62,9 +62,9 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to conversation_path(@conversation)
   end
 
-  test "create with shareable and no body succeeds" do
+  test "create with shareable and no body fails" do
     shop = create(:chicken_shop)
-    assert_difference "Message.count", 1 do
+    assert_no_difference "Message.count" do
       post conversation_messages_path(@conversation), params: {
         message: { body: "", shareable_type: "ChickenShop", shareable_id: shop.id }
       }, as: :turbo_stream

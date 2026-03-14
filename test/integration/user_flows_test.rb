@@ -92,7 +92,8 @@ class UserFlowsTest < ActionDispatch::IntegrationTest
       user: {
         email: "flowtest@example.com",
         password: "password123",
-        password_confirmation: "password123"
+        password_confirmation: "password123",
+        display_name: "FlowTester"
       }
     }
     assert_redirected_to root_path

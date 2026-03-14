@@ -46,8 +46,8 @@ class UserTest < ActiveSupport::TestCase
     assert_includes user.errors[:email], "has already been taken"
   end
 
-  test "display_name can be blank" do
-    assert build(:user, display_name: "").valid?
+  test "display_name must be present" do
+    assert_not build(:user, display_name: "").valid?
   end
 
   test "display_name cannot exceed 50 characters" do
