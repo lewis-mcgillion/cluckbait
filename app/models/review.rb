@@ -16,11 +16,19 @@ class Review < ApplicationRecord
   scope :highest_rated, -> { order(rating: :desc) }
   scope :lowest_rated, -> { order(rating: :asc) }
   scope :by_most_helpful, -> {
+    reactions_table = ReviewReaction.arel_table
+    helpful_case = Arel::Nodes::Case.new
+      .when(reactions_table[:kind].eq("helpful")).then(1)
+      .when(reactions_table[:kind].eq("not_helpful")).then(-1)
+      .else(0)
+    score = Arel::Nodes::NamedFunction.new("COALESCE", [
+      Arel::Nodes::NamedFunction.new("SUM", [ helpful_case ]),
+      Arel::Nodes.build_quoted(0)
+    ])
+
     left_joins(:reactions)
       .group(:id)
-      .order(
-        Arel.sql("COALESCE(SUM(CASE WHEN review_reactions.kind = 'helpful' THEN 1 WHEN review_reactions.kind = 'not_helpful' THEN -1 ELSE 0 END), 0) DESC")
-      )
+      .order(score.desc)
   }
 
   after_create :create_activity
