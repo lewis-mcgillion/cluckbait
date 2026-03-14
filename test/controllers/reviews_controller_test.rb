@@ -135,8 +135,14 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
-  test "create with photo uploads" do
+  test "create with photo upload" do
     sign_in @user
+
+    file = Tempfile.new([ "test_image", ".jpg" ])
+    file.write("fake image data")
+    file.rewind
+
+    photo = Rack::Test::UploadedFile.new(file.path, "image/jpeg")
 
     assert_difference "Review.count", 1 do
       post chicken_shop_reviews_path(@shop), params: {
@@ -144,11 +150,14 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
           rating: 5,
           title: "With photo",
           body: "Check this out!",
-          photos: [ fixture_file_upload(Rails.root.join("test/fixtures/files/test_image.jpg"), "image/jpeg") ]
+          photos: [ photo ]
         }
       }
     end
-  end if File.exist?(Rails.root.join("test/fixtures/files/test_image.jpg"))
+  ensure
+    file&.close
+    file&.unlink
+  end
 
   test "create with missing title fails" do
     sign_in @user

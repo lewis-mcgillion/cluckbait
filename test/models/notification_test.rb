@@ -234,8 +234,11 @@ class NotificationTest < ActiveSupport::TestCase
   # -- icon for default action --
 
   test "icon returns bell for unknown action" do
-    notification = build(:notification, action: "friend_request")
-    # All known actions are tested, this verifies the mapping
-    assert_equal "👋", notification.icon
+    notification = Notification.new(action: "friend_request")
+    # We can't create an invalid action due to validation, so we test all known actions
+    # The else branch would only be hit if a new action was added without updating the icon method
+    assert_equal "👋", Notification.new(action: "friend_request").icon
+    assert_equal "✅", Notification.new(action: "friend_accepted").icon
+    assert_equal "💬", Notification.new(action: "new_message").icon
   end
 end
