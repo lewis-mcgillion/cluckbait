@@ -10,6 +10,12 @@ class WishlistItemsController < ApplicationController
     when "visited" then @wishlist_items.visited
     else @wishlist_items
     end
+
+    @page = [ (params[:page] || 1).to_i, 1 ].max
+    @per_page = 25
+    fetched = @wishlist_items.limit(@per_page + 1).offset((@page - 1) * @per_page).to_a
+    @has_next_page = fetched.length > @per_page
+    @wishlist_items = @has_next_page ? fetched.first(@per_page) : fetched
   end
 
   def create

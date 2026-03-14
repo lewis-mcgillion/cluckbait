@@ -5,6 +5,12 @@ class FriendshipsController < ApplicationController
     @friends = current_user.friends
     @pending_requests = current_user.pending_friend_requests.includes(:user)
     @sent_requests = current_user.sent_friendships.pending.includes(:friend)
+
+    @page = [ (params[:page] || 1).to_i, 1 ].max
+    @per_page = 25
+    fetched = @friends.limit(@per_page + 1).offset((@page - 1) * @per_page).to_a
+    @has_next_page = fetched.length > @per_page
+    @friends = @has_next_page ? fetched.first(@per_page) : fetched
   end
 
   def create

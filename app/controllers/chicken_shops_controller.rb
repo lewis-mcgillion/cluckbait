@@ -62,13 +62,20 @@ class ChickenShopsController < ApplicationController
   def show
     @chicken_shop = ChickenShop.find(params[:id])
     @review_sort = params[:review_sort].presence || "recent"
-    @reviews = @chicken_shop.reviews.includes(:user, :reactions)
-    @reviews = case @review_sort
-    when "highest_rated" then @reviews.highest_rated
-    when "lowest_rated" then @reviews.lowest_rated
-    when "most_helpful" then @reviews.by_most_helpful
-    else @reviews.recent
+    reviews = @chicken_shop.reviews.includes(:user, :reactions)
+    reviews = case @review_sort
+    when "highest_rated" then reviews.highest_rated
+    when "lowest_rated" then reviews.lowest_rated
+    when "most_helpful" then reviews.by_most_helpful
+    else reviews.recent
     end
+
+    @page = [ (params[:page] || 1).to_i, 1 ].max
+    @per_page = 25
+    fetched = reviews.limit(@per_page + 1).offset((@page - 1) * @per_page).to_a
+    @has_next_page = fetched.length > @per_page
+    @reviews = @has_next_page ? fetched.first(@per_page) : fetched
+
     @review = Review.new
     @user_review = current_user ? @chicken_shop.reviews.find_by(user: current_user) : nil
     @wishlist_item = current_user ? current_user.wishlist_items.find_by(chicken_shop: @chicken_shop) : nil
