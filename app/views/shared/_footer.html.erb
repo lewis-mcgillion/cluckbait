@@ -25,7 +25,7 @@
         <h4><%= t("footer.language") %></h4>
         <div class="language-selector">
           <%= form_tag update_locale_path, method: :patch, data: { turbo: false } do %>
-            <select name="locale_preference" onchange="this.form.submit()" class="language-select" aria-label="<%= t('footer.language') %>">
+            <select name="locale_preference" class="language-select" aria-label="<%= t('footer.language') %>" data-controller="locale" data-action="change->locale#change">
               <% I18n.available_locales.each do |loc| %>
                 <option value="<%= loc %>" <%= "selected" if loc == I18n.locale %>><%= locale_name(loc) %></option>
               <% end %>
