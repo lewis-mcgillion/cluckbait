@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   root "home#index"
 
-  resources :chicken_shops, only: [ :index, :show ] do
+  resources :chicken_shops, only: [ :index, :show, :new, :create ] do
     resources :reviews, only: [ :create, :destroy ]
   end
 

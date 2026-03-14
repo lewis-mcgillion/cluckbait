@@ -45,9 +45,14 @@ class RoutingTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "no route for chicken_shops create" do
+  test "chicken_shops new route" do
+    get "/chicken_shops/new"
+    assert_response :redirect
+  end
+
+  test "chicken_shops create route" do
     post "/chicken_shops"
-    assert_response :not_found
+    assert_response :redirect
   end
 
   test "no route for chicken_shops edit" do
