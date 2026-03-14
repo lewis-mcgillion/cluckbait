@@ -20,13 +20,13 @@
           <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
           </svg>
-          <%= text_field_tag :search, params[:search], placeholder: "Search by name...", class: "search-input", data: { action: "input->search-filter#debounceSubmit" } %>
+          <%= text_field_tag :search, params[:search], placeholder: "Search by name...", class: "search-input", "aria-label": "Search shops by name", data: { action: "input->search-filter#debounceSubmit" } %>
         </div>
         <div class="search-box">
           <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
           </svg>
-          <%= text_field_tag :city, params[:city], placeholder: "Filter by city...", class: "search-input", data: { action: "input->search-filter#debounceSubmit" } %>
+          <%= text_field_tag :city, params[:city], placeholder: "Filter by city...", class: "search-input", "aria-label": "Filter shops by city", data: { action: "input->search-filter#debounceSubmit" } %>
         </div>
         <%= hidden_field_tag :sort, params[:sort], data: { shop_sort_target: "sortField", search_filter_target: "sortField" } %>
         <%= hidden_field_tag :lat, params[:lat], data: { shop_sort_target: "latField" } %>
@@ -170,7 +170,7 @@
         </div>
       </div>
       <div class="results-count">
-        Showing <strong><%= @chicken_shops.length %></strong> shop<%= "s" unless @chicken_shops.length == 1 %>
+        Showing <strong><%= @chicken_shops.length %></strong> of <strong><%= @total_count %></strong> shop<%= "s" unless @total_count == 1 %>
       </div>
     </div>
 

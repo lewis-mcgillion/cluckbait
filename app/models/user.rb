@@ -41,7 +41,7 @@ class User < ApplicationRecord
   end
 
   def average_rating_given
-    reviews.average(:rating)&.round(1) || 0
+    reviews.average(:rating)&.round(1)
   end
 
   def friends
@@ -77,6 +77,16 @@ class User < ApplicationRecord
 
   def wishlist_count
     wishlist_items.count
+  end
+
+  # Batch-load all navbar badge counts in a single method to avoid N+1
+  def nav_counts
+    @nav_counts ||= {
+      wishlist: wishlist_items.count,
+      pending_friends: pending_friend_requests.count,
+      unread_notifications: notifications.unread.count,
+      unread_conversations: unread_conversations_count
+    }
   end
 
   def unread_notifications_count

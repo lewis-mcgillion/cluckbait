@@ -37,7 +37,7 @@ module Api
         )
       end
 
-      render json: shops.map { |shop|
+      render json: shops.limit(100).map { |shop|
         {
           id: shop.id,
           name: shop.name,

@@ -14,30 +14,33 @@
     </button>
 
     <div class="nav-center" data-mobile-nav-target="menu">
-      <%= link_to "Discover", root_path, class: "nav-link #{'active' if current_page?(root_path)}" %>
+      <%= link_to "Home", root_path, class: "nav-link #{'active' if current_page?(root_path)}" %>
       <% if user_signed_in? %>
         <%= link_to "Feed", activities_path, class: "nav-link #{'active' if current_page?(activities_path)}" %>
       <% end %>
       <%= link_to "All Shops", chicken_shops_path, class: "nav-link #{'active' if current_page?(chicken_shops_path)}" %>
       <% if user_signed_in? %>
+        <% wishlist = current_user.wishlist_count %>
+        <% pending_friends = current_user.pending_friend_requests_count %>
+        <% unread_convos = current_user.unread_conversations_count %>
         <%= link_to wishlist_items_path, class: "nav-link #{'active' if current_page?(wishlist_items_path)}" do %>
           Wishlist
           <span id="wishlist_nav_count">
-            <% if current_user.wishlist_count > 0 %>
-              <span class="nav-badge"><%= current_user.wishlist_count %></span>
+            <% if wishlist > 0 %>
+              <span class="nav-badge"><%= wishlist %></span>
             <% end %>
           </span>
         <% end %>
         <%= link_to friendships_path, class: "nav-link #{'active' if current_page?(friendships_path)}" do %>
           Friends
-          <% if current_user.pending_friend_requests_count > 0 %>
-            <span class="nav-badge"><%= current_user.pending_friend_requests_count %></span>
+          <% if pending_friends > 0 %>
+            <span class="nav-badge"><%= pending_friends %></span>
           <% end %>
         <% end %>
         <%= link_to conversations_path, class: "nav-link #{'active' if current_page?(conversations_path)}" do %>
           Messages
-          <% if current_user.unread_conversations_count > 0 %>
-            <span class="nav-badge"><%= current_user.unread_conversations_count %></span>
+          <% if unread_convos > 0 %>
+            <span class="nav-badge"><%= unread_convos %></span>
           <% end %>
         <% end %>
       <% end %>
