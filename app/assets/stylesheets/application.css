@@ -877,22 +877,6 @@ img { max-width: 100%; height: auto; display: block; }
   background: #f8f9fa;
   border-color: #dadce0;
 }
-.btn-apple {
-  background: #000;
-  color: #fff;
-  border-color: #000;
-}
-.btn-apple:hover {
-  background: #1a1a1a;
-}
-.btn-facebook {
-  background: #1877f2;
-  color: #fff;
-  border-color: #1877f2;
-}
-.btn-facebook:hover {
-  background: #166fe5;
-}
 .social-divider {
   display: flex;
   align-items: center;

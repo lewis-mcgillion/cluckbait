@@ -7,11 +7,7 @@ class Users::OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
 
   teardown do
     OmniAuth.config.mock_auth[:google_oauth2] = nil
-    OmniAuth.config.mock_auth[:apple] = nil
-    OmniAuth.config.mock_auth[:facebook] = nil
   end
-
-  # --- Google OAuth2 ---
 
   test "google oauth creates new user when no account exists" do
     mock_google_auth(email: "newuser@gmail.com", name: "New User")
@@ -53,39 +49,7 @@ class Users::OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
   end
 
-  # --- Apple ---
-
-  test "apple oauth creates new user" do
-    mock_apple_auth(email: "apple@icloud.com", name: "Apple User")
-
-    assert_difference ["User.count", "SocialAccount.count"], 1 do
-      post user_apple_omniauth_callback_path
-    end
-
-    user = User.find_by(email: "apple@icloud.com")
-    assert user.present?
-    assert user.social_accounts.exists?(provider: "apple")
-    assert_redirected_to root_path
-  end
-
-  # --- Facebook ---
-
-  test "facebook oauth creates new user" do
-    mock_facebook_auth(email: "fbuser@example.com", name: "FB User")
-
-    assert_difference ["User.count", "SocialAccount.count"], 1 do
-      post user_facebook_omniauth_callback_path
-    end
-
-    user = User.find_by(email: "fbuser@example.com")
-    assert user.present?
-    assert user.social_accounts.exists?(provider: "facebook")
-    assert_redirected_to root_path
-  end
-
-  # --- Account linking (signed-in user) ---
-
-  test "signed-in user can link a new social provider" do
+  test "signed-in user can link google account" do
     user = create(:user)
     sign_in user
     mock_google_auth(email: user.email, uid: "new-google-uid")
@@ -97,8 +61,6 @@ class Users::OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     assert user.social_accounts.exists?(provider: "google_oauth2")
     assert_redirected_to edit_user_registration_path
   end
-
-  # --- Failure ---
 
   test "oauth failure redirects to sign in with alert" do
     OmniAuth.config.mock_auth[:google_oauth2] = :invalid_credentials
@@ -115,24 +77,6 @@ class Users::OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       uid: uid,
       info: { email: email, name: name, image: nil },
       credentials: { token: "mock-token", refresh_token: "mock-refresh", expires_at: 1.hour.from_now.to_i }
-    )
-  end
-
-  def mock_apple_auth(email:, name: "Test User", uid: "apple-#{SecureRandom.hex(8)}")
-    OmniAuth.config.mock_auth[:apple] = OmniAuth::AuthHash.new(
-      provider: "apple",
-      uid: uid,
-      info: { email: email, name: name, first_name: name.split.first, image: nil },
-      credentials: { token: "mock-token", expires_at: 1.hour.from_now.to_i }
-    )
-  end
-
-  def mock_facebook_auth(email:, name: "Test User", uid: "fb-#{SecureRandom.hex(8)}")
-    OmniAuth.config.mock_auth[:facebook] = OmniAuth::AuthHash.new(
-      provider: "facebook",
-      uid: uid,
-      info: { email: email, name: name, image: nil },
-      credentials: { token: "mock-token", expires_at: 1.hour.from_now.to_i }
     )
   end
 end

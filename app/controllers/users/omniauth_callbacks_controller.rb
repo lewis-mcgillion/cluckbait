@@ -4,14 +4,6 @@ module Users
       handle_omniauth("Google")
     end
 
-    def apple
-      handle_omniauth("Apple")
-    end
-
-    def facebook
-      handle_omniauth("Facebook")
-    end
-
     def failure
       redirect_to new_user_session_path, alert: t("devise.omniauth_callbacks.failure", kind: failed_strategy_name,
         reason: failure_message)

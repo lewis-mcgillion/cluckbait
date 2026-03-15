@@ -36,12 +36,6 @@ class SocialAccountTest < ActiveSupport::TestCase
     assert_includes duplicate.errors[:uid], "has already been taken"
   end
 
-  test "same uid allowed for different providers" do
-    create(:social_account, provider: "google_oauth2", uid: "shared-uid")
-    other = build(:social_account, :facebook, uid: "shared-uid")
-    assert other.valid?
-  end
-
   test "one provider per user" do
     user = create(:user)
     create(:social_account, user: user, provider: "google_oauth2")
@@ -50,17 +44,8 @@ class SocialAccountTest < ActiveSupport::TestCase
     assert_includes duplicate.errors[:provider], "is already linked to your account"
   end
 
-  test "user can have multiple different providers" do
-    user = create(:user)
-    create(:social_account, :google, user: user)
-    apple_account = build(:social_account, :apple, user: user)
-    assert apple_account.valid?
-  end
-
   test "display_provider returns human-readable name" do
     assert_equal "Google", build(:social_account, :google).display_provider
-    assert_equal "Apple", build(:social_account, :apple).display_provider
-    assert_equal "Facebook", build(:social_account, :facebook).display_provider
   end
 
   test "destroying user destroys social accounts" do
