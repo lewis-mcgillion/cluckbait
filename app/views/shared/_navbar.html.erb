@@ -1,4 +1,7 @@
 <nav class="navbar" data-controller="mobile-nav">
+  <% if user_signed_in? %>
+    <%= turbo_stream_from current_user, :notifications %>
+  <% end %>
   <div class="nav-container">
     <div class="nav-left">
       <%= link_to root_path, class: "nav-logo" do %>
