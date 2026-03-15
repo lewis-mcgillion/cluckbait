@@ -42,6 +42,10 @@ gem "image_processing", "~> 1.2"
 
 # Authentication
 gem "devise"
+gem "omniauth-rails_csrf_protection"
+gem "omniauth-google-oauth2"
+gem "omniauth-apple"
+gem "omniauth-facebook"
 
 # Geocoding
 gem "geocoder"

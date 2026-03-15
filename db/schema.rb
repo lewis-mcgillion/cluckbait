@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_14_220000) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_15_182656) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -147,6 +147,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_14_220000) do
     t.index ["user_id"], name: "index_reviews_on_user_id"
   end
 
+  create_table "social_accounts", force: :cascade do |t|
+    t.string "access_token"
+    t.datetime "created_at", null: false
+    t.string "email"
+    t.string "provider", null: false
+    t.string "refresh_token"
+    t.datetime "token_expires_at"
+    t.string "uid", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["provider", "uid"], name: "index_social_accounts_on_provider_and_uid", unique: true
+    t.index ["user_id", "provider"], name: "index_social_accounts_on_user_id_and_provider", unique: true
+    t.index ["user_id"], name: "index_social_accounts_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.text "bio"
     t.datetime "created_at", null: false
@@ -193,6 +208,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_14_220000) do
   add_foreign_key "review_reactions", "users"
   add_foreign_key "reviews", "chicken_shops"
   add_foreign_key "reviews", "users"
+  add_foreign_key "social_accounts", "users"
   add_foreign_key "wishlist_items", "chicken_shops"
   add_foreign_key "wishlist_items", "users"
 end

@@ -349,6 +349,16 @@ en:
       no_confirmation: "Didn't receive confirmation instructions?"
       no_unlock: "Didn't receive unlock instructions?"
       sign_in_with: "Sign in with %{provider}"
+      or_divider: "or continue with email"
+      continue_with_google: "Continue with Google"
+      continue_with_apple: "Continue with Apple"
+      continue_with_facebook: "Continue with Facebook"
+    omniauth_callbacks:
+      success: "Successfully signed in with %{kind}."
+      failure: "Could not sign in with %{kind}. %{reason}"
+      linked: "Successfully linked your %{kind} account."
+      link_failed: "Could not link your %{kind} account. It may already be in use."
+      create_failed: "Could not create account via %{kind}. Please try signing up with email."
     confirmations:
       heading: "Resend confirmation instructions"
       submit: "Resend confirmation instructions"
