@@ -14,6 +14,21 @@ jobs:
     name: Tests
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: cluckbait
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: cluckbait_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -31,11 +46,13 @@ jobs:
         run: bin/rails db:create db:migrate
         env:
           RAILS_ENV: test
+          DATABASE_URL: postgres://cluckbait:password@localhost:5432/cluckbait_test
 
       - name: Run tests
         run: bin/rails test test/models test/controllers test/integration
         env:
           RAILS_ENV: test
+          DATABASE_URL: postgres://cluckbait:password@localhost:5432/cluckbait_test
 
   lint:
     name: Linters

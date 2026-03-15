@@ -1,41 +1,57 @@
-# SQLite. Versions 3.8.0 and up are supported.
-#   gem install sqlite3
+# PostgreSQL configuration
+#   gem install pg
 #
-#   Ensure the SQLite 3 gem is defined in your Gemfile
-#   gem "sqlite3"
+#   Ensure the pg gem is defined in your Gemfile
+#   gem "pg"
 #
 default: &default
-  adapter: sqlite3
+  adapter: postgresql
+  encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  timeout: 5000
 
 development:
   <<: *default
-  database: storage/development.sqlite3
+  database: cluckbait_development
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: storage/test.sqlite3
+  database: cluckbait_test
 
-
-# Store production database in the storage/ directory, which by default
-# is mounted as a persistent Docker volume in config/deploy.yml.
+# In production, DATABASE_URL takes precedence when set.
+# For Kamal deployments, the database runs as an accessory container
+# accessible via the Docker network at host "cluckbait-db".
 production:
   primary:
     <<: *default
-    database: storage/production.sqlite3
+    url: <%= ENV["DATABASE_URL"] %>
+    host: <%= ENV.fetch("DB_HOST", "localhost") %>
+    database: cluckbait_production
+    username: cluckbait
+    password: <%= ENV["POSTGRES_PASSWORD"] %>
   cache:
     <<: *default
-    database: storage/production_cache.sqlite3
+    url: <%= ENV["CACHE_DATABASE_URL"] %>
+    host: <%= ENV.fetch("DB_HOST", "localhost") %>
+    database: cluckbait_production_cache
+    username: cluckbait
+    password: <%= ENV["POSTGRES_PASSWORD"] %>
     migrations_paths: db/cache_migrate
   queue:
     <<: *default
-    database: storage/production_queue.sqlite3
+    url: <%= ENV["QUEUE_DATABASE_URL"] %>
+    host: <%= ENV.fetch("DB_HOST", "localhost") %>
+    database: cluckbait_production_queue
+    username: cluckbait
+    password: <%= ENV["POSTGRES_PASSWORD"] %>
     migrations_paths: db/queue_migrate
   cable:
     <<: *default
-    database: storage/production_cable.sqlite3
+    url: <%= ENV["CABLE_DATABASE_URL"] %>
+    host: <%= ENV.fetch("DB_HOST", "localhost") %>
+    database: cluckbait_production_cable
+    username: cluckbait
+    password: <%= ENV["POSTGRES_PASSWORD"] %>
     migrations_paths: db/cable_migrate

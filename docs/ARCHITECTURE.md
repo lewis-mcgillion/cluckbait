@@ -1452,7 +1452,7 @@ Rails.application.config.filter_parameters += [
 ```dockerfile
 # Stage 1: Base (runtime dependencies)
 FROM ruby:3.4.1-slim AS base
-RUN apt-get install -y libsqlite3-0 curl
+RUN apt-get install -y postgresql-client curl
 
 # Stage 2: Build (compile gems, assets)
 FROM base AS build
