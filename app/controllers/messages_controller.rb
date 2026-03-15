@@ -29,9 +29,24 @@ class MessagesController < ApplicationController
         format.html { redirect_to conversation_path(@conversation) }
       end
     else
-      @messages = @conversation.messages.ordered.includes(:user, :shareable)
-      @friends = current_user.friends
-      render "conversations/show", status: :unprocessable_entity
+      respond_to do |format|
+        format.turbo_stream {
+          error_html = <<~HTML
+            <input type="text" name="message[body]" id="message_body"
+                   class="chat-input chat-input-error"
+                   placeholder="Message cannot be empty"
+                   autocomplete="off" data-message-form-target="input">
+          HTML
+          render turbo_stream: turbo_stream.update("message_body") {
+            render_to_string(inline: error_html)
+          }
+        }
+        format.html do
+          @messages = @conversation.messages.ordered.includes(:user, :shareable)
+          @friends = current_user.friends
+          render "conversations/show", status: :unprocessable_entity
+        end
+      end
     end
   end
 

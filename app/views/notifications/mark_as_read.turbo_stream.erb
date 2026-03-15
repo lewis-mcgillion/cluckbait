@@ -1,3 +1,10 @@
 <%= turbo_stream.replace dom_id(@notification) do %>
   <%= render partial: "notifications/notification", locals: { notification: @notification } %>
 <% end %>
+
+<%= turbo_stream.update "notification-badge" do %>
+  <% unread = current_user.unread_notifications_count %>
+  <% if unread > 0 %>
+    <span class="nav-badge"><%= unread %></span>
+  <% end %>
+<% end %>

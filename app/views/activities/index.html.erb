@@ -18,6 +18,13 @@
         <%= link_to t("activities.load_more"), activities_path(page: @page + 1), class: "btn btn-outline" %>
       </div>
     <% end %>
+  <% elsif @page > 1 %>
+    <div class="empty-state">
+      <div class="empty-state-icon">📄</div>
+      <h3><%= t("activities.no_more_activity", default: "No more activity") %></h3>
+      <p class="text-muted"><%= t("activities.no_more_hint", default: "You've reached the end of the feed.") %></p>
+      <%= link_to t("activities.heading", default: "Activity Feed"), activities_path, class: "btn btn-primary" %>
+    </div>
   <% else %>
     <div class="empty-state">
       <div class="empty-state-icon">📡</div>

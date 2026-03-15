@@ -6,10 +6,12 @@ class ChickenShop < ApplicationRecord
   validates :name, presence: true
   validates :address, presence: true
   validates :city, presence: true
-  validates :latitude, presence: true
-  validates :longitude, presence: true
+  validates :latitude, presence: { message: "must be set — please select a location on the map" }
+  validates :longitude, presence: { message: "must be set — please select a location on the map" }
   validates :website, format: { with: /\Ahttps?:\/\/\S+\z/i, message: "must start with http:// or https://" },
 allow_blank: true
+
+  validate :acceptable_image
 
   scope :search_by_name, ->(query) {
     where(arel_table[:name].matches("%#{sanitize_sql_like(query)}%")) if query.present?
@@ -108,5 +110,19 @@ allow_blank: true
       avg_rating_expr.as("avg_rating"),
       review_count_expr.as("review_count")
     )
+  end
+
+  private
+
+  def acceptable_image
+    return unless image.attached?
+
+    unless image.content_type.in?(%w[image/png image/jpeg image/gif image/webp])
+      errors.add(:image, "must be a PNG, JPEG, GIF, or WebP image")
+    end
+
+    if image.byte_size > 10.megabytes
+      errors.add(:image, "must be less than 10 MB")
+    end
   end
 end
