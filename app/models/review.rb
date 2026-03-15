@@ -79,7 +79,7 @@ class Review < ApplicationRecord
       chicken_shop, :reviews,
       target: "reviews_list",
       partial: "reviews/review_card",
-      locals: { review: self, chicken_shop: chicken_shop }
+      locals: { review: self, chicken_shop: chicken_shop, current_user: nil }
     )
   end
 end
