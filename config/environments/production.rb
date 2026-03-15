@@ -93,6 +93,8 @@ Rails.application.configure do
     "Permissions-Policy" => "camera=(), microphone=(), geolocation=(self)",
     "X-Permitted-Cross-Domain-Policies" => "none",
     "X-Frame-Options" => "SAMEORIGIN",
-    "X-Content-Type-Options" => "nosniff"
+    "X-Content-Type-Options" => "nosniff",
+    "Referrer-Policy" => "strict-origin-when-cross-origin",
+    "Strict-Transport-Security" => "max-age=31536000; includeSubDomains"
   )
 end

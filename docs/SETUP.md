@@ -6,7 +6,7 @@
 |---|---|---|
 | Ruby | 3.1+ | Developed with 3.4.1 |
 | Bundler | 2.x | `gem install bundler` |
-| SQLite3 | 3.x | Ships with macOS; `apt install libsqlite3-dev` on Ubuntu |
+| PostgreSQL | 14+ | `brew install postgresql@17` on macOS; `apt install postgresql libpq-dev` on Ubuntu |
 | Node.js | Not required | Importmap handles JS — no Node build step |
 
 ## Quick Setup (Recommended)
@@ -20,7 +20,7 @@ bin/setup
 `bin/setup` will:
 
 1. Install gem dependencies via Bundler
-2. Create the SQLite database
+2. Create the PostgreSQL databases
 3. Run all migrations
 4. Seed 250 shops, 5 users, and 992 reviews
 5. Start the dev server
@@ -57,7 +57,7 @@ The app runs with zero required env vars in development. All optional:
 
 ## Database
 
-SQLite3 is used for all environments. The database file lives at `db/development.sqlite3` (or `db/test.sqlite3` for tests). No external database server needed.
+PostgreSQL is used for all environments. In development, the databases are `cluckbait_development` and `cluckbait_test`. Ensure PostgreSQL is running locally before starting the app.
 
 ### Re-seeding
 
@@ -123,17 +123,17 @@ Kamal config lives in `config/deploy.yml`. Secrets are managed via `.kamal/secre
 
 ### `Gem::Ext::BuildError` during `bundle install`
 
-SQLite3 native extension build failure — install the dev headers:
+PostgreSQL native extension build failure — install the dev headers:
 
 ```bash
-# macOS (usually pre-installed)
-brew install sqlite3
+# macOS
+brew install postgresql@17
 
 # Ubuntu/Debian
-sudo apt install libsqlite3-dev
+sudo apt install libpq-dev
 
 # Fedora
-sudo dnf install sqlite-devel
+sudo dnf install libpq-devel
 ```
 
 ### Tests fail with `KeyError: key not found: "REDIS_URL"`

@@ -76,10 +76,8 @@ module Users
       )
 
       if auth.info.image.present?
-        # Don't block sign-up if avatar download fails
         begin
-          avatar_io = URI.parse(auth.info.image).open
-          user.avatar.attach(io: avatar_io, filename: "avatar.jpg", content_type: avatar_io.content_type)
+          attach_oauth_avatar(user, auth.info.image)
         rescue StandardError
           # Skip avatar if download fails
         end
@@ -110,6 +108,29 @@ module Users
 
     def failed_strategy_name
       request.env["omniauth.error.strategy"]&.name&.to_s&.humanize || "Unknown"
+    end
+
+    ALLOWED_AVATAR_TYPES = %w[image/png image/jpeg image/gif image/webp].freeze
+    MAX_AVATAR_SIZE = 5.megabytes
+
+    def attach_oauth_avatar(user, image_url)
+      uri = URI.parse(image_url)
+      return unless uri.is_a?(URI::HTTPS)
+
+      avatar_io = uri.open(
+        "User-Agent" => "Cluckbait/1.0",
+        :open_timeout => 5,
+        :read_timeout => 5
+      )
+
+      return if avatar_io.size > MAX_AVATAR_SIZE
+      return unless ALLOWED_AVATAR_TYPES.include?(avatar_io.content_type)
+
+      user.avatar.attach(
+        io: avatar_io,
+        filename: "avatar.#{avatar_io.content_type.split('/').last}",
+        content_type: avatar_io.content_type
+      )
     end
   end
 end
