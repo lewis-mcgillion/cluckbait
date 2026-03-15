@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title><%= content_for(:title) || "Admin — Cluckbait" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+
+    <style>
+      /* Admin layout overrides */
+      .admin-wrapper {
+        display: flex;
+        min-height: 100vh;
+        background: var(--bg-primary);
+      }
+
+      .admin-sidebar {
+        width: 240px;
+        background: var(--bg-secondary);
+        border-right: 1px solid var(--border);
+        padding: 1.5rem 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        overflow-y: auto;
+        z-index: 100;
+      }
+
+      .admin-sidebar-brand {
+        padding: 0 1.25rem 1.5rem;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 1rem;
+      }
+
+      .admin-sidebar-brand a {
+        font-family: var(--font-display);
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--accent);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .admin-sidebar-brand small {
+        display: block;
+        font-family: var(--font-body);
+        font-size: 0.7rem;
+        font-weight: 400;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-top: 0.25rem;
+      }
+
+      .admin-nav {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .admin-nav li a {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.625rem 1.25rem;
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all var(--transition);
+        border-left: 3px solid transparent;
+      }
+
+      .admin-nav li a:hover {
+        color: var(--text-primary);
+        background: var(--bg-card);
+      }
+
+      .admin-nav li a.active {
+        color: var(--accent);
+        background: var(--accent-subtle);
+        border-left-color: var(--accent);
+      }
+
+      .admin-nav li a .nav-icon {
+        width: 18px;
+        text-align: center;
+        font-size: 1rem;
+      }
+
+      .admin-nav-section {
+        padding: 1rem 1.25rem 0.5rem;
+        font-size: 0.65rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--text-muted);
+      }
+
+      .admin-content {
+        margin-left: 240px;
+        flex: 1;
+        padding: 2rem;
+        min-height: 100vh;
+      }
+
+      .admin-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+      }
+
+      .admin-header h1 {
+        font-family: var(--font-display);
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin: 0;
+      }
+
+      .admin-header-actions {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+      }
+
+      /* Stat cards */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .stat-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.25rem;
+        transition: transform var(--transition), box-shadow var(--transition);
+      }
+
+      .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow);
+      }
+
+      .stat-card .stat-label {
+        font-size: 0.75rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-muted);
+        margin-bottom: 0.5rem;
+      }
+
+      .stat-card .stat-value {
+        font-family: var(--font-display);
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--text-primary);
+      }
+
+      .stat-card .stat-change {
+        font-size: 0.75rem;
+        margin-top: 0.25rem;
+        color: var(--text-muted);
+      }
+
+      .stat-card .stat-change.positive { color: var(--success); }
+      .stat-card .stat-change.negative { color: var(--danger); }
+
+      /* Admin tables */
+      .admin-table-wrapper {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+
+      .admin-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .admin-table th {
+        text-align: left;
+        padding: 0.75rem 1rem;
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-muted);
+        background: var(--bg-secondary);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .admin-table td {
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
+        color: var(--text-primary);
+        border-bottom: 1px solid var(--border);
+        vertical-align: middle;
+      }
+
+      .admin-table tr:last-child td { border-bottom: none; }
+
+      .admin-table tr:hover td {
+        background: var(--bg-card-hover);
+      }
+
+      /* Badges */
+      .admin-badge {
+        display: inline-block;
+        padding: 0.2rem 0.6rem;
+        border-radius: 999px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+      }
+
+      .admin-badge.badge-success {
+        background: var(--success-subtle);
+        color: var(--success);
+      }
+
+      .admin-badge.badge-danger {
+        background: rgba(239, 68, 68, 0.15);
+        color: var(--danger);
+      }
+
+      .admin-badge.badge-warning {
+        background: rgba(245, 158, 11, 0.15);
+        color: var(--warning);
+      }
+
+      .admin-badge.badge-info {
+        background: rgba(59, 130, 246, 0.15);
+        color: #3b82f6;
+      }
+
+      /* Admin buttons */
+      .admin-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius-sm);
+        font-size: 0.8rem;
+        font-weight: 500;
+        text-decoration: none;
+        border: 1px solid var(--border);
+        background: var(--bg-card);
+        color: var(--text-primary);
+        cursor: pointer;
+        transition: all var(--transition);
+      }
+
+      .admin-btn:hover {
+        background: var(--bg-card-hover);
+        border-color: var(--border-light);
+      }
+
+      .admin-btn-primary {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+      }
+
+      .admin-btn-primary:hover {
+        background: var(--accent-hover);
+        border-color: var(--accent-hover);
+      }
+
+      .admin-btn-danger {
+        background: var(--danger);
+        border-color: var(--danger);
+        color: #fff;
+      }
+
+      .admin-btn-danger:hover {
+        background: var(--danger-hover);
+        border-color: var(--danger-hover);
+      }
+
+      .admin-btn-sm {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.75rem;
+      }
+
+      /* Search and filters */
+      .admin-filters {
+        display: flex;
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+      }
+
+      .admin-search {
+        flex: 1;
+        min-width: 200px;
+        padding: 0.6rem 1rem;
+        background: var(--bg-input);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        color: var(--text-primary);
+        font-size: 0.875rem;
+      }
+
+      .admin-search:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-glow);
+      }
+
+      .admin-select {
+        padding: 0.6rem 1rem;
+        background: var(--bg-input);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        color: var(--text-primary);
+        font-size: 0.875rem;
+      }
+
+      /* Detail pages */
+      .admin-detail {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 1.5rem;
+      }
+
+      .admin-detail-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+      }
+
+      .admin-detail-card h3 {
+        font-family: var(--font-display);
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin: 0 0 1rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .admin-detail-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .admin-detail-row:last-child { border-bottom: none; }
+
+      .admin-detail-label {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+      }
+
+      .admin-detail-value {
+        font-size: 0.8rem;
+        color: var(--text-primary);
+        font-weight: 500;
+      }
+
+      /* Pagination */
+      .admin-pagination {
+        display: flex;
+        justify-content: center;
+        gap: 0.25rem;
+        margin-top: 1.5rem;
+      }
+
+      .admin-pagination a, .admin-pagination span {
+        padding: 0.4rem 0.75rem;
+        border-radius: var(--radius-sm);
+        font-size: 0.8rem;
+        text-decoration: none;
+        color: var(--text-secondary);
+        border: 1px solid var(--border);
+        transition: all var(--transition);
+      }
+
+      .admin-pagination a:hover {
+        background: var(--bg-card);
+        color: var(--text-primary);
+      }
+
+      .admin-pagination .current {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+      }
+
+      .admin-pagination .disabled {
+        opacity: 0.4;
+        pointer-events: none;
+      }
+
+      /* Admin form */
+      .admin-form .field {
+        margin-bottom: 1.25rem;
+      }
+
+      .admin-form label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        margin-bottom: 0.4rem;
+      }
+
+      .admin-form input[type="text"],
+      .admin-form input[type="url"],
+      .admin-form input[type="tel"],
+      .admin-form textarea {
+        width: 100%;
+        padding: 0.6rem 1rem;
+        background: var(--bg-input);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        color: var(--text-primary);
+        font-size: 0.875rem;
+        font-family: var(--font-body);
+      }
+
+      .admin-form textarea { min-height: 120px; resize: vertical; }
+
+      .admin-form input:focus,
+      .admin-form textarea:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-glow);
+      }
+
+      .admin-form .form-actions {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 1.5rem;
+      }
+
+      /* Back link */
+      .admin-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        text-decoration: none;
+        margin-bottom: 1rem;
+        transition: color var(--transition);
+      }
+
+      .admin-back:hover { color: var(--text-primary); }
+
+      /* Empty state */
+      .admin-empty {
+        text-align: center;
+        padding: 3rem;
+        color: var(--text-muted);
+        font-size: 0.875rem;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="admin-wrapper">
+      <%= render "admin/shared/sidebar" %>
+
+      <div class="admin-content">
+        <% if notice %>
+          <div class="flash flash-notice" data-controller="flash">
+            <span><%= notice %></span>
+            <button data-action="click->flash#dismiss" class="flash-close">&times;</button>
+          </div>
+        <% end %>
+        <% if alert %>
+          <div class="flash flash-alert" data-controller="flash">
+            <span><%= alert %></span>
+            <button data-action="click->flash#dismiss" class="flash-close">&times;</button>
+          </div>
+        <% end %>
+
+        <%= yield %>
+      </div>
+    </div>
+  </body>
+</html>

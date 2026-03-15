@@ -1,0 +1,59 @@
+<% content_for(:title) { "Users — Admin" } %>
+
+<div class="admin-header">
+  <h1>Users</h1>
+</div>
+
+<%= form_tag admin_users_path, method: :get, class: "admin-filters" do %>
+  <input type="text" name="search" value="<%= params[:search] %>" placeholder="Search by email or display name…" class="admin-search">
+  <select name="filter" class="admin-select" onchange="this.form.submit()">
+    <option value="">All Users</option>
+    <option value="admin" <%= "selected" if params[:filter] == "admin" %>>Admins Only</option>
+    <option value="banned" <%= "selected" if params[:filter] == "banned" %>>Banned</option>
+  </select>
+  <button type="submit" class="admin-btn admin-btn-primary">Search</button>
+<% end %>
+
+<div class="admin-table-wrapper">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Display Name</th>
+        <th>Email</th>
+        <th>Reviews</th>
+        <th>Status</th>
+        <th>Joined</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <td><%= user.id %></td>
+          <td><%= user.name %></td>
+          <td><%= user.email %></td>
+          <td><%= user.reviews.size %></td>
+          <td>
+            <% if user.admin? %>
+              <span class="admin-badge badge-info">Admin</span>
+            <% elsif user.banned? %>
+              <span class="admin-badge badge-danger">Banned</span>
+            <% else %>
+              <span class="admin-badge badge-success">Active</span>
+            <% end %>
+          </td>
+          <td><%= user.created_at.strftime("%d %b %Y") %></td>
+          <td>
+            <%= link_to "View", admin_user_path(user), class: "admin-btn admin-btn-sm" %>
+          </td>
+        </tr>
+      <% end %>
+      <% if @users.empty? %>
+        <tr><td colspan="7" class="admin-empty">No users found</td></tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<%= render "admin/shared/pagination" %>

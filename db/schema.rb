@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_15_182656) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_15_190341) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -49,6 +49,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_15_182656) do
     t.index ["trackable_type", "trackable_id"], name: "index_activities_on_trackable_type_and_trackable_id"
     t.index ["user_id", "created_at"], name: "index_activities_on_user_id_and_created_at"
     t.index ["user_id"], name: "index_activities_on_user_id"
+  end
+
+  create_table "admin_audit_logs", force: :cascade do |t|
+    t.string "action", null: false
+    t.integer "admin_user_id", null: false
+    t.datetime "created_at", null: false
+    t.text "metadata"
+    t.integer "target_id"
+    t.string "target_type"
+    t.datetime "updated_at", null: false
+    t.index ["admin_user_id"], name: "index_admin_audit_logs_on_admin_user_id"
+    t.index ["created_at"], name: "index_admin_audit_logs_on_created_at"
+    t.index ["target_type", "target_id"], name: "index_admin_audit_logs_on_target_type_and_target_id"
   end
 
   create_table "chicken_shops", force: :cascade do |t|
@@ -163,6 +176,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_15_182656) do
   end
 
   create_table "users", force: :cascade do |t|
+    t.boolean "admin", default: false, null: false
+    t.datetime "banned_at"
     t.text "bio"
     t.datetime "created_at", null: false
     t.string "display_name"
@@ -194,6 +209,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_15_182656) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "activities", "users"
+  add_foreign_key "admin_audit_logs", "users", column: "admin_user_id"
   add_foreign_key "conversation_reads", "conversations"
   add_foreign_key "conversation_reads", "users"
   add_foreign_key "conversations", "users", column: "receiver_id"

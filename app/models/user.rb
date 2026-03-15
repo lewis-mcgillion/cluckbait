@@ -25,9 +25,19 @@ class User < ApplicationRecord
   has_many :conversation_reads, dependent: :destroy
   has_many :notifications, dependent: :destroy
 
+  has_many :admin_audit_logs, foreign_key: :admin_user_id, dependent: :destroy
+
   validates :display_name, presence: true, length: { maximum: 50 }
   validates :bio, length: { maximum: 500 }
   validates :locale, inclusion: { in: I18n.available_locales.map(&:to_s) }, allow_nil: true
+
+  def admin?
+    admin
+  end
+
+  def banned?
+    banned_at.present?
+  end
 
   def name
     display_name.presence || email.split("@").first.presence || "?"

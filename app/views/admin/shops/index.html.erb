@@ -1,0 +1,45 @@
+<% content_for(:title) { "Shops — Admin" } %>
+
+<div class="admin-header">
+  <h1>Shops</h1>
+</div>
+
+<%= form_tag admin_shops_path, method: :get, class: "admin-filters" do %>
+  <input type="text" name="search" value="<%= params[:search] %>" placeholder="Search by name or city…" class="admin-search">
+  <button type="submit" class="admin-btn admin-btn-primary">Search</button>
+<% end %>
+
+<div class="admin-table-wrapper">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>City</th>
+        <th>Reviews</th>
+        <th>Created</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @shops.each do |shop| %>
+        <tr>
+          <td><%= shop.id %></td>
+          <td><%= shop.name %></td>
+          <td><%= shop.city %></td>
+          <td><%= shop.reviews.size %></td>
+          <td><%= shop.created_at.strftime("%d %b %Y") %></td>
+          <td style="display: flex; gap: 0.5rem;">
+            <%= link_to "View", admin_shop_path(shop), class: "admin-btn admin-btn-sm" %>
+            <%= link_to "Edit", edit_admin_shop_path(shop), class: "admin-btn admin-btn-sm" %>
+          </td>
+        </tr>
+      <% end %>
+      <% if @shops.empty? %>
+        <tr><td colspan="6" class="admin-empty">No shops found</td></tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<%= render "admin/shared/pagination" %>

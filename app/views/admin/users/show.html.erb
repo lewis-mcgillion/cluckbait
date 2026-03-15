@@ -1,0 +1,134 @@
+<% content_for(:title) { "#{@user.name} — Admin" } %>
+
+<%= link_to "← Back to Users", admin_users_path, class: "admin-back" %>
+
+<div class="admin-header">
+  <h1><%= @user.name %></h1>
+  <div class="admin-header-actions">
+    <% if @user.banned? %>
+      <%= button_to "Unban User", unban_admin_user_path(@user), method: :patch, class: "admin-btn admin-btn-primary" %>
+    <% elsif !@user.admin? %>
+      <%= button_to "Ban User", ban_admin_user_path(@user), method: :patch, class: "admin-btn admin-btn-danger",
+            data: { turbo_confirm: "Are you sure you want to ban #{@user.name}?" } %>
+    <% end %>
+  </div>
+</div>
+
+<div class="admin-detail">
+  <div>
+    <div class="admin-detail-card" style="margin-bottom: 1.5rem;">
+      <h3>User Details</h3>
+      <div class="admin-detail-row">
+        <span class="admin-detail-label">ID</span>
+        <span class="admin-detail-value"><%= @user.id %></span>
+      </div>
+      <div class="admin-detail-row">
+        <span class="admin-detail-label">Email</span>
+        <span class="admin-detail-value"><%= @user.email %></span>
+      </div>
+      <div class="admin-detail-row">
+        <span class="admin-detail-label">Display Name</span>
+        <span class="admin-detail-value"><%= @user.display_name %></span>
+      </div>
+      <div class="admin-detail-row">
+        <span class="admin-detail-label">Bio</span>
+        <span class="admin-detail-value"><%= @user.bio.presence || "—" %></span>
+      </div>
+      <div class="admin-detail-row">
+        <span class="admin-detail-label">Locale</span>
+        <span class="admin-detail-value"><%= @user.locale %></span>
+      </div>
+      <div class="admin-detail-row">
+        <span class="admin-detail-label">Joined</span>
+        <span class="admin-detail-value"><%= @user.created_at.strftime("%d %b %Y at %H:%M") %></span>
+      </div>
+      <div class="admin-detail-row">
+        <span class="admin-detail-label">Status</span>
+        <span class="admin-detail-value">
+          <% if @user.admin? %>
+            <span class="admin-badge badge-info">Admin</span>
+          <% elsif @user.banned? %>
+            <span class="admin-badge badge-danger">Banned since <%= @user.banned_at.strftime("%d %b %Y") %></span>
+          <% else %>
+            <span class="admin-badge badge-success">Active</span>
+          <% end %>
+        </span>
+      </div>
+      <div class="admin-detail-row">
+        <span class="admin-detail-label">Failed Login Attempts</span>
+        <span class="admin-detail-value"><%= @user.failed_attempts %></span>
+      </div>
+    </div>
+
+    <%# Reviews %>
+    <div class="admin-detail-card">
+      <h3>Recent Reviews (<%= @user.reviews.size %>)</h3>
+      <% if @reviews.any? %>
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Shop</th>
+              <th>Rating</th>
+              <th>Title</th>
+              <th>Date</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @reviews.each do |review| %>
+              <tr>
+                <td><%= link_to review.chicken_shop.name, admin_shop_path(review.chicken_shop), style: "color: var(--accent); text-decoration: none;" %></td>
+                <td><%= "⭐" * review.rating %></td>
+                <td><%= truncate(review.title, length: 40) %></td>
+                <td><%= review.created_at.strftime("%d %b %Y") %></td>
+                <td><%= link_to "View", admin_review_path(review), class: "admin-btn admin-btn-sm" %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <div class="admin-empty">No reviews</div>
+      <% end %>
+    </div>
+  </div>
+
+  <div>
+    <div class="admin-detail-card" style="margin-bottom: 1.5rem;">
+      <h3>Stats</h3>
+      <div class="admin-detail-row">
+        <span class="admin-detail-label">Reviews</span>
+        <span class="admin-detail-value"><%= @user.reviews.size %></span>
+      </div>
+      <div class="admin-detail-row">
+        <span class="admin-detail-label">Avg Rating Given</span>
+        <span class="admin-detail-value"><%= @user.average_rating_given || "—" %></span>
+      </div>
+      <div class="admin-detail-row">
+        <span class="admin-detail-label">Friends</span>
+        <span class="admin-detail-value"><%= @user.friends.count %></span>
+      </div>
+      <div class="admin-detail-row">
+        <span class="admin-detail-label">Wishlist Items</span>
+        <span class="admin-detail-value"><%= @user.wishlist_items.count %></span>
+      </div>
+      <div class="admin-detail-row">
+        <span class="admin-detail-label">Messages Sent</span>
+        <span class="admin-detail-value"><%= @user.messages.count %></span>
+      </div>
+    </div>
+
+    <div class="admin-detail-card">
+      <h3>Recent Activity</h3>
+      <% if @activities.any? %>
+        <% @activities.each do |activity| %>
+          <div class="admin-detail-row">
+            <span class="admin-detail-label"><%= activity.action %></span>
+            <span class="admin-detail-value"><%= time_ago_in_words(activity.created_at) %> ago</span>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="admin-empty">No activity</div>
+      <% end %>
+    </div>
+  </div>
+</div>

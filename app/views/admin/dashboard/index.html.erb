@@ -1,0 +1,124 @@
+<% content_for(:title) { "Dashboard — Admin" } %>
+
+<div class="admin-header">
+  <h1>Dashboard</h1>
+  <div class="admin-header-actions">
+    <span style="font-size: 0.8rem; color: var(--text-muted);">
+      Last updated: <%= Time.current.strftime("%d %b %Y, %H:%M") %>
+    </span>
+  </div>
+</div>
+
+<%# Platform overview %>
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-label">Total Users</div>
+    <div class="stat-value"><%= number_with_delimiter(@total_users) %></div>
+    <div class="stat-change positive">+<%= @new_users_7d %> this week</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-label">New Users (30d)</div>
+    <div class="stat-value"><%= number_with_delimiter(@new_users_30d) %></div>
+    <div class="stat-change"><%= @banned_users %> banned</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-label">Total Shops</div>
+    <div class="stat-value"><%= number_with_delimiter(@total_shops) %></div>
+    <div class="stat-change positive">+<%= @shops_30d %> this month</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-label">Total Reviews</div>
+    <div class="stat-value"><%= number_with_delimiter(@total_reviews) %></div>
+    <div class="stat-change positive">+<%= @reviews_7d %> this week</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-label">Reviews (30d)</div>
+    <div class="stat-value"><%= number_with_delimiter(@reviews_30d) %></div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-label">Average Rating</div>
+    <div class="stat-value"><%= @avg_rating %> ⭐</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-label">Friendships</div>
+    <div class="stat-value"><%= number_with_delimiter(@total_friendships) %></div>
+    <div class="stat-change positive">+<%= @friendships_7d %> this week</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-label">Messages</div>
+    <div class="stat-value"><%= number_with_delimiter(@total_messages) %></div>
+    <div class="stat-change positive">+<%= @messages_7d %> this week</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-label">Wishlisted</div>
+    <div class="stat-value"><%= number_with_delimiter(@total_wishlists) %></div>
+  </div>
+</div>
+
+<%# Top cities %>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+  <div class="admin-detail-card">
+    <h3>Top Cities</h3>
+    <% @top_cities.each do |city, count| %>
+      <div class="admin-detail-row">
+        <span class="admin-detail-label"><%= city %></span>
+        <span class="admin-detail-value"><%= count %> shops</span>
+      </div>
+    <% end %>
+    <% if @top_cities.empty? %>
+      <div class="admin-empty">No shops yet</div>
+    <% end %>
+  </div>
+
+  <div class="admin-detail-card">
+    <h3>Recent Users</h3>
+    <% @recent_users.each do |user| %>
+      <div class="admin-detail-row">
+        <span class="admin-detail-label">
+          <%= link_to user.name, admin_user_path(user), style: "color: var(--accent); text-decoration: none;" %>
+        </span>
+        <span class="admin-detail-value"><%= user.created_at.strftime("%d %b") %></span>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<%# Recent reviews %>
+<div class="admin-detail-card">
+  <h3>Recent Reviews</h3>
+  <div class="admin-table-wrapper" style="border: none;">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Shop</th>
+          <th>Rating</th>
+          <th>Title</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @recent_reviews.each do |review| %>
+          <tr>
+            <td><%= link_to review.user.name, admin_user_path(review.user), style: "color: var(--accent); text-decoration: none;" %></td>
+            <td><%= link_to review.chicken_shop.name, admin_shop_path(review.chicken_shop), style: "color: var(--accent); text-decoration: none;" %></td>
+            <td><%= "⭐" * review.rating %></td>
+            <td><%= truncate(review.title, length: 40) %></td>
+            <td><%= review.created_at.strftime("%d %b %Y") %></td>
+          </tr>
+        <% end %>
+        <% if @recent_reviews.empty? %>
+          <tr><td colspan="5" class="admin-empty">No reviews yet</td></tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

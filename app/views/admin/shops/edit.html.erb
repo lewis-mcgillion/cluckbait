@@ -1,0 +1,74 @@
+<% content_for(:title) { "Edit #{@shop.name} — Admin" } %>
+
+<%= link_to "← Back to Shop", admin_shop_path(@shop), class: "admin-back" %>
+
+<div class="admin-header">
+  <h1>Edit Shop</h1>
+</div>
+
+<div class="admin-detail-card" style="max-width: 700px;">
+  <%= form_with(model: @shop, url: admin_shop_path(@shop), class: "admin-form") do |f| %>
+    <% if @shop.errors.any? %>
+      <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.5rem;">
+        <p style="color: var(--danger); font-weight: 600; margin: 0 0 0.5rem;">Please fix the following errors:</p>
+        <ul style="margin: 0; padding-left: 1.25rem; color: var(--danger); font-size: 0.85rem;">
+          <% @shop.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+    </div>
+
+    <div class="field">
+      <%= f.label :address %>
+      <%= f.text_field :address %>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+      <div class="field">
+        <%= f.label :city %>
+        <%= f.text_field :city %>
+      </div>
+      <div class="field">
+        <%= f.label :postcode %>
+        <%= f.text_field :postcode %>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= f.label :phone %>
+      <%= f.telephone_field :phone %>
+    </div>
+
+    <div class="field">
+      <%= f.label :website %>
+      <%= f.url_field :website %>
+    </div>
+
+    <div class="field">
+      <%= f.label :description %>
+      <%= f.text_area :description %>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+      <div class="field">
+        <%= f.label :latitude %>
+        <%= f.text_field :latitude %>
+      </div>
+      <div class="field">
+        <%= f.label :longitude %>
+        <%= f.text_field :longitude %>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <%= f.submit "Update Shop", class: "admin-btn admin-btn-primary" %>
+      <%= link_to "Cancel", admin_shop_path(@shop), class: "admin-btn" %>
+    </div>
+  <% end %>
+</div>
