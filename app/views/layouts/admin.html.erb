@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title><%= content_for(:title) || "Admin — Cluckbait" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "admin", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <div class="admin-wrapper">
+      <%= render "admin/shared/sidebar" %>
+
+      <div class="admin-content">
+        <% if notice %>
+          <div class="flash flash-notice" data-controller="flash">
+            <span><%= notice %></span>
+            <button data-action="click->flash#dismiss" class="flash-close">&times;</button>
+          </div>
+        <% end %>
+        <% if alert %>
+          <div class="flash flash-alert" data-controller="flash">
+            <span><%= alert %></span>
+            <button data-action="click->flash#dismiss" class="flash-close">&times;</button>
+          </div>
+        <% end %>
+
+        <%= yield %>
+      </div>
+    </div>
+  </body>
+</html>

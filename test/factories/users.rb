@@ -16,5 +16,13 @@ FactoryBot.define do
     trait :with_long_bio do
       bio { "a" * 501 }
     end
+
+    trait :admin do
+      admin { true }
+    end
+
+    trait :banned do
+      banned_at { Time.current }
+    end
   end
 end

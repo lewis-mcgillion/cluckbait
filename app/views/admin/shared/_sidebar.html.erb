@@ -1,0 +1,53 @@
+<nav class="admin-sidebar">
+  <div class="admin-sidebar-brand">
+    <%= link_to admin_root_path do %>
+      🍗 Cluckbait
+    <% end %>
+    <small>Admin Panel</small>
+  </div>
+
+  <ul class="admin-nav">
+    <li>
+      <%= link_to admin_root_path, class: "#{controller_name == 'dashboard' ? 'active' : ''}" do %>
+        <span class="nav-icon">📊</span> Dashboard
+      <% end %>
+    </li>
+
+    <div class="admin-nav-section">Management</div>
+
+    <li>
+      <%= link_to admin_users_path, class: "#{controller_name == 'users' ? 'active' : ''}" do %>
+        <span class="nav-icon">👥</span> Users
+      <% end %>
+    </li>
+    <li>
+      <%= link_to admin_shops_path, class: "#{controller_name == 'shops' ? 'active' : ''}" do %>
+        <span class="nav-icon">🏪</span> Shops
+      <% end %>
+    </li>
+    <li>
+      <%= link_to admin_reviews_path, class: "#{controller_name == 'reviews' ? 'active' : ''}" do %>
+        <span class="nav-icon">⭐</span> Reviews
+      <% end %>
+    </li>
+
+    <div class="admin-nav-section">System</div>
+
+    <li>
+      <%= link_to admin_audit_logs_path, class: "#{controller_name == 'audit_logs' ? 'active' : ''}" do %>
+        <span class="nav-icon">📋</span> Audit Log
+      <% end %>
+    </li>
+  </ul>
+
+  <div class="admin-sidebar-footer">
+    <div class="admin-sidebar-footer-inner">
+      <div class="admin-sidebar-user">
+        <%= current_user.name %>
+      </div>
+      <div class="admin-sidebar-links">
+        <%= link_to "← Back to site", root_path %>
+      </div>
+    </div>
+  </div>
+</nav>

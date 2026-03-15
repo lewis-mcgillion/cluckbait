@@ -1,10 +1,5 @@
 {
-  "ignored_warnings": [
-    {
-      "fingerprint": "0df05e84c7cddc481eb0c4d18ebe196534f526eaf9b8257e2869e9779010113b",
-      "note": "Website URLs are validated with format regex (http/https only) on the model. Safe to use in link_to."
-    }
-  ],
-  "updated": "2026-03-12",
+  "ignored_warnings": [],
+  "updated": "2026-03-15",
   "brakeman_version": "8.0.4"
 }
