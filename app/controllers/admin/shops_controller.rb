@@ -7,7 +7,8 @@ module Admin
     def index
       @page = [(params[:page] || 1).to_i, 1].max
       @shops = ChickenShop.order(created_at: :desc)
-      @shops = @shops.where("name LIKE ? OR city LIKE ?", "%#{params[:search]}%", "%#{params[:search]}%") if params[:search].present?
+      @shops = @shops.where("name LIKE ? OR city LIKE ?", "%#{params[:search]}%",
+                                                          "%#{params[:search]}%") if params[:search].present?
       @shops = @shops.where(city: params[:city]) if params[:city].present?
 
       fetched = @shops.limit(PER_PAGE + 1).offset((@page - 1) * PER_PAGE).to_a
@@ -44,7 +45,8 @@ module Admin
     end
 
     def shop_params
-      params.require(:chicken_shop).permit(:name, :address, :city, :postcode, :phone, :website, :description, :latitude, :longitude)
+      params.require(:chicken_shop).permit(:name, :address, :city, :postcode, :phone,
+                                           :website, :description, :latitude, :longitude)
     end
   end
 end
