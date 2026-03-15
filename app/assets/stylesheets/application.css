@@ -844,6 +844,73 @@ img { max-width: 100%; height: auto; display: block; }
 }
 .devise-links a { display: block; margin-bottom: 0.4rem; }
 
+/* ----- Social Login ----- */
+.social-login-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.btn-social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition);
+  border: 1.5px solid var(--border-light);
+  text-decoration: none;
+}
+.btn-social:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.btn-google {
+  background: #fff;
+  color: #3c4043;
+}
+.btn-google:hover {
+  background: #f8f9fa;
+  border-color: #dadce0;
+}
+.btn-apple {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+.btn-apple:hover {
+  background: #1a1a1a;
+}
+.btn-facebook {
+  background: #1877f2;
+  color: #fff;
+  border-color: #1877f2;
+}
+.btn-facebook:hover {
+  background: #166fe5;
+}
+.social-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1.5rem 0;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+.social-divider::before,
+.social-divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid var(--border-light);
+}
+.social-divider span {
+  padding: 0 1rem;
+}
+
 /* ----- 24. Third-Party Overrides ----- */
 .leaflet-popup-content-wrapper {
   background: var(--bg-card) !important;

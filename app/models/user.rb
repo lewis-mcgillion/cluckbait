@@ -1,10 +1,12 @@
 class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
-         :lockable, :timeoutable
+         :lockable, :timeoutable,
+         :omniauthable, omniauth_providers: [:google_oauth2, :apple, :facebook]
 
   has_many :activities, dependent: :destroy
   has_many :reviews, dependent: :destroy
+  has_many :social_accounts, dependent: :destroy
   has_many :review_reactions, dependent: :destroy
   has_many :wishlist_items, dependent: :destroy
   has_many :wishlisted_shops, through: :wishlist_items, source: :chicken_shop
