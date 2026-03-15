@@ -84,7 +84,7 @@
               </div>
               <div class="friend-card-actions">
                 <%= button_to t("profiles.show.message"), conversations_path(receiver_id: friend.id), method: :post, class: "btn btn-primary btn-sm" %>
-                <% friendship = current_user.friendship_with(friend) %>
+                <% friendship = @friendships_by_friend&.dig(friend.id) || current_user.friendship_with(friend) %>
                 <% if friendship %>
                   <%= button_to t("shared.remove"), friendship_path(friendship), method: :delete, class: "btn btn-outline btn-sm", data: { turbo_confirm: t("friendships.remove_confirm", name: friend.name) } %>
                 <% end %>
