@@ -41,7 +41,8 @@
       </div>
       <div class="admin-detail-row">
         <span class="admin-detail-label">Website</span>
-        <span class="admin-detail-value"><%= @shop.website.present? ? link_to(@shop.website, @shop.website, target: "_blank", class: "admin-link") : "—" %></span>
+        <% safe_website = safe_external_url(@shop.website) %>
+        <span class="admin-detail-value"><%= safe_website ? link_to(safe_website, safe_website, target: "_blank", class: "admin-link") : "—" %></span>
       </div>
       <div class="admin-detail-row">
         <span class="admin-detail-label">Coordinates</span>

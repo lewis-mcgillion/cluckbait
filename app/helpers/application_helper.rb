@@ -82,4 +82,13 @@ module ApplicationHelper
   def text_direction
     rtl_locale? ? "rtl" : "ltr"
   end
+
+  def safe_external_url(url)
+    return nil if url.blank?
+
+    uri = URI.parse(url.to_s)
+    uri.scheme.in?(%w[http https]) ? url : nil
+  rescue URI::InvalidURIError
+    nil
+  end
 end
