@@ -22,9 +22,12 @@ export default class extends Controller {
       popupAnchor: [0, -40]
     })
 
+    const popupContent = document.createElement("span")
+    popupContent.textContent = this.nameValue
+
     L.marker([this.latValue, this.lngValue], { icon: chickenIcon })
       .addTo(this.map)
-      .bindPopup(this.nameValue)
+      .bindPopup(popupContent)
   }
 
   disconnect() {
