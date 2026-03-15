@@ -31,8 +31,14 @@ class MessagesController < ApplicationController
     else
       respond_to do |format|
         format.turbo_stream {
+          error_html = <<~HTML
+            <input type="text" name="message[body]" id="message_body"
+                   class="chat-input chat-input-error"
+                   placeholder="Message cannot be empty"
+                   autocomplete="off" data-message-form-target="input">
+          HTML
           render turbo_stream: turbo_stream.update("message_body") {
-            render_to_string(inline: '<input type="text" name="message[body]" id="message_body" class="chat-input chat-input-error" placeholder="Message cannot be empty" autocomplete="off" data-message-form-target="input">')
+            render_to_string(inline: error_html)
           }
         }
         format.html do

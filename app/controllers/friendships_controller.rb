@@ -15,7 +15,8 @@ class FriendshipsController < ApplicationController
     if @friends.any?
       friend_ids = @friends.map(&:id)
       @friendships_by_friend = Friendship.for_user(current_user)
-                                         .where(user_id: friend_ids).or(Friendship.for_user(current_user).where(friend_id: friend_ids))
+                                         .where(user_id: friend_ids)
+                                         .or(Friendship.for_user(current_user).where(friend_id: friend_ids))
                                          .index_by { |f| f.other_user(current_user).id }
     end
   end

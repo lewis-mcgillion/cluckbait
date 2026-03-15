@@ -62,7 +62,9 @@ class ChickenShopsController < ApplicationController
 
     if user_signed_in?
       shop_ids = @chicken_shops.map(&:id)
-      @wishlist_items_by_shop = current_user.wishlist_items.where(chicken_shop_id: shop_ids).index_by(&:chicken_shop_id)
+      @wishlist_items_by_shop = current_user.wishlist_items
+                                  .where(chicken_shop_id: shop_ids)
+                                  .index_by(&:chicken_shop_id)
     end
   end
 

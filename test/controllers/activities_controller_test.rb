@@ -56,8 +56,14 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
 
     shop = create(:chicken_shop)
     old_review = create(:review, user: @friend, chicken_shop: shop)
-    old_activity = Activity.create!(user: @friend, action: "posted_review", trackable: old_review, created_at: 2.days.ago)
-    recent_activity = Activity.create!(user: @friend, action: "became_friends", trackable: @friendship, created_at: 1.hour.ago)
+    old_activity = Activity.create!(
+      user: @friend, action: "posted_review",
+      trackable: old_review, created_at: 2.days.ago
+    )
+    recent_activity = Activity.create!(
+      user: @friend, action: "became_friends",
+      trackable: @friendship, created_at: 1.hour.ago
+    )
 
     get activities_path
     assert_response :success
