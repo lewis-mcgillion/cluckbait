@@ -36,8 +36,10 @@
           <td><%= "⭐" * review.rating %></td>
           <td><%= truncate(review.title, length: 40) %></td>
           <td><%= review.created_at.strftime("%d %b %Y") %></td>
-          <td>
+          <td class="admin-td-actions">
             <%= link_to "View", admin_review_path(review), class: "admin-btn admin-btn-sm" %>
+            <%= button_to "Delete", admin_review_path(review), method: :delete, class: "admin-btn admin-btn-sm admin-btn-danger",
+                  data: { turbo_confirm: "Delete this review?" } %>
           </td>
         </tr>
       <% end %>

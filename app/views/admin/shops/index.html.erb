@@ -32,6 +32,8 @@
           <td class="admin-td-actions">
             <%= link_to "View", admin_shop_path(shop), class: "admin-btn admin-btn-sm" %>
             <%= link_to "Edit", edit_admin_shop_path(shop), class: "admin-btn admin-btn-sm" %>
+            <%= button_to "Delete", admin_shop_path(shop), method: :delete, class: "admin-btn admin-btn-sm admin-btn-danger",
+                  data: { turbo_confirm: "Delete #{shop.name}?" } %>
           </td>
         </tr>
       <% end %>

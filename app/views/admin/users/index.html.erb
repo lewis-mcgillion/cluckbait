@@ -44,8 +44,14 @@
             <% end %>
           </td>
           <td><%= user.created_at.strftime("%d %b %Y") %></td>
-          <td>
+          <td class="admin-td-actions">
             <%= link_to "View", admin_user_path(user), class: "admin-btn admin-btn-sm" %>
+            <% if user.banned? %>
+              <%= button_to "Unban", unban_admin_user_path(user), method: :patch, class: "admin-btn admin-btn-sm admin-btn-primary" %>
+            <% elsif !user.admin? %>
+              <%= button_to "Ban", ban_admin_user_path(user), method: :patch, class: "admin-btn admin-btn-sm admin-btn-danger",
+                    data: { turbo_confirm: "Ban #{user.name}?" } %>
+            <% end %>
           </td>
         </tr>
       <% end %>
