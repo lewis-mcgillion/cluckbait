@@ -119,8 +119,8 @@ module Users
 
       avatar_io = uri.open(
         "User-Agent" => "Cluckbait/1.0",
-        open_timeout: 5,
-        read_timeout: 5
+        :open_timeout => 5,
+        :read_timeout => 5
       )
 
       return if avatar_io.size > MAX_AVATAR_SIZE
