@@ -1,0 +1,64 @@
+<% content_for(:title) { "Audit Log — Admin" } %>
+
+<div class="admin-header">
+  <h1>Audit Log</h1>
+</div>
+
+<%= form_tag admin_audit_logs_path, method: :get, class: "admin-filters" do %>
+  <input type="text" name="search" value="<%= params[:search] %>" placeholder="Filter by action (e.g. user.ban, shop.destroy)…" class="admin-search">
+  <button type="submit" class="admin-btn admin-btn-primary">Filter</button>
+<% end %>
+
+<div class="admin-table-wrapper">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Timestamp</th>
+        <th>Admin</th>
+        <th>Action</th>
+        <th>Target</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @audit_logs.each do |log| %>
+        <tr>
+          <td><%= log.created_at.strftime("%d %b %Y %H:%M:%S") %></td>
+          <td><%= log.admin_user.name %></td>
+          <td>
+            <% badge_class = case log.action
+              when /ban/ then "badge-danger"
+              when /unban/ then "badge-success"
+              when /destroy/ then "badge-danger"
+              when /update/ then "badge-warning"
+              else "badge-info"
+            end %>
+            <span class="admin-badge <%= badge_class %>"><%= log.action %></span>
+          </td>
+          <td>
+            <% if log.target_type.present? %>
+              <%= log.target_type %> #<%= log.target_id %>
+            <% else %>
+              —
+            <% end %>
+          </td>
+          <td>
+            <% metadata = log.parsed_metadata %>
+            <% if metadata.any? %>
+              <span class="admin-timestamp">
+                <%= metadata.map { |k, v| "#{k}: #{v}" }.join(", ").truncate(80) %>
+              </span>
+            <% else %>
+              —
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+      <% if @audit_logs.empty? %>
+        <tr><td colspan="5" class="admin-empty">No audit logs yet</td></tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<%= render "admin/shared/pagination" %>

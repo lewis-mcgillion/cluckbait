@@ -1,0 +1,53 @@
+<% content_for(:title) { "Reviews — Admin" } %>
+
+<div class="admin-header">
+  <h1>Reviews</h1>
+</div>
+
+<%= form_tag admin_reviews_path, method: :get, class: "admin-filters" do %>
+  <input type="text" name="search" value="<%= params[:search] %>" placeholder="Search by title or body…" class="admin-search">
+  <select name="filter" class="admin-select" onchange="this.form.submit()">
+    <option value="">All Reviews</option>
+    <option value="low_rated" <%= "selected" if params[:filter] == "low_rated" %>>Low Rated (≤ 2⭐)</option>
+    <option value="recent" <%= "selected" if params[:filter] == "recent" %>>Recent (7 days)</option>
+  </select>
+  <button type="submit" class="admin-btn admin-btn-primary">Search</button>
+<% end %>
+
+<div class="admin-table-wrapper">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>User</th>
+        <th>Shop</th>
+        <th>Rating</th>
+        <th>Title</th>
+        <th>Date</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @reviews.each do |review| %>
+        <tr>
+          <td><%= review.id %></td>
+          <td><%= link_to review.user.name, admin_user_path(review.user), class: "admin-link" %></td>
+          <td><%= link_to review.chicken_shop.name, admin_shop_path(review.chicken_shop), class: "admin-link" %></td>
+          <td><%= "⭐" * review.rating %></td>
+          <td><%= truncate(review.title, length: 40) %></td>
+          <td><%= review.created_at.strftime("%d %b %Y") %></td>
+          <td class="admin-td-actions">
+            <%= link_to "View", admin_review_path(review), class: "admin-btn admin-btn-sm" %>
+            <%= button_to "Delete", admin_review_path(review), method: :delete, class: "admin-btn admin-btn-sm admin-btn-danger",
+                  data: { turbo_confirm: "Delete this review?" } %>
+          </td>
+        </tr>
+      <% end %>
+      <% if @reviews.empty? %>
+        <tr><td colspan="7" class="admin-empty">No reviews found</td></tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<%= render "admin/shared/pagination" %>

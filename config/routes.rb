@@ -44,6 +44,19 @@ Rails.application.routes.draw do
 
   get "api/shops", to: "api/shops#index"
 
+  namespace :admin do
+    root "dashboard#index"
+    resources :users, only: [:index, :show] do
+      member do
+        patch :ban
+        patch :unban
+      end
+    end
+    resources :shops, only: [:index, :show, :edit, :update, :destroy]
+    resources :reviews, only: [:index, :show, :destroy]
+    resources :audit_logs, only: [:index]
+  end
+
   # Fallback for sign-out via GET (when JS/Turbo is unavailable)
   get "users/sign_out", to: redirect("/")
 

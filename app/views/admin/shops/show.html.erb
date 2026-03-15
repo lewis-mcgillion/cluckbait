@@ -1,0 +1,109 @@
+<% content_for(:title) { "#{@shop.name} — Admin" } %>
+
+<%= link_to "← Back to Shops", admin_shops_path, class: "admin-back" %>
+
+<div class="admin-header">
+  <h1><%= @shop.name %></h1>
+  <div class="admin-header-actions">
+    <%= link_to "Edit", edit_admin_shop_path(@shop), class: "admin-btn" %>
+    <%= button_to "Delete", admin_shop_path(@shop), method: :delete, class: "admin-btn admin-btn-danger",
+          data: { turbo_confirm: "Are you sure you want to delete #{@shop.name}? This cannot be undone." } %>
+  </div>
+</div>
+
+<div class="admin-detail">
+  <div>
+    <div class="admin-detail-card">
+      <h3>Shop Details</h3>
+      <div class="admin-detail-row">
+        <span class="admin-detail-label">ID</span>
+        <span class="admin-detail-value"><%= @shop.id %></span>
+      </div>
+      <div class="admin-detail-row">
+        <span class="admin-detail-label">Name</span>
+        <span class="admin-detail-value"><%= @shop.name %></span>
+      </div>
+      <div class="admin-detail-row">
+        <span class="admin-detail-label">Address</span>
+        <span class="admin-detail-value"><%= @shop.address %></span>
+      </div>
+      <div class="admin-detail-row">
+        <span class="admin-detail-label">City</span>
+        <span class="admin-detail-value"><%= @shop.city %></span>
+      </div>
+      <div class="admin-detail-row">
+        <span class="admin-detail-label">Postcode</span>
+        <span class="admin-detail-value"><%= @shop.postcode.presence || "—" %></span>
+      </div>
+      <div class="admin-detail-row">
+        <span class="admin-detail-label">Phone</span>
+        <span class="admin-detail-value"><%= @shop.phone.presence || "—" %></span>
+      </div>
+      <div class="admin-detail-row">
+        <span class="admin-detail-label">Website</span>
+        <span class="admin-detail-value"><%= @shop.website.present? ? link_to(@shop.website, @shop.website, target: "_blank", class: "admin-link") : "—" %></span>
+      </div>
+      <div class="admin-detail-row">
+        <span class="admin-detail-label">Coordinates</span>
+        <span class="admin-detail-value"><%= @shop.latitude %>, <%= @shop.longitude %></span>
+      </div>
+      <div class="admin-detail-row">
+        <span class="admin-detail-label">Description</span>
+        <span class="admin-detail-value"><%= @shop.description.presence || "—" %></span>
+      </div>
+      <div class="admin-detail-row">
+        <span class="admin-detail-label">Created</span>
+        <span class="admin-detail-value"><%= @shop.created_at.strftime("%d %b %Y at %H:%M") %></span>
+      </div>
+    </div>
+
+    <%# Reviews %>
+    <div class="admin-detail-card">
+      <h3>Recent Reviews (<%= @shop.reviews.size %>)</h3>
+      <% if @reviews.any? %>
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Rating</th>
+              <th>Title</th>
+              <th>Date</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @reviews.each do |review| %>
+              <tr>
+                <td><%= link_to review.user.name, admin_user_path(review.user), class: "admin-link" %></td>
+                <td><%= "⭐" * review.rating %></td>
+                <td><%= truncate(review.title, length: 40) %></td>
+                <td><%= review.created_at.strftime("%d %b %Y") %></td>
+                <td><%= link_to "View", admin_review_path(review), class: "admin-btn admin-btn-sm" %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <div class="admin-empty">No reviews yet</div>
+      <% end %>
+    </div>
+  </div>
+
+  <div>
+    <div class="admin-detail-card">
+      <h3>Stats</h3>
+      <div class="admin-detail-row">
+        <span class="admin-detail-label">Total Reviews</span>
+        <span class="admin-detail-value"><%= @shop.reviews.size %></span>
+      </div>
+      <div class="admin-detail-row">
+        <span class="admin-detail-label">Average Rating</span>
+        <span class="admin-detail-value"><%= @shop.reviews.average(:rating)&.round(1) || "—" %></span>
+      </div>
+      <div class="admin-detail-row">
+        <span class="admin-detail-label">Wishlisted</span>
+        <span class="admin-detail-value"><%= @shop.wishlist_items.count %> times</span>
+      </div>
+    </div>
+  </div>
+</div>
