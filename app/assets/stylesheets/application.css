@@ -226,6 +226,7 @@ img { max-width: 100%; height: auto; display: block; }
 }
 .nav-username { color: var(--text-primary); font-weight: 500; font-size: 0.9rem; }
 .nav-signout { font-size: 0.8rem; }
+.nav-signout-mobile { display: none; }
 
 /* Hamburger button — hidden on desktop */
 .nav-hamburger {
@@ -779,7 +780,9 @@ img { max-width: 100%; height: auto; display: block; }
 
 /* ----- 22. Responsive (Primary) ----- */
 @media (max-width: 768px) {
-  .nav-hamburger { display: flex; }
+  .nav-hamburger { display: flex; min-width: 44px; min-height: 44px; }
+  .nav-signout { display: none; }
+  .nav-signout-mobile { display: block; }
   .nav-center {
     display: none;
     position: absolute;
@@ -801,7 +804,7 @@ img { max-width: 100%; height: auto; display: block; }
   .hero-title { font-size: 1.75rem; }
   .main-map { height: 300px; }
   .shop-layout { grid-template-columns: 1fr; }
-  .shop-hero { height: 240px; }
+  .shop-hero { height: 240px; padding-top: 64px; }
   .shop-name { font-size: 1.75rem; }
   .shop-meta { gap: 1rem; }
   .profile-header { flex-direction: column; align-items: center; text-align: center; }
@@ -809,6 +812,20 @@ img { max-width: 100%; height: auto; display: block; }
   .footer-links { flex-direction: column; gap: 1.5rem; }
   .shops-grid { grid-template-columns: 1fr; }
   .reviews-grid { grid-template-columns: 1fr; }
+  .shop-sidebar, .shop-reviews { min-width: 0; }
+  .sort-btn { min-height: 44px; display: inline-flex; align-items: center; }
+  .section { padding: 2rem 0; }
+  .form-input { font-size: 1rem; }
+  .wishlist-bookmark-btn { width: 44px; height: 44px; font-size: 1.2rem; }
+  .wishlist-card-actions { flex-wrap: wrap; }
+  .wishlist-toggle-btn, .wishlist-remove-btn { min-height: 44px; }
+  .notification-mark-btn { min-width: 44px; min-height: 44px; }
+  .btn-sm { min-height: 44px; }
+  .friend-card-actions .button_to { flex: 1; }
+  .friend-card-actions .button_to .btn { width: 100%; }
+  .footer-links a { min-height: 44px; display: inline-flex; align-items: center; }
+  .language-select { min-height: 44px; }
+  .map-picker-container { height: 250px; }
 }
 
 /* ----- 23. Devise (Auth Views) ----- */
@@ -1755,6 +1772,7 @@ turbo-frame { display: contents; }
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  flex-wrap: wrap;
 }
 
 .sort-btn-sm {

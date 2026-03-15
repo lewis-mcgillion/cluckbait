@@ -43,6 +43,7 @@
             <span class="nav-badge"><%= unread_convos %></span>
           <% end %>
         <% end %>
+        <%= link_to t("shared.sign_out"), destroy_user_session_path, data: { turbo_method: :delete }, class: "nav-link nav-signout-mobile" %>
       <% end %>
     </div>
 
