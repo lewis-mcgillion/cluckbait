@@ -3,7 +3,12 @@
 
 <section class="section">
   <div class="container">
-    <div class="chat-container">
+    <div class="chat-container"
+         data-controller="typing-indicator"
+         data-typing-indicator-conversation-id-value="<%= @conversation.id %>"
+         data-typing-indicator-user-id-value="<%= current_user.id %>">
+      <%= turbo_stream_from current_user, @conversation %>
+
       <!-- Chat Header -->
       <div class="chat-header">
         <%= link_to conversations_path, class: "chat-back" do %>
@@ -17,6 +22,10 @@
               <div class="chat-avatar-placeholder-sm"><%= other.name[0].upcase %></div>
             <% end %>
             <span class="chat-header-name"><%= other.name %></span>
+            <span class="presence-dot <%= 'presence-online' if other.online? %>"
+                  id="presence-<%= other.id %>"
+                  data-controller="presence"
+                  data-presence-user-id-value="<%= other.id %>"></span>
           <% end %>
         </div>
       </div>
@@ -32,6 +41,17 @@
             <p><%= t("conversations.show.start_conversation", name: other.name) %></p>
           </div>
         <% end %>
+      </div>
+
+      <!-- Typing Indicator -->
+      <div class="typing-indicator" id="typing-indicator" style="display: none;"
+           data-typing-indicator-target="indicator">
+        <span class="typing-dots">
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+        </span>
+        <span class="typing-text"><%= other.name %> <%= t("conversations.show.is_typing", default: "is typing...") %></span>
       </div>
 
       <!-- Message Form -->
@@ -69,7 +89,7 @@
           </div>
         </div>
 
-        <%= form_with(model: [@conversation, @message], class: "chat-form", data: { turbo_frame: "chat-messages-frame", controller: "message-form" }) do |f| %>
+        <%= form_with(model: [@conversation, @message], class: "chat-form", data: { turbo_frame: "chat-messages-frame", controller: "message-form", action: "input->typing-indicator#onInput" }) do |f| %>
           <%= f.hidden_field :shareable_type, data: { message_form_target: "shareableType" } %>
           <%= f.hidden_field :shareable_id, data: { message_form_target: "shareableId" } %>
           <div class="chat-input-row">

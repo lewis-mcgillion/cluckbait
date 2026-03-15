@@ -8,8 +8,9 @@
 </div>
 
 <div class="container" style="padding: 2rem 1.5rem;">
+  <%= turbo_stream_from current_user, :activities %>
   <% if @activities.any? %>
-    <div class="activity-feed">
+    <div class="activity-feed" id="activity-feed">
       <%= render partial: "activity", collection: @activities %>
     </div>
 

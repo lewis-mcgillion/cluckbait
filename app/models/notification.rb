@@ -11,6 +11,8 @@ class Notification < ApplicationRecord
   scope :read, -> { where.not(read_at: nil) }
   scope :recent_first, -> { order(created_at: :desc) }
 
+  after_create_commit :broadcast_notification
+
   def read?
     read_at.present?
   end
@@ -59,5 +61,16 @@ class Notification < ApplicationRecord
     else
       helpers.notifications_path(locale: nil)
     end
+  end
+
+  private
+
+  def broadcast_notification
+    broadcast_update_to(
+      user, :notifications,
+      target: "notification-badge",
+      partial: "notifications/badge",
+      locals: { count: user.unread_notifications_count }
+    )
   end
 end

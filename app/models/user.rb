@@ -134,4 +134,8 @@ class User < ApplicationRecord
     SQL
     conversations.where(unread_sql, id, id).count
   end
+
+  def online?
+    last_seen_at.present? && last_seen_at > 2.minutes.ago
+  end
 end

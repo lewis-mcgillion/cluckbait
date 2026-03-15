@@ -12,6 +12,7 @@ class Message < ApplicationRecord
   scope :ordered, -> { order(created_at: :asc) }
 
   after_create :notify_recipient
+  after_create_commit :broadcast_message
 
   private
 
@@ -35,6 +36,16 @@ class Message < ApplicationRecord
       actor: user,
       action: "new_message",
       notifiable: self
+    )
+  end
+
+  def broadcast_message
+    recipient = conversation.other_user(user)
+    broadcast_append_to(
+      [recipient, conversation],
+      target: "chat-messages",
+      partial: "messages/message",
+      locals: { message: self, current_user: recipient }
     )
   end
 end
