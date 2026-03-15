@@ -6,12 +6,12 @@
   <h1>Edit Shop</h1>
 </div>
 
-<div class="admin-detail-card" style="max-width: 700px;">
+<div class="admin-detail-card admin-form-narrow">
   <%= form_with(model: @shop, url: admin_shop_path(@shop), class: "admin-form") do |f| %>
     <% if @shop.errors.any? %>
-      <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.5rem;">
-        <p style="color: var(--danger); font-weight: 600; margin: 0 0 0.5rem;">Please fix the following errors:</p>
-        <ul style="margin: 0; padding-left: 1.25rem; color: var(--danger); font-size: 0.85rem;">
+      <div class="form-errors">
+        <p>Please fix the following errors:</p>
+        <ul>
           <% @shop.errors.full_messages.each do |msg| %>
             <li><%= msg %></li>
           <% end %>
@@ -29,7 +29,7 @@
       <%= f.text_field :address %>
     </div>
 
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+    <div class="admin-form-grid">
       <div class="field">
         <%= f.label :city %>
         <%= f.text_field :city %>
@@ -55,7 +55,7 @@
       <%= f.text_area :description %>
     </div>
 
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+    <div class="admin-form-grid">
       <div class="field">
         <%= f.label :latitude %>
         <%= f.text_field :latitude %>

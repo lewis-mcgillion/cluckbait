@@ -29,7 +29,7 @@
           <td><%= shop.city %></td>
           <td><%= shop.reviews.size %></td>
           <td><%= shop.created_at.strftime("%d %b %Y") %></td>
-          <td style="display: flex; gap: 0.5rem;">
+          <td class="admin-td-actions">
             <%= link_to "View", admin_shop_path(shop), class: "admin-btn admin-btn-sm" %>
             <%= link_to "Edit", edit_admin_shop_path(shop), class: "admin-btn admin-btn-sm" %>
           </td>

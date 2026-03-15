@@ -12,7 +12,7 @@
 
 <div class="admin-detail">
   <div>
-    <div class="admin-detail-card" style="margin-bottom: 1.5rem;">
+    <div class="admin-detail-card">
       <h3>Review Content</h3>
       <div class="admin-detail-row">
         <span class="admin-detail-label">Rating</span>
@@ -22,9 +22,9 @@
         <span class="admin-detail-label">Title</span>
         <span class="admin-detail-value"><%= @review.title %></span>
       </div>
-      <div style="padding: 1rem 0; border-bottom: 1px solid var(--border);">
-        <div class="admin-detail-label" style="margin-bottom: 0.5rem;">Body</div>
-        <div style="color: var(--text-primary); font-size: 0.875rem; line-height: 1.6;">
+      <div class="admin-review-body">
+        <div class="admin-detail-label">Body</div>
+        <div class="admin-review-body-text">
           <%= simple_format(@review.body) %>
         </div>
       </div>
@@ -51,12 +51,12 @@
   </div>
 
   <div>
-    <div class="admin-detail-card" style="margin-bottom: 1.5rem;">
+    <div class="admin-detail-card">
       <h3>Author</h3>
       <div class="admin-detail-row">
         <span class="admin-detail-label">Name</span>
         <span class="admin-detail-value">
-          <%= link_to @review.user.name, admin_user_path(@review.user), style: "color: var(--accent); text-decoration: none;" %>
+          <%= link_to @review.user.name, admin_user_path(@review.user), class: "admin-link" %>
         </span>
       </div>
       <div class="admin-detail-row">
@@ -74,7 +74,7 @@
       <div class="admin-detail-row">
         <span class="admin-detail-label">Name</span>
         <span class="admin-detail-value">
-          <%= link_to @review.chicken_shop.name, admin_shop_path(@review.chicken_shop), style: "color: var(--accent); text-decoration: none;" %>
+          <%= link_to @review.chicken_shop.name, admin_shop_path(@review.chicken_shop), class: "admin-link" %>
         </span>
       </div>
       <div class="admin-detail-row">

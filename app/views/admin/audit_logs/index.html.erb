@@ -45,7 +45,7 @@
           <td>
             <% metadata = log.parsed_metadata %>
             <% if metadata.any? %>
-              <span style="font-size: 0.75rem; color: var(--text-muted);">
+              <span class="admin-timestamp">
                 <%= metadata.map { |k, v| "#{k}: #{v}" }.join(", ").truncate(80) %>
               </span>
             <% else %>
