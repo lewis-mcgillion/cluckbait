@@ -1,7 +1,7 @@
+<% if activity.trackable.present? %>
 <div class="activity-card">
   <% case activity.action %>
   <% when "posted_review" %>
-    <% if activity.trackable.present? %>
       <div class="activity-card-avatar">
         <% if activity.user.avatar.attached? %>
           <%= image_tag activity.user.avatar, class: "activity-avatar" %>
@@ -27,10 +27,8 @@
         <p class="activity-review-title"><%= activity.trackable.title %></p>
         <div class="activity-timestamp"><%= time_ago_in_words(activity.created_at) %> <%= t("shared.ago") %></div>
       </div>
-    <% end %>
 
   <% when "became_friends" %>
-    <% if activity.trackable.present? %>
       <% other = activity.trackable.other_user(activity.user) %>
       <div class="activity-card-avatars">
         <% if activity.user.avatar.attached? %>
@@ -53,6 +51,6 @@
         </div>
         <div class="activity-timestamp"><%= time_ago_in_words(activity.created_at) %> <%= t("shared.ago") %></div>
       </div>
-    <% end %>
   <% end %>
 </div>
+<% end %>

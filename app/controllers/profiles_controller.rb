@@ -4,7 +4,7 @@ class ProfilesController < ApplicationController
 
   def show
     @reviews = @user.reviews.includes(:chicken_shop).recent
-    @wishlist_items = @user.wishlist_items.includes(:chicken_shop).want_to_try.recent
+    @wishlist_items = @user.wishlist_items.includes(:chicken_shop).recent
 
     @page = [(params[:page] || 1).to_i, 1].max
     @per_page = 25
@@ -16,6 +16,7 @@ class ProfilesController < ApplicationController
   def edit
     unless @user == current_user
       redirect_to profile_path(@user), alert: "You can only edit your own profile."
+      return
     end
   end
 

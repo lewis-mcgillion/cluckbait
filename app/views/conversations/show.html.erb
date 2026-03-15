@@ -40,11 +40,11 @@
         <div class="share-panel" id="share-panel" style="display: none;" data-controller="share-panel">
           <div class="share-panel-header">
             <span><%= t("conversations.show.share_something") %></span>
-            <button class="share-panel-close" data-action="click->share-panel#close">✕</button>
+            <button type="button" class="share-panel-close" data-action="click->share-panel#close">✕</button>
           </div>
           <div class="share-panel-tabs">
-            <button class="share-tab active" data-action="click->share-panel#switchTab" data-tab="shops"><%= t("conversations.show.shops_tab") %></button>
-            <button class="share-tab" data-action="click->share-panel#switchTab" data-tab="reviews"><%= t("conversations.show.reviews_tab") %></button>
+            <button type="button" class="share-tab active" data-action="click->share-panel#switchTab" data-tab="shops"><%= t("conversations.show.shops_tab") %></button>
+            <button type="button" class="share-tab" data-action="click->share-panel#switchTab" data-tab="reviews"><%= t("conversations.show.reviews_tab") %></button>
           </div>
           <div class="share-panel-content" data-share-panel-target="content">
             <div class="share-tab-pane active" data-tab="shops" data-share-panel-target="shopsPane">

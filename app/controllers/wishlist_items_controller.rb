@@ -37,25 +37,37 @@ notes: wishlist_params[:notes])
   end
 
   def update
-    @wishlist_item.update(visited: !@wishlist_item.visited)
     @chicken_shop = @wishlist_item.chicken_shop
 
-    respond_to do |format|
-      format.turbo_stream
-      format.html {
-        redirect_to wishlist_items_path,
-       notice: @wishlist_item.visited? ? "Marked as visited! ✅" : "Moved back to Want to Try"
-      }
+    if @wishlist_item.update(visited: !@wishlist_item.visited)
+      respond_to do |format|
+        format.turbo_stream
+        format.html {
+          redirect_to wishlist_items_path,
+         notice: @wishlist_item.visited? ? "Marked as visited! ✅" : "Moved back to Want to Try"
+        }
+      end
+    else
+      respond_to do |format|
+        format.turbo_stream { head :unprocessable_entity }
+        format.html { redirect_to wishlist_items_path, alert: @wishlist_item.errors.full_messages.join(", ") }
+      end
     end
   end
 
   def destroy
     @chicken_shop = @wishlist_item.chicken_shop
-    @wishlist_item.destroy
 
-    respond_to do |format|
-      format.turbo_stream
-      format.html { redirect_to wishlist_items_path, notice: "Removed from wishlist." }
+    if @wishlist_item.destroy
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to wishlist_items_path, notice: "Removed from wishlist." }
+      end
+    else
+      respond_to do |format|
+        format.turbo_stream { head :unprocessable_entity }
+        format.html { redirect_to wishlist_items_path, alert: "Could not remove item from wishlist." }
+      end
     end
   end
 

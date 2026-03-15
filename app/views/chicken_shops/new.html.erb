@@ -65,12 +65,12 @@
 
         <div class="form-group">
           <label class="form-label"><%= t("chicken_shops.new.phone_label") %></label>
-          <%= f.text_field :phone, class: "form-input", placeholder: t("chicken_shops.new.phone_placeholder") %>
+          <%= f.telephone_field :phone, class: "form-input", placeholder: t("chicken_shops.new.phone_placeholder") %>
         </div>
 
         <div class="form-group">
           <label class="form-label"><%= t("chicken_shops.new.website_label") %></label>
-          <%= f.text_field :website, class: "form-input", placeholder: t("chicken_shops.new.website_placeholder") %>
+          <%= f.url_field :website, class: "form-input", placeholder: t("chicken_shops.new.website_placeholder") %>
         </div>
 
         <div class="form-group">

@@ -2,6 +2,6 @@
   <%= render "messages/message", message: @message %>
 <% end %>
 
-<%= turbo_stream.replace "message_form_body" do %>
+<%= turbo_stream.replace "message_body" do %>
   <input type="text" name="message[body]" id="message_body" class="chat-input" placeholder="<%= t("conversations.show.type_message") %>" autocomplete="off" data-message-form-target="input">
 <% end %>

@@ -2,7 +2,7 @@
 
 <section class="section">
   <div class="container container-narrow">
-    <div class="notifications-header">
+    <div class="notifications-header" id="notifications-header">
       <h1 class="section-title"><%= t("notifications.heading") %></h1>
       <% if @notifications.any? { |n| n.unread? } %>
         <%= button_to t("notifications.mark_all_read"), mark_all_as_read_notifications_path, class: "btn btn-outline btn-sm" %>

@@ -1,0 +1,37 @@
+<div class="sidebar-card review-form-card" id="review-form">
+  <h3><%= t("chicken_shops.show.write_review") %></h3>
+  <% if review.errors.any? %>
+    <div class="form-errors">
+      <% review.errors.full_messages.each do |msg| %>
+        <p><%= msg %></p>
+      <% end %>
+    </div>
+  <% end %>
+  <%= form_with(model: [chicken_shop, review], class: "review-form", data: { turbo_frame: "reviews_list" }) do |f| %>
+    <div class="form-group" data-controller="star-rating">
+      <label class="form-label"><%= t("chicken_shops.show.your_rating") %></label>
+      <%= f.hidden_field :rating, data: { star_rating_target: "input" }, value: review.rating || 0 %>
+      <div class="star-rating-input">
+        <% (1..5).each do |i| %>
+          <span class="star <%= 'selected' if review.rating && i <= review.rating %>"
+                data-star-rating-target="star"
+                data-value="<%= i %>"
+                data-action="click->star-rating#select mouseenter->star-rating#hover mouseleave->star-rating#unhover">★</span>
+        <% end %>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label"><%= t("chicken_shops.show.review_title") %></label>
+      <%= f.text_field :title, class: "form-input", placeholder: t("chicken_shops.show.review_title_placeholder") %>
+    </div>
+    <div class="form-group">
+      <label class="form-label"><%= t("chicken_shops.show.your_review") %></label>
+      <%= f.text_area :body, class: "form-input form-textarea", rows: 5, placeholder: t("chicken_shops.show.review_body_placeholder") %>
+    </div>
+    <div class="form-group">
+      <label class="form-label"><%= t("chicken_shops.show.photos_optional") %></label>
+      <%= f.file_field :photos, multiple: true, class: "form-file-input", accept: "image/*" %>
+    </div>
+    <%= f.submit t("chicken_shops.show.post_review"), class: "btn btn-primary btn-block" %>
+  <% end %>
+</div>

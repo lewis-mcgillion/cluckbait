@@ -1,7 +1,18 @@
 <%= turbo_stream.replace "notifications-list" do %>
   <div id="notifications-list">
-    <% current_user.notifications.recent_first.includes(:actor, :notifiable).limit(50).each do |notification| %>
+    <% current_user.notifications.recent_first.includes(:actor, :notifiable).limit(25).each do |notification| %>
       <%= render partial: "notifications/notification", locals: { notification: notification } %>
     <% end %>
   </div>
+<% end %>
+
+<%= turbo_stream.update "notifications-header" do %>
+  <h1 class="section-title"><%= t("notifications.heading") %></h1>
+<% end %>
+
+<%= turbo_stream.update "notification-badge" do %>
+  <% unread = current_user.unread_notifications_count %>
+  <% if unread > 0 %>
+    <span class="nav-badge"><%= unread %></span>
+  <% end %>
 <% end %>

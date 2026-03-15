@@ -22,7 +22,7 @@
             <%= link_to chicken_shop_path(item.chicken_shop), class: "shop-card" do %>
               <div class="shop-card-image">
                 <% if item.chicken_shop.image.attached? %>
-                  <%= image_tag item.chicken_shop.image, class: "shop-img" %>
+                  <%= image_tag item.chicken_shop.image, class: "shop-img", alt: item.chicken_shop.name %>
                 <% else %>
                   <div class="shop-img-placeholder">
                     <span>🍔</span>
@@ -37,7 +37,7 @@
                 <p class="shop-card-location">📍 <%= item.chicken_shop.city %><%= ", #{item.chicken_shop.postcode}" if item.chicken_shop.postcode.present? %></p>
                 <div class="shop-card-stats">
                   <span class="shop-reviews-count"><%= t("chicken_shops.card.reviews", count: item.chicken_shop.reviews_count) %></span>
-                  <span class="shop-card-stars"><%= "★" * item.chicken_shop.average_rating.round %><%= "☆" * (5 - item.chicken_shop.average_rating.round) %></span>
+                  <span class="shop-card-stars"><%= "★" * item.chicken_shop.average_rating.floor %><%= "☆" * (5 - item.chicken_shop.average_rating.floor) %></span>
                 </div>
               </div>
             <% end %>

@@ -25,7 +25,9 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
 
   test "index shows activities from friends" do
     sign_in @user
-    activity = Activity.create!(user: @friend, action: "posted_review")
+    shop = create(:chicken_shop)
+    review = create(:review, user: @friend, chicken_shop: shop)
+    Activity.create!(user: @friend, action: "posted_review", trackable: review)
 
     get activities_path
     assert_response :success
@@ -52,9 +54,10 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
   test "index orders activities newest first" do
     sign_in @user
 
-    # Create activities directly with explicit timestamps
-    old_activity = Activity.create!(user: @friend, action: "posted_review", created_at: 2.days.ago)
-    recent_activity = Activity.create!(user: @friend, action: "became_friends", created_at: 1.hour.ago)
+    shop = create(:chicken_shop)
+    old_review = create(:review, user: @friend, chicken_shop: shop)
+    old_activity = Activity.create!(user: @friend, action: "posted_review", trackable: old_review, created_at: 2.days.ago)
+    recent_activity = Activity.create!(user: @friend, action: "became_friends", trackable: @friendship, created_at: 1.hour.ago)
 
     get activities_path
     assert_response :success

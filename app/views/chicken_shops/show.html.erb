@@ -16,7 +16,7 @@
         <div class="shop-meta">
           <div class="shop-rating-large">
             <span class="rating-number"><%= @chicken_shop.average_rating %></span>
-            <div class="rating-stars-large"><%= "★" * @chicken_shop.average_rating.round %><%= "☆" * (5 - @chicken_shop.average_rating.round) %></div>
+            <div class="rating-stars-large"><%= "★" * @chicken_shop.average_rating.floor %><%= "☆" * (5 - @chicken_shop.average_rating.floor) %></div>
             <span class="rating-count"><%= t("chicken_shops.show.reviews_count", count: @chicken_shop.reviews_count) %></span>
           </div>
           <% if @chicken_shop.phone.present? %>

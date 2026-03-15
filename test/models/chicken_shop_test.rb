@@ -47,13 +47,13 @@ class ChickenShopTest < ActiveSupport::TestCase
   test "invalid without latitude" do
     shop = build(:chicken_shop, latitude: nil)
     assert_not shop.valid?
-    assert_includes shop.errors[:latitude], "can't be blank"
+    assert_includes shop.errors[:latitude], "must be set — please select a location on the map"
   end
 
   test "invalid without longitude" do
     shop = build(:chicken_shop, longitude: nil)
     assert_not shop.valid?
-    assert_includes shop.errors[:longitude], "can't be blank"
+    assert_includes shop.errors[:longitude], "must be set — please select a location on the map"
   end
 
   test "valid with blank website" do
