@@ -36,7 +36,6 @@ class ApplicationController < ActionController::Base
 
   def track_visit
     return unless request.get? || request.head?
-    return unless cookies[:cookie_consent] == "all"
     return if session[:visited_today] == Date.current.to_s
 
     Visit.create(ip_address: request.remote_ip, visited_at: Time.current)
