@@ -1,13 +1,18 @@
 <% content_for(:title) { t("notifications.title") } %>
 
-<section class="section">
+<div class="page-header">
   <div class="container container-narrow">
     <div class="notifications-header" id="notifications-header">
-      <h1 class="section-title"><%= t("notifications.heading") %></h1>
+      <h1 class="page-title"><%= t("notifications.heading") %></h1>
       <% if @notifications.any? { |n| n.unread? } %>
         <%= button_to t("notifications.mark_all_read"), mark_all_as_read_notifications_path, class: "btn btn-outline btn-sm" %>
       <% end %>
     </div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container container-narrow">
 
     <div id="notifications-list">
       <% if @notifications.any? %>

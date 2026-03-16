@@ -27,6 +27,7 @@ class ApplicationController < ActionController::Base
 
   def set_sentry_context
     return unless user_signed_in?
+    return unless defined?(Sentry)
 
     Sentry.set_user(id: current_user.id, username: current_user.display_name)
   end

@@ -856,7 +856,8 @@ img { max-width: 100%; height: auto; display: block; }
   .btn-sm { min-height: 44px; }
   .friend-card-actions .button_to { flex: 1; }
   .friend-card-actions .button_to .btn { width: 100%; }
-  .footer-links a { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+  .cta-section .btn { margin: 0.5rem 0; }
+  .footer-links a { min-height: 44px; display: flex; align-items: center; justify-content: center; }
   .language-select { min-height: 44px; }
   .map-picker-container { height: 250px; }
 }
