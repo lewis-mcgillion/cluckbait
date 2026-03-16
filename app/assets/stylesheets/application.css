@@ -804,7 +804,9 @@ img { max-width: 100%; height: auto; display: block; }
   .hero-title { font-size: 1.75rem; }
   .main-map { height: 300px; }
   .shop-layout { grid-template-columns: 1fr; }
-  .shop-hero { height: 240px; padding-top: 64px; }
+  .shop-hero { height: auto; min-height: 200px; padding-top: 64px; overflow: visible; }
+  .shop-hero-overlay { position: relative; }
+  .shop-hero-bg { display: none; }
   .shop-name { font-size: 1.75rem; }
   .shop-meta { gap: 1rem; }
   .profile-header { flex-direction: column; align-items: center; text-align: center; }
