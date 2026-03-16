@@ -5,7 +5,6 @@ class ProfilesController < ApplicationController
   def show
     @reviews = @user.reviews.includes(:chicken_shop).recent
     @wishlist_items = @user.wishlist_items.includes(:chicken_shop).recent
-    @user_badges = @user.user_badges.includes(:badge).recent
 
     @page = [(params[:page] || 1).to_i, 1].max
     @per_page = 25

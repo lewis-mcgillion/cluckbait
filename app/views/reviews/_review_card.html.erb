@@ -10,9 +10,6 @@
           <% end %>
           <div>
             <span class="review-author-name"><%= review.user.name %></span>
-            <% if review.user.badges.any? %>
-              <span class="review-author-badges"><%= review.user.badges.limit(3).map(&:icon).join(" ") %></span>
-            <% end %>
             <span class="review-date"><%= review.created_at.strftime("%d %b %Y") %></span>
           </div>
         <% end %>

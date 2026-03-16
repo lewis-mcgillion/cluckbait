@@ -67,10 +67,6 @@ puts "✅ #{Review.count} reviews"
 puts ""
 puts "🍗 Seeding complete! Cluckbait is ready to go."
 
-# ── 4. Badges ─────────────────────────────────────────────────────────
-Badge.seed!
-puts "✅ #{Badge.count} badges"
-
 puts ""
 puts "   Log in with any demo account using password: #{password}"
 puts "   e.g. cluckfan@example.com / #{password}"
