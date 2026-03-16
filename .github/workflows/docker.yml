@@ -1,4 +1,4 @@
-name: Build & Push Docker Image
+name: Build, Push & Deploy
 
 on:
   push:
@@ -48,3 +48,41 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  deploy:
+    name: Deploy to VPS
+    needs: build-and-push
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Copy docker-compose to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          source: docker-compose.production.yml
+          target: /opt/cluckbait/
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            cd /opt/cluckbait
+            cat > .env << 'EOF'
+            POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+            RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}
+            EOF
+            docker compose -f docker-compose.production.yml up -d db
+            docker compose -f docker-compose.production.yml pull web
+            docker compose -f docker-compose.production.yml up -d web
+            sleep 5
+            docker compose -f docker-compose.production.yml exec -T web bin/rails db:prepare
+            docker image prune -f
