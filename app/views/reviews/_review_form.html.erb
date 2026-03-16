@@ -7,7 +7,7 @@
       <% end %>
     </div>
   <% end %>
-  <%= form_with(model: [chicken_shop, review], class: "review-form", data: { turbo_frame: "reviews_list" }) do |f| %>
+  <%= form_with(model: [chicken_shop, review], class: "review-form", data: { turbo: false }) do |f| %>
     <div class="form-group" data-controller="star-rating">
       <label class="form-label"><%= t("chicken_shops.show.your_rating") %></label>
       <%= f.hidden_field :rating, data: { star_rating_target: "input" }, value: review.rating || 0 %>

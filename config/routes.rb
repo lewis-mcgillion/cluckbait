@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       resources :reactions, only: [:create], controller: "review_reactions"
     end
 
+    resources :users, only: [:index]
     resources :profiles, only: [:show, :edit, :update], param: :id
 
     resources :wishlist_items, only: [:index, :create, :update, :destroy]
