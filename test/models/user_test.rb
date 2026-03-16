@@ -501,4 +501,51 @@ class UserTest < ActiveSupport::TestCase
     user = create(:user)
     assert_equal 0, user.unread_notifications_count
   end
+
+  # -- .search_by_name_or_email --
+
+  test "search_by_name_or_email matches display_name" do
+    alice = create(:user, display_name: "Alice")
+    create(:user, display_name: "Bob")
+
+    results = User.search_by_name_or_email("Alice")
+    assert_includes results, alice
+    assert_equal 1, results.count
+  end
+
+  test "search_by_name_or_email matches email" do
+    alice = create(:user, email: "alice@example.com")
+    create(:user, email: "bob@example.com")
+
+    results = User.search_by_name_or_email("alice@")
+    assert_includes results, alice
+    assert_equal 1, results.count
+  end
+
+  test "search_by_name_or_email is case-insensitive" do
+    alice = create(:user, display_name: "Alice")
+    results = User.search_by_name_or_email("alice")
+    assert_includes results, alice
+  end
+
+  test "search_by_name_or_email matches partial strings" do
+    alice = create(:user, display_name: "Alice")
+    results = User.search_by_name_or_email("lic")
+    assert_includes results, alice
+  end
+
+  test "search_by_name_or_email returns none for blank query" do
+    create(:user)
+    assert_empty User.search_by_name_or_email("")
+    assert_empty User.search_by_name_or_email(nil)
+  end
+
+  test "search_by_name_or_email sanitizes SQL wildcards" do
+    user = create(:user, display_name: "Test%User")
+    create(:user, display_name: "TestXUser")
+
+    results = User.search_by_name_or_email("t%u")
+    assert_includes results, user
+    assert_equal 1, results.count
+  end
 end

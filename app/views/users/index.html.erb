@@ -1,0 +1,68 @@
+<% content_for(:title) { t("users.title") } %>
+
+<div class="page-header">
+  <div class="container">
+    <h1 class="page-title"><%= t("users.heading") %></h1>
+    <p class="page-subtitle"><%= t("users.subtitle") %></p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="shops-filter-bar">
+      <%= form_tag users_path, method: :get, class: "filter-form" do %>
+        <div class="search-box">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+          <%= text_field_tag :search, params[:search], placeholder: t("users.search_placeholder"), class: "search-input", autofocus: true, "aria-label": t("users.search_aria") %>
+        </div>
+        <%= submit_tag t("shared.search"), class: "btn btn-primary" %>
+        <% if params[:search].present? %>
+          <%= link_to t("users.clear"), users_path, class: "btn btn-outline" %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="results-count" style="margin-bottom: 1rem;">
+      <% if params[:search].present? %>
+        <%= t("users.results_for", query: params[:search], count: @total_count) %>
+      <% else %>
+        <%= t("users.showing_count", count: @total_count) %>
+      <% end %>
+    </div>
+
+    <% if @users.any? %>
+      <div class="friends-grid">
+        <% @users.each do |user| %>
+          <div class="friend-card">
+            <div class="friend-card-info">
+              <%= link_to profile_path(user), class: "friend-avatar-link" do %>
+                <% if user.avatar.attached? %>
+                  <%= image_tag user.avatar, class: "friend-avatar" %>
+                <% else %>
+                  <div class="friend-avatar-placeholder"><%= user.name[0].upcase %></div>
+                <% end %>
+              <% end %>
+              <div class="friend-details">
+                <%= link_to user.name, profile_path(user), class: "friend-name" %>
+                <span class="friend-meta"><%= user.reviews_count %> <%= t("shared.reviews") %></span>
+              </div>
+            </div>
+            <div class="friend-card-actions">
+              <%= link_to t("users.view_profile"), profile_path(user), class: "btn btn-outline btn-sm" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <%= render "shared/pagination" %>
+    <% else %>
+      <div class="empty-state">
+        <span class="empty-icon">🔍</span>
+        <h3><%= t("users.no_results") %></h3>
+        <p><%= t("users.no_results_hint") %></p>
+      </div>
+    <% end %>
+  </div>
+</section>

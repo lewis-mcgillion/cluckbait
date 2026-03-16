@@ -7,8 +7,10 @@ module Admin
     def index
       @page = [(params[:page] || 1).to_i, 1].max
       @reviews = Review.includes(:user, :chicken_shop).order(created_at: :desc)
-      @reviews = @reviews.where("title LIKE ? OR body LIKE ?", "%#{params[:search]}%",
-                                                               "%#{params[:search]}%") if params[:search].present?
+      if params[:search].present?
+        search = "%#{sanitize_sql_like(params[:search])}%"
+        @reviews = @reviews.where("title LIKE ? OR body LIKE ?", search, search)
+      end
 
       case params[:filter]
       when "low_rated"

@@ -64,7 +64,8 @@ module Users
       user = User.new(
         email: auth.info.email || "",
         display_name: auth.info.name || auth.info.first_name || provider_name,
-        password: Devise.friendly_token(32)
+        password: Devise.friendly_token(32),
+        skip_password_complexity: true
       )
 
       if auth.info.image.present?

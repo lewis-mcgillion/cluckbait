@@ -31,12 +31,12 @@
         <% if @minimum_password_length %>
           <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.3rem;"><%= t("devise.password_chars_minimum", count: @minimum_password_length) %></p>
         <% end %>
-        <%= f.password_field :password, autocomplete: "new-password", class: "form-input", placeholder: "••••••••", required: true, minlength: 10 %>
+        <%= f.password_field :password, autocomplete: "new-password", class: "form-input", placeholder: "••••••••", required: true, minlength: 12 %>
       </div>
 
       <div class="form-group">
         <%= f.label :password_confirmation, t("devise.registrations.new.confirm_password"), class: "form-label" %>
-        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-input", placeholder: "••••••••", required: true, minlength: 10 %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-input", placeholder: "••••••••", required: true, minlength: 12 %>
       </div>
 
       <%= f.submit t("devise.registrations.new.submit"), class: "btn btn-primary btn-block btn-lg" %>

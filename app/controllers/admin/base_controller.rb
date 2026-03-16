@@ -22,5 +22,9 @@ module Admin
         metadata: metadata&.to_json
       )
     end
+
+    def sanitize_sql_like(string)
+      ActiveRecord::Base.sanitize_sql_like(string)
+    end
   end
 end

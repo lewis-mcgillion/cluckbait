@@ -30,6 +30,13 @@ Rails.application.configure do
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = true
 
+  # Secure session cookie configuration
+  config.session_store :cookie_store,
+    key: "_cluckbait_session",
+    secure: true,
+    httponly: true,
+    same_site: :lax
+
   # Skip http-to-https redirect for the default health check endpoint.
   # config.ssl_options = { redirect: { exclude: ->(request) { request.path == "/up" } } }
 

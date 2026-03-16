@@ -60,6 +60,7 @@ en:
     badges: "Badges"
     leaderboard: "Leaderboard"
     toggle_menu: "Toggle navigation menu"
+    find_people: "Find People"
 
   footer:
     tagline: "The UK's #1 chicken burger review platform"
@@ -260,6 +261,19 @@ en:
     empty_want_to_try: "No shops on your list"
     empty_all: "Your wishlist is empty"
     empty_hint: "Discover chicken shops and save the ones you want to try!"
+
+  users:
+    title: "Find People — Cluckbait"
+    heading: "🔍 Find People"
+    subtitle: "Search for other users by username or email"
+    search_placeholder: "Search by username or email…"
+    search_aria: "Search users"
+    clear: "Clear"
+    view_profile: "View Profile"
+    results_for: "Found %{count} results for \"%{query}\""
+    showing_count: "%{count} users"
+    no_results: "No users found"
+    no_results_hint: "Try a different search term."
 
   friendships:
     title: "Friends — Cluckbait"

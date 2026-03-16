@@ -15,6 +15,12 @@ class User < ApplicationRecord
 
   validate :acceptable_avatar
 
+  scope :search_by_name_or_email, ->(query) {
+    return none if query.blank?
+    pattern = "%#{sanitize_sql_like(query)}%"
+    where(arel_table[:display_name].matches(pattern).or(arel_table[:email].matches(pattern)))
+  }
+
   # Friendships
   has_many :sent_friendships, class_name: "Friendship", foreign_key: :user_id, dependent: :destroy
   has_many :received_friendships, class_name: "Friendship", foreign_key: :friend_id, dependent: :destroy
@@ -28,9 +34,12 @@ class User < ApplicationRecord
 
   has_many :admin_audit_logs, foreign_key: :admin_user_id, dependent: :destroy
 
+  attr_accessor :skip_password_complexity
+
   validates :display_name, presence: true, length: { maximum: 50 }
   validates :bio, length: { maximum: 500 }
   validates :locale, inclusion: { in: I18n.available_locales.map(&:to_s) }, allow_nil: true
+  validate :password_complexity, unless: :skip_password_complexity
 
   def admin?
     admin
@@ -128,5 +137,19 @@ class User < ApplicationRecord
 
   def online?
     last_seen_at.present? && last_seen_at > 2.minutes.ago
+  end
+
+  private
+
+  def password_complexity
+    return if password.blank?
+
+    unless password.match?(/\d/)
+      errors.add(:password, "must include at least one number")
+    end
+
+    unless password.match?(/[!@#$%^&*()_\-+=\[\]{}|;:'",.<>?\/\\~`]/)
+      errors.add(:password, "must include at least one special character")
+    end
   end
 end
