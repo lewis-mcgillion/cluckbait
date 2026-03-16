@@ -48,6 +48,10 @@ gem "omniauth-rails_csrf_protection"
 # Rate limiting and throttling
 gem "rack-attack"
 
+# Error tracking and monitoring
+gem "sentry-ruby"
+gem "sentry-rails"
+
 # Geocoding
 gem "geocoder"
 

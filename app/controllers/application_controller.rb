@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   allow_browser versions: :modern
 
   before_action :set_locale
+  before_action :set_sentry_context
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
@@ -22,5 +23,11 @@ class ApplicationController < ActionController::Base
 
   def record_not_found
     render "errors/not_found", status: :not_found
+  end
+
+  def set_sentry_context
+    return unless user_signed_in?
+
+    Sentry.set_user(id: current_user.id, username: current_user.display_name)
   end
 end
