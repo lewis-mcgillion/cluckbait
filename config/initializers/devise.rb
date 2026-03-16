@@ -269,20 +269,6 @@ Devise.setup do |config|
     ENV.fetch("GOOGLE_CLIENT_SECRET", ""),
     scope: "email,profile"
 
-  config.omniauth :apple,
-    ENV.fetch("APPLE_CLIENT_ID", ""),
-    "",
-    scope: "email name",
-    team_id: ENV.fetch("APPLE_TEAM_ID", ""),
-    key_id: ENV.fetch("APPLE_KEY_ID", ""),
-    pem: ENV.fetch("APPLE_PRIVATE_KEY", "")
-
-  config.omniauth :facebook,
-    ENV.fetch("FACEBOOK_APP_ID", ""),
-    ENV.fetch("FACEBOOK_APP_SECRET", ""),
-    scope: "email,public_profile",
-    info_fields: "email,name,first_name,last_name,picture"
-
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.
