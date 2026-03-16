@@ -6,7 +6,7 @@ A social platform for discovering and reviewing chicken shops across the UK. Bro
 
 ## What's Inside
 
-- 🗺️ **Interactive map** of 250 chicken shops across 50 UK cities
+- 🗺️ **Interactive map** ofchicken shops across UK cities
 - ⭐ **Reviews** with star ratings, photos, and emoji reactions
 - 🔍 **Advanced search** — filter by rating, city, review count, distance, and more
 - 📋 **Wishlist** — save shops and track which ones you've visited
