@@ -48,10 +48,10 @@ class ConversationsController < ApplicationController
 
     remaining = 10 - user_shops.size
     popular_shops = if remaining > 0
-      ChickenShop.by_most_popular.where.not(id: user_shop_ids).limit(remaining)
-    else
-      ChickenShop.none
-    end
+                      ChickenShop.by_most_popular.where.not(id: user_shop_ids).limit(remaining)
+                    else
+                      ChickenShop.none
+                    end
 
     user_shops.to_a + popular_shops.to_a
   end
