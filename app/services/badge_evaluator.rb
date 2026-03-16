@@ -49,7 +49,15 @@ class BadgeEvaluator
     method_name = EVALUATORS[badge_key]
     return 0 unless method_name
 
-    send(method_name)
+    case method_name
+    when :review_count then review_count
+    when :photo_count then photo_count
+    when :helpful_reaction_count then helpful_reaction_count
+    when :friend_count then friend_count
+    when :cities_explored_count then cities_explored_count
+    when :visited_wishlist_count then visited_wishlist_count
+    else 0
+    end
   end
 
   private
