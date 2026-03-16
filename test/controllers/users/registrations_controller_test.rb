@@ -140,4 +140,38 @@ class Users::RegistrationsControllerTest < ActionDispatch::IntegrationTest
     }
     assert_redirected_to new_user_session_path
   end
+
+  # -- Registration form HTML5 validation --
+
+  test "registration form has required attribute on display_name" do
+    get new_user_registration_path
+    assert_response :success
+    assert_select 'input[name="user[display_name]"][required]'
+  end
+
+  test "registration form has maxlength on display_name" do
+    get new_user_registration_path
+    assert_response :success
+    assert_select 'input[name="user[display_name]"][maxlength="50"]'
+  end
+
+  test "registration form has required attribute on email" do
+    get new_user_registration_path
+    assert_response :success
+    assert_select 'input[name="user[email]"][required]'
+  end
+
+  test "registration form has required and minlength on password" do
+    get new_user_registration_path
+    assert_response :success
+    assert_select 'input[name="user[password]"][required]'
+    assert_select 'input[name="user[password]"][minlength="10"]'
+  end
+
+  test "registration form has required and minlength on password confirmation" do
+    get new_user_registration_path
+    assert_response :success
+    assert_select 'input[name="user[password_confirmation]"][required]'
+    assert_select 'input[name="user[password_confirmation]"][minlength="10"]'
+  end
 end

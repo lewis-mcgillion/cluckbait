@@ -72,6 +72,8 @@ class Review < ApplicationRecord
 
   def create_activity
     Activity.create!(user: user, action: "posted_review", trackable: self)
+  rescue => e
+    Rails.logger.error("Failed to create activity for review #{id}: #{e.message}")
   end
 
   def broadcast_review
@@ -81,5 +83,7 @@ class Review < ApplicationRecord
       partial: "reviews/review_card",
       locals: { review: self, chicken_shop: chicken_shop, current_user: nil }
     )
+  rescue => e
+    Rails.logger.error("Failed to broadcast review #{id}: #{e.message}")
   end
 end

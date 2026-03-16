@@ -5,6 +5,7 @@ test:
   adapter: test
 
 production:
-  adapter: redis
-  url: <%= ENV["REDIS_URL"] %>
-  channel_prefix: cluckbait_production
+  adapter: solid_cable
+  silence_polling: true
+  polling_interval: 0.1.seconds
+  message_retention: 1.day

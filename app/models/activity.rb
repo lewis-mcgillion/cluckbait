@@ -20,5 +20,7 @@ class Activity < ApplicationRecord
         locals: { activity: self }
       )
     end
+  rescue => e
+    Rails.logger.error("Failed to broadcast activity #{id}: #{e.message}")
   end
 end

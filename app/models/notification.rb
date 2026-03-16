@@ -72,5 +72,7 @@ class Notification < ApplicationRecord
       partial: "notifications/badge",
       locals: { count: user.unread_notifications_count }
     )
+  rescue => e
+    Rails.logger.error("Failed to broadcast notification #{id}: #{e.message}")
   end
 end

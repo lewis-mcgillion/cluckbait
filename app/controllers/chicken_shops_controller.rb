@@ -1,5 +1,6 @@
 class ChickenShopsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create]
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update]
+  before_action :set_chicken_shop, only: [:show, :edit, :update]
 
   def new
     @chicken_shop = ChickenShop.new
@@ -7,11 +8,32 @@ class ChickenShopsController < ApplicationController
 
   def create
     @chicken_shop = ChickenShop.new(chicken_shop_params)
+    @chicken_shop.user = current_user
 
     if @chicken_shop.save
       redirect_to @chicken_shop, notice: "Chicken shop was successfully added! 🍗"
     else
       render :new, status: :unprocessable_entity
+    end
+  end
+
+  def edit
+    unless @chicken_shop.user == current_user
+      redirect_to @chicken_shop, alert: "You can only edit chicken shops you've added."
+      return
+    end
+  end
+
+  def update
+    unless @chicken_shop.user == current_user
+      redirect_to @chicken_shop, alert: "You can only edit chicken shops you've added."
+      return
+    end
+
+    if @chicken_shop.update(chicken_shop_params)
+      redirect_to @chicken_shop, notice: "Chicken shop was successfully updated! 🍗"
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -69,7 +91,6 @@ class ChickenShopsController < ApplicationController
   end
 
   def show
-    @chicken_shop = ChickenShop.find(params[:id])
     @review_sort = params[:review_sort].presence || "recent"
     reviews = @chicken_shop.reviews.includes(:user, :reactions)
     reviews = case @review_sort
@@ -91,6 +112,10 @@ class ChickenShopsController < ApplicationController
   end
 
   private
+
+  def set_chicken_shop
+    @chicken_shop = ChickenShop.find(params[:id])
+  end
 
   def chicken_shop_params
     params.require(:chicken_shop).permit(:name, :address, :city, :postcode, :phone, :website, :description,

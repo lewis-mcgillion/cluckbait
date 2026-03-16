@@ -7,12 +7,12 @@
     </div>
     <div class="footer-links">
       <div class="footer-col">
-        <h4><%= t("footer.explore") %></h4>
+        <h3><%= t("footer.explore") %></h3>
         <%= link_to t("navbar.home"), root_path %>
         <%= link_to t("navbar.all_shops"), chicken_shops_path %>
       </div>
       <div class="footer-col">
-        <h4><%= t("footer.account") %></h4>
+        <h3><%= t("footer.account") %></h3>
         <% if user_signed_in? %>
           <%= link_to t("footer.my_profile"), profile_path(current_user) %>
           <%= link_to t("shared.sign_out"), destroy_user_session_path, data: { turbo_method: :delete } %>
@@ -22,7 +22,7 @@
         <% end %>
       </div>
       <div class="footer-col">
-        <h4><%= t("footer.language") %></h4>
+        <h3><%= t("footer.language") %></h3>
         <div class="language-selector">
           <%= form_tag update_locale_path, method: :patch, data: { turbo: false } do %>
             <select name="locale_preference" class="language-select" aria-label="<%= t('footer.language') %>" data-controller="locale" data-action="change->locale#change">

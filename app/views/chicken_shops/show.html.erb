@@ -21,7 +21,7 @@
           <div class="shop-rating-large">
             <span class="rating-number"><%= @chicken_shop.average_rating %></span>
             <div class="rating-stars-large"><%= "★" * @chicken_shop.average_rating.floor %><%= "☆" * (5 - @chicken_shop.average_rating.floor) %></div>
-            <span class="rating-count"><%= t("chicken_shops.show.reviews_count", count: @chicken_shop.reviews_count) %></span>
+            <span class="rating-count"><%= @chicken_shop.reviews_count %> <%= "review".pluralize(@chicken_shop.reviews_count) %></span>
           </div>
           <% if @chicken_shop.phone.present? %>
             <div class="shop-contact">📞 <%= @chicken_shop.phone %></div>
@@ -36,7 +36,12 @@
             <div class="shop-contact">🌐 <%= link_to t("shared.website"), safe_website_url, target: "_blank", rel: "noopener" %></div>
           <% end %>
         </div>
-        <%= render "wishlist_items/wishlist_button", shop: @chicken_shop, wishlist_item: @wishlist_item %>
+        <div class="shop-hero-actions">
+          <%= render "wishlist_items/wishlist_button", shop: @chicken_shop, wishlist_item: @wishlist_item %>
+          <% if user_signed_in? && @chicken_shop.user == current_user %>
+            <%= link_to "✏️ " + t("chicken_shops.edit.edit_button"), edit_chicken_shop_path(@chicken_shop), class: "btn btn-outline" %>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>
@@ -87,14 +92,18 @@
             <h3><%= t("chicken_shops.show.write_review") %></h3>
             <%= form_with(model: [@chicken_shop, @review], class: "review-form", data: { turbo_frame: "reviews_list" }) do |f| %>
               <div class="form-group" data-controller="star-rating">
-                <label class="form-label"><%= t("chicken_shops.show.your_rating") %></label>
+                <label class="form-label" id="rating-label"><%= t("chicken_shops.show.your_rating") %></label>
                 <%= f.hidden_field :rating, data: { star_rating_target: "input" }, value: 0 %>
-                <div class="star-rating-input">
+                <div class="star-rating-input" role="radiogroup" aria-labelledby="rating-label">
                   <% (1..5).each do |i| %>
                     <span class="star"
+                          role="radio"
+                          tabindex="0"
+                          aria-checked="false"
+                          aria-label="<%= i %> star"
                           data-star-rating-target="star"
                           data-value="<%= i %>"
-                          data-action="click->star-rating#select mouseenter->star-rating#hover mouseleave->star-rating#unhover">★</span>
+                          data-action="click->star-rating#select mouseenter->star-rating#hover mouseleave->star-rating#unhover keydown->star-rating#keydown">★</span>
                   <% end %>
                 </div>
               </div>
@@ -110,7 +119,7 @@
                 <label class="form-label"><%= t("chicken_shops.show.photos_optional") %></label>
                 <%= f.file_field :photos, multiple: true, class: "form-file-input", accept: "image/*" %>
               </div>
-              <%= f.submit t("chicken_shops.show.post_review"), class: "btn btn-primary btn-block" %>
+              <%= f.submit t("chicken_shops.show.post_review"), class: "btn btn-primary btn-block", data: { turbo_submits_with: "Posting..." } %>
             <% end %>
           </div>
         <% elsif user_signed_in? && @user_review %>

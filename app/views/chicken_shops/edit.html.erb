@@ -1,0 +1,14 @@
+<% content_for(:title, t("chicken_shops.edit.title", name: @chicken_shop.name)) %>
+
+<section class="section">
+  <div class="container container-narrow">
+    <h1 class="page-title"><%= t("chicken_shops.edit.heading") %></h1>
+    <p class="page-subtitle"><%= t("chicken_shops.edit.subtitle", name: @chicken_shop.name) %></p>
+
+    <%= render "form", submit_label: t("chicken_shops.edit.submit") %>
+
+    <div class="form-footer">
+      <%= link_to t("chicken_shops.edit.back"), chicken_shop_path(@chicken_shop), class: "form-link" %>
+    </div>
+  </div>
+</section>

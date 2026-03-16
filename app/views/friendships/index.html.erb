@@ -79,7 +79,7 @@
                 <% end %>
                 <div class="friend-details">
                   <%= link_to friend.name, profile_path(friend), class: "friend-name" %>
-                  <span class="friend-meta"><%= t("friendships.reviews_avg", count: friend.reviews_count, avg: friend.average_rating_given) %></span>
+                  <span class="friend-meta"><%= friend.reviews_count %> <%= "review".pluralize(friend.reviews_count) %><% if friend.average_rating_given %> · Avg ★ <%= friend.average_rating_given %><% end %></span>
                 </div>
               </div>
               <div class="friend-card-actions">

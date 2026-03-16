@@ -10,8 +10,8 @@ Rails.application.routes.draw do
     # rubocop:enable Layout/LineLength
     root "home#index"
 
-    resources :chicken_shops, only: [:index, :show, :new, :create] do
-      resources :reviews, only: [:create, :destroy]
+    resources :chicken_shops, only: [:index, :show, :new, :create, :edit, :update] do
+      resources :reviews, only: [:create, :edit, :update, :destroy]
     end
 
     resources :reviews, only: [] do

@@ -6,6 +6,7 @@ class User < ApplicationRecord
 
   has_many :activities, dependent: :destroy
   has_many :reviews, dependent: :destroy
+  has_many :chicken_shops, dependent: :nullify
   has_many :social_accounts, dependent: :destroy
   has_many :review_reactions, dependent: :destroy
   has_many :wishlist_items, dependent: :destroy

@@ -8,6 +8,9 @@ export default class extends Controller {
 
   connect() {
     this.subscription = consumer.subscriptions.create("PresenceChannel", {
+      connected: () => this.handleConnected(),
+      disconnected: () => this.handleDisconnected(),
+      rejected: () => this.handleRejected(),
       received: (data) => this.handlePresence(data)
     })
   }
@@ -16,6 +19,22 @@ export default class extends Controller {
     if (this.subscription) {
       this.subscription.unsubscribe()
     }
+  }
+
+  handleConnected() {
+    // Connection established — presence tracking is active
+  }
+
+  handleDisconnected() {
+    // Connection lost — mark all presence indicators as unknown/offline
+    document.querySelectorAll(".presence-online").forEach((dot) => {
+      dot.classList.remove("presence-online")
+    })
+  }
+
+  handleRejected() {
+    // Subscription rejected by server
+    console.warn("PresenceChannel subscription was rejected")
   }
 
   handlePresence(data) {

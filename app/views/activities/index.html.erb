@@ -14,7 +14,7 @@
       <%= render partial: "activity", collection: @activities %>
     </div>
 
-    <% if @activities.size == 20 %>
+    <% if @activities.size >= 20 %>
       <div class="activity-load-more">
         <%= link_to t("activities.load_more"), activities_path(page: @page + 1), class: "btn btn-outline" %>
       </div>

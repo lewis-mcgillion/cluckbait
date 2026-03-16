@@ -306,4 +306,144 @@ class ChickenShopsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to chicken_shop_path(ChickenShop.last)
   end
+
+  # -- Review count pluralization --
+
+  test "show displays singular review when shop has one review" do
+    shop = create(:chicken_shop)
+    create(:review, chicken_shop: shop)
+
+    get chicken_shop_path(shop)
+    assert_response :success
+    assert_select ".rating-count", text: /\b1 review\b/
+  end
+
+  test "show displays plural reviews when shop has multiple reviews" do
+    shop = create(:chicken_shop)
+    create(:review, chicken_shop: shop)
+    create(:review, chicken_shop: shop)
+
+    get chicken_shop_path(shop)
+    assert_response :success
+    assert_select ".rating-count", text: /\b2 reviews\b/
+  end
+
+  # -- Star rating ARIA --
+
+  test "show star rating input has radiogroup role" do
+    user = create(:user)
+    sign_in user
+    shop = create(:chicken_shop)
+
+    get chicken_shop_path(shop)
+    assert_response :success
+    assert_select '.star-rating-input[role="radiogroup"]'
+  end
+
+  # -- #edit --
+
+  test "creator can edit their chicken shop" do
+    user = create(:user)
+    shop = create(:chicken_shop, user: user)
+    sign_in user
+
+    get edit_chicken_shop_path(shop)
+    assert_response :success
+    assert_select "form"
+  end
+
+  test "non-creator cannot edit chicken shop" do
+    owner = create(:user)
+    other = create(:user)
+    shop = create(:chicken_shop, user: owner)
+    sign_in other
+
+    get edit_chicken_shop_path(shop)
+    assert_redirected_to chicken_shop_path(shop)
+    assert_equal "You can only edit chicken shops you've added.", flash[:alert]
+  end
+
+  test "unauthenticated user cannot edit chicken shop" do
+    shop = create(:chicken_shop)
+
+    get edit_chicken_shop_path(shop)
+    assert_response :redirect
+  end
+
+  test "edit shows shop with no owner as inaccessible" do
+    user = create(:user)
+    shop = create(:chicken_shop, user: nil)
+    sign_in user
+
+    get edit_chicken_shop_path(shop)
+    assert_redirected_to chicken_shop_path(shop)
+  end
+
+  # -- #update --
+
+  test "creator can update their chicken shop" do
+    user = create(:user)
+    shop = create(:chicken_shop, user: user, name: "Old Name")
+    sign_in user
+
+    patch chicken_shop_path(shop), params: { chicken_shop: { name: "New Name" } }
+    assert_redirected_to chicken_shop_path(shop)
+    assert_equal "Chicken shop was successfully updated! 🍗", flash[:notice]
+    assert_equal "New Name", shop.reload.name
+  end
+
+  test "non-creator cannot update chicken shop" do
+    owner = create(:user)
+    other = create(:user)
+    shop = create(:chicken_shop, user: owner, name: "Original")
+    sign_in other
+
+    patch chicken_shop_path(shop), params: { chicken_shop: { name: "Hacked" } }
+    assert_redirected_to chicken_shop_path(shop)
+    assert_equal "Original", shop.reload.name
+  end
+
+  test "update with invalid data re-renders edit" do
+    user = create(:user)
+    shop = create(:chicken_shop, user: user)
+    sign_in user
+
+    patch chicken_shop_path(shop), params: { chicken_shop: { name: "" } }
+    assert_response :unprocessable_entity
+  end
+
+  test "create assigns current user as shop owner" do
+    user = create(:user)
+    sign_in user
+
+    post chicken_shops_path, params: {
+      chicken_shop: {
+        name: "My Shop", address: "1 Test St", city: "London",
+        latitude: 51.5, longitude: -0.1
+      }
+    }
+    shop = ChickenShop.last
+    assert_equal user, shop.user
+  end
+
+  test "show displays edit button for creator" do
+    user = create(:user)
+    shop = create(:chicken_shop, user: user)
+    sign_in user
+
+    get chicken_shop_path(shop)
+    assert_response :success
+    assert_select "a[href=?]", edit_chicken_shop_path(shop)
+  end
+
+  test "show does not display edit button for non-creator" do
+    owner = create(:user)
+    other = create(:user)
+    shop = create(:chicken_shop, user: owner)
+    sign_in other
+
+    get chicken_shop_path(shop)
+    assert_response :success
+    assert_select "a[href=?]", edit_chicken_shop_path(shop), count: 0
+  end
 end
