@@ -8,13 +8,5 @@ FactoryBot.define do
     trait :google do
       provider { "google_oauth2" }
     end
-
-    trait :apple do
-      provider { "apple" }
-    end
-
-    trait :facebook do
-      provider { "facebook" }
-    end
   end
 end

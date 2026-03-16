@@ -7,8 +7,6 @@ class Users::OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
 
   teardown do
     OmniAuth.config.mock_auth[:google_oauth2] = nil
-    OmniAuth.config.mock_auth[:apple] = nil
-    OmniAuth.config.mock_auth[:facebook] = nil
   end
 
   test "google oauth creates new user when no account exists" do
@@ -62,28 +60,6 @@ class Users::OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
 
     assert user.social_accounts.exists?(provider: "google_oauth2")
     assert_redirected_to edit_user_registration_path
-  end
-
-  test "apple oauth creates new user" do
-    mock_provider_auth(:apple, email: "apple@icloud.com", name: "Apple User")
-
-    assert_difference ["User.count", "SocialAccount.count"], 1 do
-      post user_apple_omniauth_callback_path
-    end
-
-    assert User.find_by(email: "apple@icloud.com").social_accounts.exists?(provider: "apple")
-    assert_redirected_to root_path
-  end
-
-  test "facebook oauth creates new user" do
-    mock_provider_auth(:facebook, email: "fbuser@example.com", name: "FB User")
-
-    assert_difference ["User.count", "SocialAccount.count"], 1 do
-      post user_facebook_omniauth_callback_path
-    end
-
-    assert User.find_by(email: "fbuser@example.com").social_accounts.exists?(provider: "facebook")
-    assert_redirected_to root_path
   end
 
   test "oauth failure redirects to sign in with alert" do

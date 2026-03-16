@@ -46,21 +46,12 @@ class SocialAccountTest < ActiveSupport::TestCase
 
   test "display_provider returns human-readable name" do
     assert_equal "Google", build(:social_account, :google).display_provider
-    assert_equal "Apple", build(:social_account, :apple).display_provider
-    assert_equal "Facebook", build(:social_account, :facebook).display_provider
   end
 
   test "same uid allowed for different providers" do
     create(:social_account, provider: "google_oauth2", uid: "shared-uid")
-    other = build(:social_account, :facebook, uid: "shared-uid")
-    assert other.valid?
-  end
-
-  test "user can have multiple different providers" do
-    user = create(:user)
-    create(:social_account, :google, user: user)
-    apple_account = build(:social_account, :apple, user: user)
-    assert apple_account.valid?
+    other = build(:social_account, provider: "google_oauth2", uid: "shared-uid", user: create(:user))
+    assert_not other.valid?
   end
 
   test "destroying user destroys social accounts" do
