@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
   end
 
   def track_visit
-    return unless request.get?
+    return unless request.get? || request.head?
     return unless cookies[:cookie_consent] == "all"
     return if session[:visited_today] == Date.current.to_s
 
