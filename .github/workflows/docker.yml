@@ -76,10 +76,7 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script: |
             cd /opt/cluckbait
-            cat > .env << 'EOF'
-            POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
-            RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}
-            EOF
+            printf 'POSTGRES_PASSWORD=%s\nRAILS_MASTER_KEY=%s\n' '${{ secrets.POSTGRES_PASSWORD }}' '${{ secrets.RAILS_MASTER_KEY }}' > .env
             docker compose -f docker-compose.production.yml up -d db
             docker compose -f docker-compose.production.yml pull web
             docker compose -f docker-compose.production.yml up -d web
