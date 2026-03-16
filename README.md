@@ -47,7 +47,6 @@ Then visit [http://localhost:3000](http://localhost:3000). Log in with any demo 
 |---|---|
 | **[Project Overview](docs/OVERVIEW.md)** | Features, tech stack, demo accounts, seed data, security |
 | **[Local Setup Guide](docs/SETUP.md)** | Installation, environment variables, Docker, Kamal, troubleshooting |
-| **[Architecture Deep Dive](docs/ARCHITECTURE.md)** | Data model, all 11 models, 14 controllers, 15 Stimulus controllers, routes, views, CSS, testing, security, deployment |
 
 ## Deployment
 
