@@ -14,6 +14,7 @@ class Friendship < ApplicationRecord
   after_create :notify_friend_request
   after_update :create_accepted_activity, if: :became_accepted?
   after_update :notify_friend_accepted, if: :saved_change_to_status?
+  after_update :evaluate_badges, if: :became_accepted?
 
   def other_user(current_user)
     current_user == user ? friend : user
@@ -54,5 +55,10 @@ class Friendship < ApplicationRecord
       action: "friend_accepted",
       notifiable: self
     )
+  end
+
+  def evaluate_badges
+    AwardBadgeJob.perform_later(user_id, categories: %w[social])
+    AwardBadgeJob.perform_later(friend_id, categories: %w[social])
   end
 end

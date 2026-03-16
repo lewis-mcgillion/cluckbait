@@ -57,6 +57,8 @@ en:
     wishlist: "Wishlist"
     friends: "Friends"
     messages: "Messages"
+    badges: "Badges"
+    leaderboard: "Leaderboard"
     toggle_menu: "Toggle navigation menu"
 
   footer:
@@ -89,6 +91,9 @@ en:
     create_free_account: "Create Free Account"
     browse_all_shops: "Browse All Shops"
     meta_description: "Discover, rate and review the best chicken burger shops across the UK. Join the Cluckbait community today."
+    top_contributors: "🏆 Top Contributors"
+    top_contributors_subtitle: "Our most active chicken burger reviewers"
+    view_leaderboard: "View Full Leaderboard"
 
   chicken_shops:
     index:
@@ -222,6 +227,8 @@ en:
       no_wishlist: "No wishlist items yet"
       no_wishlist_own: "Save chicken shops you want to try!"
       no_wishlist_other: "%{name} hasn't saved any shops yet."
+      badges: "🏅 Badges"
+      view_all_badges: "View All Badges"
     edit:
       title: "Edit Profile — Cluckbait"
       heading: "Edit Profile"
@@ -519,3 +526,23 @@ en:
         contact:
           title: "Contact"
           body: "For questions about our use of cookies, please contact us at privacy@cluckbait.com."
+  badges:
+    title: "🏅 Badges & Achievements"
+    subtitle: "Earn chicken-themed badges by contributing to the Cluckbait community"
+    earned: "✅ Earned!"
+
+  leaderboard:
+    title: "🏆 Leaderboard"
+    subtitle: "The most active members of the Cluckbait community"
+    period: "Period"
+    all_time: "All Time"
+    monthly: "This Month"
+    metric: "Metric"
+    reviews: "Reviews"
+    helpful_votes: "Helpful Votes"
+    cities_explored: "Cities Explored"
+    rank: "Rank"
+    user: "User"
+    score_label: "Score"
+    empty: "No data yet"
+    empty_hint: "Start reviewing chicken shops to appear on the leaderboard!"
