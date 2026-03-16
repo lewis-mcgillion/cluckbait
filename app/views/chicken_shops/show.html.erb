@@ -1,4 +1,8 @@
 <% content_for(:title) { "#{@chicken_shop.name} — Cluckbait" } %>
+<% content_for(:meta_description) { "#{@chicken_shop.name} in #{@chicken_shop.city} — #{@chicken_shop.average_rating}★ from #{@chicken_shop.reviews_count} reviews" } %>
+<% if @chicken_shop.image.attached? %>
+  <% content_for(:og_image) { url_for(@chicken_shop.image) } %>
+<% end %>
 
 <section class="shop-hero">
   <div class="shop-hero-bg">
