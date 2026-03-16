@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
 
   before_action :set_locale
   before_action :set_sentry_context
+  before_action :reject_banned_user!
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
@@ -30,5 +31,13 @@ class ApplicationController < ActionController::Base
     return unless defined?(Sentry)
 
     Sentry.set_user(id: current_user.id, username: current_user.display_name)
+  end
+
+  def reject_banned_user!
+    return unless user_signed_in?
+    return unless current_user.banned?
+
+    sign_out current_user
+    redirect_to root_path, alert: "Your account has been suspended."
   end
 end

@@ -8,8 +8,8 @@ class Users::RegistrationsControllerTest < ActionDispatch::IntegrationTest
       post user_registration_path, params: {
         user: {
           email: "newuser@example.com",
-          password: "password123",
-          password_confirmation: "password123",
+          password: "password123!",
+          password_confirmation: "password123!",
           display_name: "ChickenLover"
         }
       }
@@ -24,8 +24,8 @@ class Users::RegistrationsControllerTest < ActionDispatch::IntegrationTest
       post user_registration_path, params: {
         user: {
           email: "noname@example.com",
-          password: "password123",
-          password_confirmation: "password123"
+          password: "password123!",
+          password_confirmation: "password123!"
         }
       }
     end
@@ -37,8 +37,8 @@ class Users::RegistrationsControllerTest < ActionDispatch::IntegrationTest
       post user_registration_path, params: {
         user: {
           email: "",
-          password: "password123",
-          password_confirmation: "password123"
+          password: "password123!",
+          password_confirmation: "password123!"
         }
       }
     end
@@ -50,7 +50,7 @@ class Users::RegistrationsControllerTest < ActionDispatch::IntegrationTest
       post user_registration_path, params: {
         user: {
           email: "mismatch@example.com",
-          password: "password123",
+          password: "password123!",
           password_confirmation: "different456"
         }
       }
@@ -65,8 +65,8 @@ class Users::RegistrationsControllerTest < ActionDispatch::IntegrationTest
       post user_registration_path, params: {
         user: {
           email: "taken@example.com",
-          password: "password123",
-          password_confirmation: "password123"
+          password: "password123!",
+          password_confirmation: "password123!"
         }
       }
     end
@@ -92,7 +92,7 @@ class Users::RegistrationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "update email requires current password" do
-    user = create(:user, email: "old@example.com", password: "password123")
+    user = create(:user, email: "old@example.com", password: "password123!")
     sign_in user
 
     put user_registration_path, params: {
@@ -106,13 +106,13 @@ class Users::RegistrationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "update email succeeds with current password" do
-    user = create(:user, email: "old@example.com", password: "password123")
+    user = create(:user, email: "old@example.com", password: "password123!")
     sign_in user
 
     put user_registration_path, params: {
       user: {
         email: "new@example.com",
-        current_password: "password123"
+        current_password: "password123!"
       }
     }
 
@@ -165,13 +165,13 @@ class Users::RegistrationsControllerTest < ActionDispatch::IntegrationTest
     get new_user_registration_path
     assert_response :success
     assert_select 'input[name="user[password]"][required]'
-    assert_select 'input[name="user[password]"][minlength="10"]'
+    assert_select 'input[name="user[password]"][minlength="12"]'
   end
 
   test "registration form has required and minlength on password confirmation" do
     get new_user_registration_path
     assert_response :success
     assert_select 'input[name="user[password_confirmation]"][required]'
-    assert_select 'input[name="user[password_confirmation]"][minlength="10"]'
+    assert_select 'input[name="user[password_confirmation]"][minlength="12"]'
   end
 end

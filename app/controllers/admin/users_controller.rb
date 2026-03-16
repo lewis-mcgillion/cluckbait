@@ -7,8 +7,8 @@ module Admin
     def index
       @page = [(params[:page] || 1).to_i, 1].max
       @users = User.order(created_at: :desc)
-      @users = @users.where("email LIKE ? OR display_name LIKE ?", "%#{params[:search]}%",
-                                                                   "%#{params[:search]}%") if params[:search].present?
+      @users = @users.where("email LIKE ? OR display_name LIKE ?", "%#{sanitize_sql_like(params[:search])}%",
+                                                                   "%#{sanitize_sql_like(params[:search])}%") if params[:search].present?
 
       case params[:filter]
       when "admin"
