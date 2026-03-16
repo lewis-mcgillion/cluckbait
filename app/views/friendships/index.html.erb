@@ -1,10 +1,13 @@
 <% content_for(:title) { t("friendships.title") } %>
 
+<div class="page-header">
+  <div class="container">
+    <h1 class="page-title"><%= t("friendships.heading") %></h1>
+  </div>
+</div>
+
 <section class="section">
   <div class="container">
-    <div class="friends-page-header">
-      <h1 class="section-title"><%= t("friendships.heading") %></h1>
-    </div>
 
     <% if @pending_requests.any? %>
       <div class="friends-section">

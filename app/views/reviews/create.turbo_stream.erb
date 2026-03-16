@@ -3,3 +3,7 @@
     <p class="text-muted"><%= t("chicken_shops.show.already_reviewed") %></p>
   </div>
 <% end %>
+
+<%= turbo_stream.prepend "reviews_list" do %>
+  <%= render "reviews/review_card", review: @review, chicken_shop: @chicken_shop %>
+<% end %>
