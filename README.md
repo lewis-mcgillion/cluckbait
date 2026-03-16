@@ -36,10 +36,10 @@ Then visit [http://localhost:3000](http://localhost:3000). Log in with any demo 
 |---|---|
 | Backend | Ruby on Rails 8.1 |
 | Frontend | Hotwire (Turbo + Stimulus), Tailwind CSS |
-| Database | SQLite3 |
-| Auth | Devise (lockable + timeoutable) |
+| Database | PostgreSQL (production), SQLite3 (development) |
+| Auth | Devise + OmniAuth (Google) |
 | Maps | Leaflet.js + OpenStreetMap |
-| Deployment | Kamal + Thruster |
+| Deployment | Docker + GitHub Actions → DigitalOcean |
 
 ## Documentation
 
@@ -48,6 +48,13 @@ Then visit [http://localhost:3000](http://localhost:3000). Log in with any demo 
 | **[Project Overview](docs/OVERVIEW.md)** | Features, tech stack, demo accounts, seed data, security |
 | **[Local Setup Guide](docs/SETUP.md)** | Installation, environment variables, Docker, Kamal, troubleshooting |
 | **[Architecture Deep Dive](docs/ARCHITECTURE.md)** | Data model, all 11 models, 14 controllers, 15 Stimulus controllers, routes, views, CSS, testing, security, deployment |
+
+## Deployment
+
+Pushing to `main` triggers an automated deployment via GitHub Actions:
+
+1. **Build** — Docker image is built and pushed to GitHub Container Registry (GHCR)
+2. **Deploy** — The workflow SSHs into the DigitalOcean droplet, copies the compose file, pulls the new image, and runs database migrations
 
 ## Testing
 

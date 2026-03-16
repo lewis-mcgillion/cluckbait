@@ -809,7 +809,7 @@ img { max-width: 100%; height: auto; display: block; }
   .shop-meta { gap: 1rem; }
   .profile-header { flex-direction: column; align-items: center; text-align: center; }
   .filter-form { flex-direction: column; }
-  .footer-links { flex-direction: column; gap: 1.5rem; }
+  .footer-links { flex-direction: column; gap: 1.5rem; text-align: center; display: flex; align-items: center; }
   .shops-grid { grid-template-columns: 1fr; }
   .reviews-grid { grid-template-columns: 1fr; }
   .shop-sidebar, .shop-reviews { min-width: 0; }
@@ -823,7 +823,7 @@ img { max-width: 100%; height: auto; display: block; }
   .btn-sm { min-height: 44px; }
   .friend-card-actions .button_to { flex: 1; }
   .friend-card-actions .button_to .btn { width: 100%; }
-  .footer-links a { min-height: 44px; display: inline-flex; align-items: center; }
+  .footer-links a { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
   .language-select { min-height: 44px; }
   .map-picker-container { height: 250px; }
 }
