@@ -1,4 +1,17 @@
 services:
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN:-cluckbait.uk}
+    command: caddy reverse-proxy --from ${APP_DOMAIN:-cluckbait.uk} --to web:80
+
   db:
     image: postgres:17
     restart: unless-stopped
@@ -20,8 +33,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    ports:
-      - "80:80"
+    expose:
+      - "80"
     environment:
       RAILS_ENV: production
       RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
@@ -34,3 +47,5 @@ services:
 
 volumes:
   postgres_data:
+  caddy_data:
+  caddy_config:
