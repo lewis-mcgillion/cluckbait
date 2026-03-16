@@ -76,10 +76,10 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script: |
             cd /opt/cluckbait
-            printf 'POSTGRES_PASSWORD=%s\nRAILS_MASTER_KEY=%s\nGOOGLE_CLIENT_ID=%s\nGOOGLE_CLIENT_SECRET=%s\n' '${{ secrets.POSTGRES_PASSWORD }}' '${{ secrets.RAILS_MASTER_KEY }}' '${{ secrets.GOOGLE_CLIENT_ID }}' '${{ secrets.GOOGLE_CLIENT_SECRET }}' > .env
+            printf 'POSTGRES_PASSWORD=%s\nRAILS_MASTER_KEY=%s\nGOOGLE_CLIENT_ID=%s\nGOOGLE_CLIENT_SECRET=%s\nAPP_DOMAIN=cluckbait.uk\n' '${{ secrets.POSTGRES_PASSWORD }}' '${{ secrets.RAILS_MASTER_KEY }}' '${{ secrets.GOOGLE_CLIENT_ID }}' '${{ secrets.GOOGLE_CLIENT_SECRET }}' > .env
             docker compose -f docker-compose.production.yml up -d db
             docker compose -f docker-compose.production.yml pull web
-            docker compose -f docker-compose.production.yml up -d web
+            docker compose -f docker-compose.production.yml up -d web caddy
             sleep 5
             docker compose -f docker-compose.production.yml exec -T web bin/rails db:prepare
             docker image prune -f
