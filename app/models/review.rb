@@ -32,6 +32,7 @@ class Review < ApplicationRecord
   }
 
   after_create :create_activity
+  after_create :evaluate_badges
 
   def reactions_summary
     reactions.group(:kind).count
@@ -71,5 +72,9 @@ class Review < ApplicationRecord
 
   def create_activity
     Activity.create!(user: user, action: "posted_review", trackable: self)
+  end
+
+  def evaluate_badges
+    AwardBadgeJob.perform_later(user_id, categories: %w[reviews photos])
   end
 end

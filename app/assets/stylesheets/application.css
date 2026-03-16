@@ -2467,3 +2467,279 @@ turbo-frame { display: contents; }
 [dir="rtl"] .btn {
   direction: ltr;
 }
+
+/* ── Badges ────────────────────────────────────────────── */
+
+.badges-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.badge-card {
+  background: var(--card-bg, #fff);
+  border: 2px solid var(--border, #e5e7eb);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  opacity: 0.5;
+  transition: all 0.2s;
+}
+
+.badge-card.badge-earned {
+  opacity: 1;
+  border-color: var(--accent, #f59e0b);
+  box-shadow: 0 2px 12px rgba(245, 158, 11, 0.15);
+}
+
+.badge-icon-large {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.badge-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0.25rem 0;
+}
+
+.badge-description {
+  font-size: 0.85rem;
+  color: var(--text-muted, #6b7280);
+  margin: 0.25rem 0 0.75rem;
+}
+
+.badge-status.earned {
+  display: inline-block;
+  background: var(--accent, #f59e0b);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+}
+
+.badge-progress {
+  margin-top: 0.5rem;
+}
+
+.progress-bar {
+  height: 8px;
+  background: var(--border, #e5e7eb);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 0.25rem;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--accent, #f59e0b);
+  border-radius: 4px;
+  transition: width 0.3s;
+}
+
+.progress-text {
+  font-size: 0.75rem;
+  color: var(--text-muted, #6b7280);
+}
+
+/* Profile badges */
+
+.profile-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.badge-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+.badge-icon {
+  font-size: 1.1rem;
+}
+
+.badge-chip-name {
+  font-weight: 600;
+}
+
+/* Review card badges */
+
+.review-author-badges {
+  font-size: 0.85rem;
+  margin-left: 0.25rem;
+}
+
+/* ── Leaderboard ───────────────────────────────────────── */
+
+.leaderboard-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.filter-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-muted, #6b7280);
+}
+
+.leaderboard-table {
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.leaderboard-header {
+  display: grid;
+  grid-template-columns: 60px 1fr 80px;
+  padding: 0.75rem 1.25rem;
+  background: var(--bg-secondary, #f9fafb);
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--text-muted, #6b7280);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.leaderboard-row {
+  display: grid;
+  grid-template-columns: 60px 1fr 80px;
+  padding: 0.75rem 1.25rem;
+  border-top: 1px solid var(--border, #e5e7eb);
+  align-items: center;
+}
+
+.leaderboard-row.top-three {
+  background: rgba(245, 158, 11, 0.04);
+}
+
+.lb-rank {
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.lb-user a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.lb-user a:hover .leaderboard-name {
+  text-decoration: underline;
+}
+
+.leaderboard-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.leaderboard-avatar-placeholder {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--accent, #f59e0b);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.leaderboard-name {
+  font-weight: 600;
+}
+
+.lb-score {
+  font-weight: 700;
+  text-align: right;
+  color: var(--accent, #f59e0b);
+}
+
+/* ── Top Contributors (homepage) ───────────────────────── */
+
+.contributors-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.contributor-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.2s, border-color 0.2s;
+  min-width: 200px;
+}
+
+.contributor-card:hover {
+  border-color: var(--accent, #f59e0b);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.contributor-rank {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.contributor-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.contributor-avatar-placeholder {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--accent, #f59e0b);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.contributor-name {
+  font-weight: 600;
+}
+
+.contributor-score {
+  font-size: 0.85rem;
+  color: var(--text-muted, #6b7280);
+}

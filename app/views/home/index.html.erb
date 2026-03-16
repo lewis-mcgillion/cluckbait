@@ -74,6 +74,40 @@
 </section>
 <% end %>
 
+<!-- Top Contributors -->
+<% if @top_contributors.any? %>
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title"><%= t("home.top_contributors") %></h2>
+      <p class="section-subtitle"><%= t("home.top_contributors_subtitle") %></p>
+    </div>
+    <div class="contributors-grid">
+      <% @top_contributors.each_with_index do |contributor, index| %>
+        <%= link_to profile_path(contributor), class: "contributor-card" do %>
+          <span class="contributor-rank">
+            <% case index %>
+            <% when 0 %> 🥇
+            <% when 1 %> 🥈
+            <% when 2 %> 🥉
+            <% else %> #<%= index + 1 %>
+            <% end %>
+          </span>
+          <% if contributor.avatar.attached? %>
+            <%= image_tag contributor.avatar.variant(resize_to_fill: [48, 48]), class: "contributor-avatar" %>
+          <% else %>
+            <span class="contributor-avatar-placeholder"><%= contributor.name[0].upcase %></span>
+          <% end %>
+          <span class="contributor-name"><%= contributor.name %></span>
+          <span class="contributor-score"><%= contributor.reviews_score %> <%= t("shared.reviews") %></span>
+        <% end %>
+      <% end %>
+    </div>
+    <%= link_to t("home.view_leaderboard"), leaderboard_path, class: "btn btn-outline" %>
+  </div>
+</section>
+<% end %>
+
 <!-- CTA Section -->
 <section class="section cta-section">
   <div class="container text-center">

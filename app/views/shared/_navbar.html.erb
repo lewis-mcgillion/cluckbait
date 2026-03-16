@@ -19,6 +19,8 @@
         <%= link_to t("navbar.feed"), activities_path, class: "nav-link #{'active' if current_page?(activities_path)}" %>
       <% end %>
       <%= link_to t("navbar.all_shops"), chicken_shops_path, class: "nav-link #{'active' if current_page?(chicken_shops_path)}" %>
+      <%= link_to t("navbar.badges"), badges_path, class: "nav-link #{'active' if current_page?(badges_path)}" %>
+      <%= link_to t("navbar.leaderboard"), leaderboard_path, class: "nav-link #{'active' if current_page?(leaderboard_path)}" %>
       <% if user_signed_in? %>
         <% wishlist = current_user.wishlist_count %>
         <% pending_friends = current_user.pending_friend_requests_count %>

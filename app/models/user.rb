@@ -25,6 +25,9 @@ class User < ApplicationRecord
   has_many :conversation_reads, dependent: :destroy
   has_many :notifications, dependent: :destroy
 
+  has_many :user_badges, dependent: :destroy
+  has_many :badges, through: :user_badges
+
   has_many :admin_audit_logs, foreign_key: :admin_user_id, dependent: :destroy
 
   validates :display_name, presence: true, length: { maximum: 50 }

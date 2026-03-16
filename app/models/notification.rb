@@ -3,7 +3,7 @@ class Notification < ApplicationRecord
   belongs_to :actor, class_name: "User", optional: true
   belongs_to :notifiable, polymorphic: true, optional: true
 
-  ACTIONS = %w[friend_request friend_accepted new_message].freeze
+  ACTIONS = %w[friend_request friend_accepted new_message badge_earned].freeze
 
   validates :action, presence: true, inclusion: { in: ACTIONS }
 
@@ -28,6 +28,7 @@ class Notification < ApplicationRecord
     when "friend_request" then "👋"
     when "friend_accepted" then "✅"
     when "new_message" then "💬"
+    when "badge_earned" then "🏅"
     else "🔔"
     end
   end
@@ -40,6 +41,9 @@ class Notification < ApplicationRecord
       "#{actor&.name || 'Someone'} accepted your friend request"
     when "new_message"
       "#{actor&.name || 'Someone'} sent you a message"
+    when "badge_earned"
+      badge_name = notifiable.is_a?(UserBadge) ? notifiable.badge.name : "a badge"
+      "You earned the #{badge_name} badge! 🎉"
     else
       "You have a new notification"
     end
@@ -56,6 +60,8 @@ class Notification < ApplicationRecord
       else
         helpers.conversations_path(locale: nil)
       end
+    when "badge_earned"
+      helpers.badges_path(locale: nil)
     else
       helpers.notifications_path(locale: nil)
     end
