@@ -35,6 +35,8 @@ services:
         condition: service_healthy
     expose:
       - "80"
+    volumes:
+      - storage:/rails/storage
     environment:
       RAILS_ENV: production
       RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
@@ -49,3 +51,4 @@ volumes:
   postgres_data:
   caddy_data:
   caddy_config:
+  storage:
