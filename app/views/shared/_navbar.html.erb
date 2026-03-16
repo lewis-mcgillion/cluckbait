@@ -34,7 +34,7 @@
             <% end %>
           </span>
         <% end %>
-        <%= link_to friendships_path, class: "nav-link #{'active' if current_page?(friendships_path)}" do %>
+        <%= link_to friendships_path, class: "nav-link #{'active' if current_page?(friendships_path) || current_page?(users_path)}" do %>
           <%= t("navbar.friends") %>
           <% if pending_friends > 0 %>
             <span class="nav-badge"><%= pending_friends %></span>

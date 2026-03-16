@@ -90,7 +90,7 @@
         <% if user_signed_in? && @user_review.nil? %>
           <div class="sidebar-card review-form-card" id="review-form">
             <h3><%= t("chicken_shops.show.write_review") %></h3>
-            <%= form_with(model: [@chicken_shop, @review], class: "review-form", data: { turbo_frame: "reviews_list" }) do |f| %>
+            <%= form_with(model: [@chicken_shop, @review], class: "review-form", data: { turbo: false }) do |f| %>
               <div class="form-group" data-controller="star-rating">
                 <label class="form-label" id="rating-label"><%= t("chicken_shops.show.your_rating") %></label>
                 <%= f.hidden_field :rating, data: { star_rating_target: "input" }, value: 0 %>
@@ -119,7 +119,7 @@
                 <label class="form-label"><%= t("chicken_shops.show.photos_optional") %></label>
                 <%= f.file_field :photos, multiple: true, class: "form-file-input", accept: "image/*" %>
               </div>
-              <%= f.submit t("chicken_shops.show.post_review"), class: "btn btn-primary btn-block", data: { turbo_submits_with: "Posting..." } %>
+              <%= f.submit t("chicken_shops.show.post_review"), class: "btn btn-primary btn-block" %>
             <% end %>
           </div>
         <% elsif user_signed_in? && @user_review %>

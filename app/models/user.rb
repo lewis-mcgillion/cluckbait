@@ -15,6 +15,12 @@ class User < ApplicationRecord
 
   validate :acceptable_avatar
 
+  scope :search_by_name_or_email, ->(query) {
+    return none if query.blank?
+    pattern = "%#{sanitize_sql_like(query)}%"
+    where(arel_table[:display_name].matches(pattern).or(arel_table[:email].matches(pattern)))
+  }
+
   # Friendships
   has_many :sent_friendships, class_name: "Friendship", foreign_key: :user_id, dependent: :destroy
   has_many :received_friendships, class_name: "Friendship", foreign_key: :friend_id, dependent: :destroy

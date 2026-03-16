@@ -3,6 +3,9 @@
 <div class="page-header">
   <div class="container">
     <h1 class="page-title"><%= t("friendships.heading") %></h1>
+    <%= link_to users_path, class: "btn btn-primary btn-sm page-header-action" do %>
+      🔍 <%= t("navbar.find_people") %>
+    <% end %>
   </div>
 </div>
 
