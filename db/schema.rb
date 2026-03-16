@@ -216,6 +216,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_16_162500) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "activities", "users"
+  add_foreign_key "chicken_shops", "users"
   add_foreign_key "admin_audit_logs", "users", column: "admin_user_id"
   add_foreign_key "conversation_reads", "conversations"
   add_foreign_key "conversation_reads", "users"
