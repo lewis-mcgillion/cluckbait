@@ -59,6 +59,23 @@
   </div>
 </section>
 
+<% if @user_badges.any? %>
+<section class="section">
+  <div class="container">
+    <h2 class="section-title"><%= t("profiles.show.badges") %></h2>
+    <div class="profile-badges">
+      <% @user_badges.each do |user_badge| %>
+        <div class="badge-chip" title="<%= user_badge.badge.name %>: <%= user_badge.badge.description %>">
+          <span class="badge-icon"><%= user_badge.badge.icon %></span>
+          <span class="badge-chip-name"><%= user_badge.badge.name %></span>
+        </div>
+      <% end %>
+    </div>
+    <%= link_to t("profiles.show.view_all_badges"), badges_path, class: "btn btn-outline btn-sm" %>
+  </div>
+</section>
+<% end %>
+
 <section class="section">
   <div class="container">
     <h2 class="section-title"><%= t("profiles.show.user_reviews", name: @user.name) %></h2>

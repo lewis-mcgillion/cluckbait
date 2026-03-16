@@ -1,0 +1,62 @@
+<% content_for(:title) { t("leaderboard.title") } %>
+
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title"><%= t("leaderboard.title") %></h2>
+      <p class="section-subtitle"><%= t("leaderboard.subtitle") %></p>
+    </div>
+
+    <div class="leaderboard-filters">
+      <div class="filter-group">
+        <span class="filter-label"><%= t("leaderboard.period") %>:</span>
+        <%= link_to t("leaderboard.all_time"), leaderboard_path(metric: @metric, period: "all_time"), class: "btn btn-sm #{@period == 'all_time' ? 'btn-primary' : 'btn-outline'}" %>
+        <%= link_to t("leaderboard.monthly"), leaderboard_path(metric: @metric, period: "monthly"), class: "btn btn-sm #{@period == 'monthly' ? 'btn-primary' : 'btn-outline'}" %>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label"><%= t("leaderboard.metric") %>:</span>
+        <%= link_to t("leaderboard.reviews"), leaderboard_path(metric: "reviews", period: @period), class: "btn btn-sm #{@metric == 'reviews' ? 'btn-primary' : 'btn-outline'}" %>
+        <%= link_to t("leaderboard.helpful_votes"), leaderboard_path(metric: "helpful", period: @period), class: "btn btn-sm #{@metric == 'helpful' ? 'btn-primary' : 'btn-outline'}" %>
+        <%= link_to t("leaderboard.cities_explored"), leaderboard_path(metric: "cities", period: @period), class: "btn btn-sm #{@metric == 'cities' ? 'btn-primary' : 'btn-outline'}" %>
+      </div>
+    </div>
+
+    <% if @leaders.any? %>
+      <div class="leaderboard-table">
+        <div class="leaderboard-header">
+          <span class="lb-rank"><%= t("leaderboard.rank") %></span>
+          <span class="lb-user"><%= t("leaderboard.user") %></span>
+          <span class="lb-score"><%= t("leaderboard.score_label") %></span>
+        </div>
+        <% @leaders.each_with_index do |leader, index| %>
+          <div class="leaderboard-row <%= 'top-three' if index < 3 %>">
+            <span class="lb-rank">
+              <% if index == 0 %> 🥇
+              <% elsif index == 1 %> 🥈
+              <% elsif index == 2 %> 🥉
+              <% else %> <%= index + 1 %>
+              <% end %>
+            </span>
+            <span class="lb-user">
+              <%= link_to profile_path(leader) do %>
+                <% if leader.avatar.attached? %>
+                  <%= image_tag leader.avatar.variant(resize_to_fill: [32, 32]), class: "leaderboard-avatar" %>
+                <% else %>
+                  <span class="leaderboard-avatar-placeholder"><%= leader.name[0].upcase %></span>
+                <% end %>
+                <span class="leaderboard-name"><%= leader.name %></span>
+              <% end %>
+            </span>
+            <span class="lb-score"><%= leader.score %></span>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="empty-state">
+        <span class="empty-icon">🏆</span>
+        <h3><%= t("leaderboard.empty") %></h3>
+        <p><%= t("leaderboard.empty_hint") %></p>
+      </div>
+    <% end %>
+  </div>
+</section>

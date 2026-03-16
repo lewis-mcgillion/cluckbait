@@ -39,6 +39,9 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :badges, only: [:index]
+    resource :leaderboard, only: [:show], controller: "leaderboard", action: "index"
+
     patch "locale", to: "locale#update", as: :update_locale
   end
 
