@@ -1,0 +1,12 @@
+<div class="cookie-banner" data-controller="cookie-consent" data-cookie-consent-target="banner" role="dialog" aria-label="<%= t("cookie_consent.aria_label") %>">
+  <div class="cookie-banner-content">
+    <p>
+      <%= t("cookie_consent.message") %>
+      <%= link_to t("cookie_consent.learn_more"), cookie_policy_path, class: "cookie-banner-link" %>
+    </p>
+    <div class="cookie-banner-actions">
+      <button data-action="click->cookie-consent#accept" class="btn btn-primary btn-sm"><%= t("cookie_consent.accept") %></button>
+      <button data-action="click->cookie-consent#acceptEssential" class="btn btn-outline btn-sm"><%= t("cookie_consent.essential_only") %></button>
+    </div>
+  </div>
+</div>

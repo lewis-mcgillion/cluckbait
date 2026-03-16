@@ -1,7 +1,5 @@
 module Api
   class ShopsController < ApplicationController
-    protect_from_forgery with: :null_session
-
     def index
       shops = ChickenShop.left_joins(:reviews)
                          .select_with_stats

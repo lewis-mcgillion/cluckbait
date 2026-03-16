@@ -40,6 +40,10 @@ Rails.application.routes.draw do
     end
 
     patch "locale", to: "locale#update", as: :update_locale
+
+    get "privacy", to: "pages#privacy_policy", as: :privacy_policy
+    get "terms", to: "pages#terms", as: :terms
+    get "cookies", to: "pages#cookie_policy", as: :cookie_policy
   end
 
   get "api/shops", to: "api/shops#index"

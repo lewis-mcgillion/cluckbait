@@ -52,6 +52,9 @@ The app runs with zero required env vars in development. All optional:
 | Variable | Default | Purpose |
 |---|---|---|
 | `DEVISE_MAILER_SENDER` | `noreply@cluckbait.com` | From address for Devise emails |
+| `GOOGLE_CLIENT_ID` | not set | Google OAuth client ID (required for Google sign-in) |
+| `GOOGLE_CLIENT_SECRET` | not set | Google OAuth client secret (required for Google sign-in) |
+| `SENTRY_DSN` | not set | Sentry error tracking DSN (production) |
 | `REDIS_URL` | not set (Solid Cable used) | Action Cable adapter for production |
 | `RAILS_MASTER_KEY` | read from `config/master.key` | Decrypt credentials in production |
 
@@ -89,7 +92,7 @@ Expected output: **341 tests, 620 assertions, 0 failures, 0 errors**.
 bin/rubocop -f github
 ```
 
-Uses [rubocop-rails-omakase](https://github.com/rails/rubocop-rails-omakase) — the Rails team's recommended style config.
+Uses [rubocop-github](https://github.com/github/rubocop-github) — GitHub's Ruby style config, with rubocop-performance, rubocop-minitest, and rubocop-rails plugins.
 
 ## Docker
 
@@ -108,16 +111,17 @@ The Dockerfile uses a multi-stage build:
 
 The container starts with [Thruster](https://github.com/basecamp/thruster) (HTTP caching/compression proxy) in front of the Rails server on port 80.
 
-## Deployment (Kamal)
+## Deployment
 
-The app is configured for deployment with [Kamal](https://kamal-deploy.org/):
+### GitHub Actions CI/CD (Current)
 
-```bash
-kamal setup    # First deploy
-kamal deploy   # Subsequent deploys
-```
+Pushing to `main` triggers an automated deployment via GitHub Actions:
 
-Kamal config lives in `config/deploy.yml`. Secrets are managed via `.kamal/secrets` (gitignored) which reads `config/master.key`.
+1. **CI** — Tests, RuboCop linting, Brakeman security scan, importmap audit
+2. **Build** — Docker image is built and pushed to GitHub Container Registry (GHCR)
+3. **Deploy** — The workflow SSHs into the DigitalOcean droplet, copies the compose file, pulls the new image, and runs database migrations
+
+Production runs with Docker Compose: Caddy (reverse proxy with automatic HTTPS), PostgreSQL 17, and the Rails app.
 
 ## Troubleshooting
 

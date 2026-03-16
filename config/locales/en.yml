@@ -67,6 +67,10 @@ en:
     join_cluckbait: "Join Cluckbait"
     copyright: "© %{year} Cluckbait. All rights reserved. Made with 🍗 in the UK."
     language: "Language"
+    legal: "Legal"
+    privacy_policy: "Privacy Policy"
+    terms: "Terms of Service"
+    cookie_policy: "Cookie Policy"
 
   home:
     title: "Cluckbait — Find & Review the Best Chicken Burgers in the UK"
@@ -371,3 +375,147 @@ en:
       heading: "Resend unlock instructions"
       submit: "Resend unlock instructions"
     password_chars_minimum: "%{count} characters minimum"
+
+  cookie_consent:
+    aria_label: "Cookie consent"
+    message: "We use essential cookies to make Cluckbait work. We'd also like to set optional cookies to improve your experience."
+    learn_more: "Learn more"
+    accept: "Accept all"
+    essential_only: "Essential only"
+
+  pages:
+    privacy_policy:
+      title: "Privacy Policy — Cluckbait"
+      meta_description: "Learn how Cluckbait collects, uses, and protects your personal data."
+      heading: "Privacy Policy"
+      last_updated: "Last updated: %{date}"
+      sections:
+        intro:
+          title: "Introduction"
+          body: "Cluckbait (\"we\", \"us\", \"our\") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your personal information when you use our website and services."
+        data_collected:
+          title: "Information We Collect"
+          body: "We collect the following types of information:"
+          items:
+            - "Account information: email address, display name, and password (securely hashed)"
+            - "Profile information: bio and avatar image (optional)"
+            - "Content you create: reviews, ratings, photos, messages, and wishlist items"
+            - "Social connections: friend relationships and conversations"
+            - "Technical data: browser type, IP address (not stored), and language preference"
+            - "OAuth data: if you sign in with Google, we receive your name, email, and profile picture from your Google account"
+        how_we_use:
+          title: "How We Use Your Information"
+          body: "We use your information to:"
+          items:
+            - "Provide and maintain the Cluckbait service"
+            - "Create and manage your account"
+            - "Enable social features (friends, messaging, activity feeds)"
+            - "Display your reviews and ratings to other users"
+            - "Send transactional emails (password resets, email confirmations)"
+            - "Monitor and improve the service's security and performance"
+        third_parties:
+          title: "Third-Party Services"
+          body: "We use the following third-party services:"
+          items:
+            - "Google OAuth: for optional social sign-in (subject to Google's Privacy Policy)"
+            - "Sentry: for error tracking and service reliability (no personally identifiable information is shared)"
+            - "OpenStreetMap: for displaying maps (subject to OpenStreetMap's Privacy Policy)"
+            - "Google Fonts: for typography (subject to Google's Privacy Policy)"
+        cookies:
+          title: "Cookies"
+          body: "We use essential cookies required for the site to function (authentication session, CSRF protection, language preference). We do not use tracking or advertising cookies. See our Cookie Policy for full details."
+        your_rights:
+          title: "Your Rights"
+          body: "Under GDPR and applicable data protection laws, you have the right to:"
+          items:
+            - "Access the personal data we hold about you"
+            - "Correct inaccurate personal data"
+            - "Delete your account and associated data"
+            - "Object to or restrict processing of your data"
+            - "Data portability — receive your data in a structured format"
+            - "Withdraw consent at any time"
+        data_retention:
+          title: "Data Retention"
+          body: "We retain your personal data for as long as your account is active. When you delete your account, your reviews, messages, wishlist items, activities, and profile data are permanently deleted. Chicken shops you submitted remain visible but are no longer associated with your account."
+        contact:
+          title: "Contact Us"
+          body: "If you have questions about this Privacy Policy or wish to exercise your data rights, please contact us at privacy@cluckbait.com."
+
+    terms:
+      title: "Terms of Service — Cluckbait"
+      meta_description: "Read the Terms of Service for using Cluckbait."
+      heading: "Terms of Service"
+      last_updated: "Last updated: %{date}"
+      sections:
+        acceptance:
+          title: "Acceptance of Terms"
+          body: "By accessing or using Cluckbait, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use the service."
+        eligibility:
+          title: "Eligibility"
+          body: "You must be at least 13 years old to use Cluckbait. By using the service, you represent that you meet this age requirement."
+        accounts:
+          title: "User Accounts"
+          body: "You are responsible for maintaining the confidentiality of your account credentials. You agree to provide accurate information and to keep your account details up to date. You are responsible for all activity that occurs under your account."
+        user_content:
+          title: "User Content"
+          body: "You retain ownership of the content you post (reviews, photos, messages). By posting content, you grant Cluckbait a non-exclusive, worldwide licence to display and distribute your content as part of the service. You are solely responsible for the content you post and must ensure it does not violate any laws or third-party rights."
+        prohibited_conduct:
+          title: "Prohibited Conduct"
+          body: "You agree not to:"
+          items:
+            - "Post false, misleading, or fraudulent reviews"
+            - "Harass, abuse, or threaten other users"
+            - "Upload malicious content or attempt to exploit security vulnerabilities"
+            - "Impersonate other users or entities"
+            - "Use automated tools to scrape or access the service without permission"
+            - "Post content that is illegal, defamatory, or infringes on intellectual property rights"
+        termination:
+          title: "Account Termination"
+          body: "We reserve the right to suspend or terminate accounts that violate these Terms of Service. You may delete your account at any time through your account settings."
+        disclaimers:
+          title: "Disclaimers"
+          body: "Cluckbait is provided \"as is\" without warranties of any kind. Reviews and ratings reflect the opinions of individual users and do not represent the views of Cluckbait. We do not guarantee the accuracy of any user-submitted content."
+        liability:
+          title: "Limitation of Liability"
+          body: "To the maximum extent permitted by law, Cluckbait shall not be liable for any indirect, incidental, or consequential damages arising from your use of the service."
+        changes:
+          title: "Changes to Terms"
+          body: "We may update these Terms of Service from time to time. Continued use of the service after changes constitutes acceptance of the updated terms. We will notify registered users of material changes via email."
+        contact:
+          title: "Contact"
+          body: "For questions about these Terms of Service, please contact us at legal@cluckbait.com."
+
+    cookie_policy:
+      title: "Cookie Policy — Cluckbait"
+      meta_description: "Learn about how Cluckbait uses cookies."
+      heading: "Cookie Policy"
+      last_updated: "Last updated: %{date}"
+      sections:
+        what_are_cookies:
+          title: "What Are Cookies"
+          body: "Cookies are small text files stored on your device when you visit a website. They are widely used to make websites work, remember your preferences, and provide information to site owners."
+        essential:
+          title: "Essential Cookies"
+          body: "These cookies are required for Cluckbait to function and cannot be disabled:"
+          items:
+            - "Session cookie: keeps you signed in while you use the site"
+            - "CSRF token: protects against cross-site request forgery attacks"
+            - "Cookie consent: remembers your cookie preferences"
+        functional:
+          title: "Functional Cookies"
+          body: "These cookies enhance your experience but are not strictly necessary:"
+          items:
+            - "Remember me: keeps you signed in between browser sessions (only if you choose this option at sign-in)"
+            - "Language preference: remembers your chosen language"
+        third_party:
+          title: "Third-Party Cookies"
+          body: "The following third-party services may set cookies when you use Cluckbait:"
+          items:
+            - "Google Fonts: may set cookies when loading font files (typography)"
+            - "OpenStreetMap: may set cookies when loading map tiles"
+        managing_cookies:
+          title: "Managing Cookies"
+          body: "You can manage your cookie preferences using the cookie consent banner when you first visit the site. You can also clear cookies through your browser settings at any time. Note that disabling essential cookies may prevent the site from functioning correctly."
+        contact:
+          title: "Contact"
+          body: "For questions about our use of cookies, please contact us at privacy@cluckbait.com."

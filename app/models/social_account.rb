@@ -1,6 +1,8 @@
 class SocialAccount < ApplicationRecord
   belongs_to :user
 
+  encrypts :access_token, :refresh_token
+
   validates :provider, presence: true
   validates :uid, presence: true
   validates :uid, uniqueness: { scope: :provider }

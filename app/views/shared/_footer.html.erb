@@ -22,7 +22,12 @@
         <% end %>
       </div>
       <div class="footer-col">
-        <h3><%= t("footer.language") %></h3>
+        <h3><%= t("footer.legal") %></h3>
+        <%= link_to t("footer.privacy_policy"), privacy_policy_path %>
+        <%= link_to t("footer.terms"), terms_path %>
+        <%= link_to t("footer.cookie_policy"), cookie_policy_path %>
+      </div>
+      <div class="footer-col">
         <div class="language-selector">
           <%= form_tag update_locale_path, method: :patch, data: { turbo: false } do %>
             <select name="locale_preference" class="language-select" aria-label="<%= t('footer.language') %>" data-controller="locale" data-action="change->locale#change">

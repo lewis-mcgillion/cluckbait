@@ -1,0 +1,66 @@
+<% content_for(:title) { t("pages.terms.title") } %>
+<% content_for(:meta_description) { t("pages.terms.meta_description") } %>
+
+<div class="legal-page">
+  <div class="container">
+    <h1><%= t("pages.terms.heading") %></h1>
+    <p class="legal-updated"><%= t("pages.terms.last_updated", date: "16 March 2026") %></p>
+
+    <div class="legal-content">
+      <section>
+        <h2><%= t("pages.terms.sections.acceptance.title") %></h2>
+        <p><%= t("pages.terms.sections.acceptance.body") %></p>
+      </section>
+
+      <section>
+        <h2><%= t("pages.terms.sections.eligibility.title") %></h2>
+        <p><%= t("pages.terms.sections.eligibility.body") %></p>
+      </section>
+
+      <section>
+        <h2><%= t("pages.terms.sections.accounts.title") %></h2>
+        <p><%= t("pages.terms.sections.accounts.body") %></p>
+      </section>
+
+      <section>
+        <h2><%= t("pages.terms.sections.user_content.title") %></h2>
+        <p><%= t("pages.terms.sections.user_content.body") %></p>
+      </section>
+
+      <section>
+        <h2><%= t("pages.terms.sections.prohibited_conduct.title") %></h2>
+        <p><%= t("pages.terms.sections.prohibited_conduct.body") %></p>
+        <ul>
+          <% t("pages.terms.sections.prohibited_conduct.items").each do |item| %>
+            <li><%= item %></li>
+          <% end %>
+        </ul>
+      </section>
+
+      <section>
+        <h2><%= t("pages.terms.sections.termination.title") %></h2>
+        <p><%= t("pages.terms.sections.termination.body") %></p>
+      </section>
+
+      <section>
+        <h2><%= t("pages.terms.sections.disclaimers.title") %></h2>
+        <p><%= t("pages.terms.sections.disclaimers.body") %></p>
+      </section>
+
+      <section>
+        <h2><%= t("pages.terms.sections.liability.title") %></h2>
+        <p><%= t("pages.terms.sections.liability.body") %></p>
+      </section>
+
+      <section>
+        <h2><%= t("pages.terms.sections.changes.title") %></h2>
+        <p><%= t("pages.terms.sections.changes.body") %></p>
+      </section>
+
+      <section>
+        <h2><%= t("pages.terms.sections.contact.title") %></h2>
+        <p><%= t("pages.terms.sections.contact.body") %></p>
+      </section>
+    </div>
+  </div>
+</div>
