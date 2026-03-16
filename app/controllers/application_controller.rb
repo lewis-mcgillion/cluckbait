@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
 
   before_action :set_locale
   before_action :set_sentry_context
+  before_action :reject_banned_user!
+  before_action :track_visit
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
@@ -30,5 +32,22 @@ class ApplicationController < ActionController::Base
     return unless defined?(Sentry)
 
     Sentry.set_user(id: current_user.id, username: current_user.display_name)
+  end
+
+  def track_visit
+    return unless request.get?
+    return unless cookies[:cookie_consent] == "all"
+    return if session[:visited_today] == Date.current.to_s
+
+    Visit.create(ip_address: request.remote_ip, visited_at: Time.current)
+    session[:visited_today] = Date.current.to_s
+  end
+
+  def reject_banned_user!
+    return unless user_signed_in?
+    return unless current_user.banned?
+
+    sign_out current_user
+    redirect_to root_path, alert: "Your account has been suspended."
   end
 end

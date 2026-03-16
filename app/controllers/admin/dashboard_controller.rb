@@ -23,6 +23,10 @@ module Admin
 
       @total_wishlists = WishlistItem.count
 
+      @unique_visits = Visit.unique_count
+      @unique_visits_7d = Visit.where("visited_at >= ?", 7.days.ago).unique_count
+      @unique_visits_30d = Visit.where("visited_at >= ?", 30.days.ago).unique_count
+
       @recent_users = User.order(created_at: :desc).limit(5)
       @recent_reviews = Review.includes(:user, :chicken_shop).order(created_at: :desc).limit(5)
     end

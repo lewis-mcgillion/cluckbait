@@ -61,6 +61,12 @@
     <div class="stat-label">Wishlisted</div>
     <div class="stat-value"><%= number_with_delimiter(@total_wishlists) %></div>
   </div>
+
+  <div class="stat-card">
+    <div class="stat-label">Unique Visits</div>
+    <div class="stat-value"><%= number_with_delimiter(@unique_visits) %></div>
+    <div class="stat-change positive">+<%= number_with_delimiter(@unique_visits_7d) %> this week</div>
+  </div>
 </div>
 
 <%# Top cities %>
