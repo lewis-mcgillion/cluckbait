@@ -1,9 +1,26 @@
 <!DOCTYPE html>
 <html lang="<%= I18n.locale %>" dir="<%= text_direction %>">
   <head>
+    <meta charset="utf-8">
     <title><%= content_for(:title) || t("shared.cluckbait") %></title>
     <meta name="description" content="<%= content_for(:meta_description) || t("home.meta_description") %>">
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <% if content_for?(:canonical_url) %>
+      <link rel="canonical" href="<%= content_for(:canonical_url) %>">
+    <% end %>
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="<%= content_for(:title) || t("shared.cluckbait") %>">
+    <meta property="og:description" content="<%= content_for(:meta_description) || t("home.meta_description") %>">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="<%= content_for(:og_image) || "#{request.base_url}/icon.png" %>">
+    <meta property="og:site_name" content="Cluckbait">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="<%= content_for(:title) || t("shared.cluckbait") %>">
+    <meta name="twitter:description" content="<%= content_for(:meta_description) || t("home.meta_description") %>">
+    <meta name="twitter:image" content="<%= content_for(:og_image) || "#{request.base_url}/icon.png" %>">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
@@ -30,22 +47,23 @@
   </head>
 
   <body>
+    <a href="#main-content" class="skip-nav">Skip to main content</a>
     <%= render "shared/navbar" %>
 
     <% if notice %>
-      <div class="flash flash-notice" data-controller="flash">
+      <div class="flash flash-notice" role="alert" data-controller="flash">
         <span><%= notice %></span>
-        <button data-action="click->flash#dismiss" class="flash-close">&times;</button>
+        <button data-action="click->flash#dismiss" class="flash-close" aria-label="Dismiss notification">&times;</button>
       </div>
     <% end %>
     <% if alert %>
-      <div class="flash flash-alert" data-controller="flash">
+      <div class="flash flash-alert" role="alert" data-controller="flash">
         <span><%= alert %></span>
-        <button data-action="click->flash#dismiss" class="flash-close">&times;</button>
+        <button data-action="click->flash#dismiss" class="flash-close" aria-label="Dismiss notification">&times;</button>
       </div>
     <% end %>
 
-    <main>
+    <main id="main-content">
       <%= yield %>
     </main>
 

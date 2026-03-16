@@ -55,9 +55,10 @@ class RoutingTest < ActionDispatch::IntegrationTest
     assert_response :redirect
   end
 
-  test "no route for chicken_shops edit" do
-    get "/chicken_shops/1/edit"
-    assert_response :not_found
+  test "chicken_shops edit route exists" do
+    shop = ChickenShop.create!(name: "Test", address: "1 St", city: "London", latitude: 51.5, longitude: -0.1)
+    get "/chicken_shops/#{shop.id}/edit"
+    assert_response :redirect
   end
 
   # -- Friendship routes --

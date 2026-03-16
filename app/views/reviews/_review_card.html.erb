@@ -36,6 +36,7 @@
 
     <% if defined?(current_user) && current_user == review.user %>
       <div class="review-actions">
+        <%= link_to t("reviews.edit", default: "Edit"), edit_chicken_shop_review_path(chicken_shop, review), class: "btn btn-outline btn-sm" %>
         <%= button_to t("reviews.delete"), chicken_shop_review_path(chicken_shop, review), method: :delete, class: "btn btn-danger btn-sm", data: { turbo_confirm: t("reviews.delete_confirm") } %>
       </div>
     <% end %>

@@ -1,0 +1,86 @@
+<%= form_with(model: @chicken_shop, class: "auth-form new-shop-form") do |f| %>
+  <% if @chicken_shop.errors.any? %>
+    <div class="form-errors">
+      <p><strong><%= pluralize(@chicken_shop.errors.count, "error") %> prevented this shop from being saved:</strong></p>
+      <% @chicken_shop.errors.full_messages.each do |msg| %>
+        <p><%= msg %></p>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="form-section">
+    <h2 class="form-section-title"><%= t("chicken_shops.new.location_section") %></h2>
+    <p class="form-section-hint"><%= t("chicken_shops.new.location_hint") %></p>
+
+    <div data-controller="map-picker">
+      <div class="map-picker-controls">
+        <button type="button" class="btn btn-outline btn-sm" data-action="click->map-picker#locate">
+          <%= t("chicken_shops.new.use_my_location") %>
+        </button>
+        <span class="map-picker-coords" data-map-picker-target="coordinates"><%= @chicken_shop.latitude.present? ? "#{@chicken_shop.latitude}, #{@chicken_shop.longitude}" : t("chicken_shops.new.no_location") %></span>
+      </div>
+
+      <div class="map-picker-container" data-map-picker-target="container"
+        <% if @chicken_shop.latitude.present? %>
+          data-map-picker-lat-value="<%= @chicken_shop.latitude %>"
+          data-map-picker-lng-value="<%= @chicken_shop.longitude %>"
+        <% end %>
+      ></div>
+
+      <%= f.hidden_field :latitude, data: { map_picker_target: "latitude" } %>
+      <%= f.hidden_field :longitude, data: { map_picker_target: "longitude" } %>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <h2 class="form-section-title"><%= t("chicken_shops.new.shop_details") %></h2>
+
+    <div class="form-group">
+      <label class="form-label"><%= t("chicken_shops.new.name_label") %></label>
+      <%= f.text_field :name, class: "form-input", placeholder: t("chicken_shops.new.name_placeholder"), autofocus: true %>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label"><%= t("chicken_shops.new.address_label") %></label>
+      <%= f.text_field :address, class: "form-input", placeholder: t("chicken_shops.new.address_placeholder") %>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group form-group-half">
+        <label class="form-label"><%= t("chicken_shops.new.city_label") %></label>
+        <%= f.text_field :city, class: "form-input", placeholder: t("chicken_shops.new.city_placeholder") %>
+      </div>
+
+      <div class="form-group form-group-half">
+        <label class="form-label"><%= t("chicken_shops.new.postcode_label") %></label>
+        <%= f.text_field :postcode, class: "form-input", placeholder: t("chicken_shops.new.postcode_placeholder") %>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <h2 class="form-section-title"><%= t("chicken_shops.new.contact_section") %></h2>
+
+    <div class="form-group">
+      <label class="form-label"><%= t("chicken_shops.new.phone_label") %></label>
+      <%= f.telephone_field :phone, class: "form-input", placeholder: t("chicken_shops.new.phone_placeholder") %>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label"><%= t("chicken_shops.new.website_label") %></label>
+      <%= f.url_field :website, class: "form-input", placeholder: t("chicken_shops.new.website_placeholder") %>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label"><%= t("chicken_shops.new.description_label") %></label>
+      <%= f.text_area :description, class: "form-input form-textarea", rows: 4, placeholder: t("chicken_shops.new.description_placeholder") %>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label"><%= t("chicken_shops.new.photo_label") %></label>
+      <%= f.file_field :image, class: "form-file-input", accept: "image/*" %>
+    </div>
+  </div>
+
+  <%= f.submit submit_label, class: "btn btn-primary btn-block btn-lg" %>
+<% end %>

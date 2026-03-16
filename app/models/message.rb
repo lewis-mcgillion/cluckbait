@@ -6,18 +6,15 @@ class Message < ApplicationRecord
   ALLOWED_SHAREABLE_TYPES = %w[ChickenShop Review].freeze
 
   validates :body, presence: true, length: { maximum: 2000 }
-  validates :shareable_type, inclusion: { in: ALLOWED_SHAREABLE_TYPES }, allow_nil: true
+  validates :shareable_type, inclusion: { in: ALLOWED_SHAREABLE_TYPES }, allow_blank: true
   validate :user_is_participant
 
   scope :ordered, -> { order(created_at: :asc) }
 
   after_create :notify_recipient
+  after_create_commit :broadcast_message
 
   private
-
-  def shareable_present?
-    shareable_type.present? && shareable_id.present?
-  end
 
   def user_is_participant
     return if conversation.blank?
@@ -36,5 +33,17 @@ class Message < ApplicationRecord
       action: "new_message",
       notifiable: self
     )
+  end
+
+  def broadcast_message
+    recipient = conversation.other_user(user)
+    broadcast_append_to(
+      [recipient, conversation],
+      target: "chat-messages",
+      partial: "messages/message",
+      locals: { message: self, current_user: recipient }
+    )
+  rescue => e
+    Rails.logger.error("Failed to broadcast message #{id}: #{e.message}")
   end
 end

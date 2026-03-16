@@ -3,6 +3,10 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ["content", "shopsPane", "reviewsPane", "shopSearch", "shopResults"]
 
+  connect() {
+    this.initialShopResults = this.shopResultsTarget.innerHTML
+  }
+
   close() {
     this.element.closest("#share-panel").style.display = "none"
   }
@@ -20,7 +24,7 @@ export default class extends Controller {
   async searchShops() {
     const query = this.shopSearchTarget.value.trim()
     if (query.length < 2) {
-      this.shopResultsTarget.innerHTML = '<p class="text-muted share-hint">Type to search for a shop to share</p>'
+      this.shopResultsTarget.innerHTML = this.initialShopResults
       return
     }
 

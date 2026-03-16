@@ -175,6 +175,13 @@ en:
       photo_label: "Photo"
       submit: "Add Chicken Shop 🍗"
       back: "← Back to shops"
+    edit:
+      title: "Edit %{name} — Cluckbait"
+      heading: "Edit Chicken Shop ✏️"
+      subtitle: "Update the details for %{name}."
+      submit: "Save Changes 🍗"
+      back: "← Back to shop"
+      edit_button: "Edit Shop"
     card:
       reviews:
         one: "%{count} review"
@@ -358,8 +365,6 @@ en:
       sign_in_with: "Sign in with %{provider}"
       or_divider: "or continue with email"
       continue_with_google: "Continue with Google"
-      continue_with_apple: "Continue with Apple"
-      continue_with_facebook: "Continue with Facebook"
     omniauth_callbacks:
       success: "Successfully signed in with %{kind}."
       failure: "Could not sign in with %{kind}. %{reason}"

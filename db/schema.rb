@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_15_190341) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_16_162500) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_catalog.plpgsql"
+
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -75,7 +78,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_15_190341) do
     t.string "phone"
     t.string "postcode"
     t.datetime "updated_at", null: false
+    t.integer "user_id"
     t.string "website"
+    t.index ["user_id"], name: "index_chicken_shops_on_user_id"
   end
 
   create_table "conversation_reads", force: :cascade do |t|
@@ -157,7 +162,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_15_190341) do
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
     t.index ["chicken_shop_id"], name: "index_reviews_on_chicken_shop_id"
-    t.index ["user_id"], name: "index_reviews_on_user_id"
+    t.index ["user_id", "chicken_shop_id"], name: "index_reviews_on_user_id_and_chicken_shop_id", unique: true
   end
 
   create_table "social_accounts", force: :cascade do |t|
@@ -184,6 +189,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_15_190341) do
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.integer "failed_attempts", default: 0, null: false
+    t.datetime "last_seen_at"
     t.string "locale", default: "en", null: false
     t.datetime "locked_at"
     t.datetime "remember_created_at"
@@ -191,6 +197,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_15_190341) do
     t.string "reset_password_token"
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["last_seen_at"], name: "index_users_on_last_seen_at"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
@@ -209,6 +216,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_15_190341) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "activities", "users"
+  add_foreign_key "chicken_shops", "users"
   add_foreign_key "admin_audit_logs", "users", column: "admin_user_id"
   add_foreign_key "conversation_reads", "conversations"
   add_foreign_key "conversation_reads", "users"

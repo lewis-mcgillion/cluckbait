@@ -35,3 +35,4 @@
 
 # Ignore vendored gems
 /vendor/bundle
+node_modules

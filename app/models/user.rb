@@ -2,10 +2,11 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :lockable, :timeoutable,
-         :omniauthable, omniauth_providers: [:google_oauth2, :apple, :facebook]
+         :omniauthable, omniauth_providers: [:google_oauth2]
 
   has_many :activities, dependent: :destroy
   has_many :reviews, dependent: :destroy
+  has_many :chicken_shops, dependent: :nullify
   has_many :social_accounts, dependent: :destroy
   has_many :review_reactions, dependent: :destroy
   has_many :wishlist_items, dependent: :destroy
@@ -95,16 +96,6 @@ class User < ApplicationRecord
     wishlist_items.count
   end
 
-  # Batch-load all navbar badge counts in a single method to avoid N+1
-  def nav_counts
-    @nav_counts ||= {
-      wishlist: wishlist_items.count,
-      pending_friends: pending_friend_requests.count,
-      unread_notifications: notifications.unread.count,
-      unread_conversations: unread_conversations_count
-    }
-  end
-
   def unread_notifications_count
     notifications.unread.count
   end
@@ -136,5 +127,9 @@ class User < ApplicationRecord
       )
     SQL
     conversations.where(unread_sql, id, id).count
+  end
+
+  def online?
+    last_seen_at.present? && last_seen_at > 2.minutes.ago
   end
 end

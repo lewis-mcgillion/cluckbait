@@ -126,4 +126,17 @@ class ProfilesControllerTest < ActionDispatch::IntegrationTest
     get profile_path(@user)
     assert_response :success
   end
+
+  # -- Friend count --
+
+  test "show displays friend count on profile" do
+    friend1 = create(:user)
+    friend2 = create(:user)
+    create(:friendship, :accepted, user: @user, friend: friend1)
+    create(:friendship, :accepted, user: @user, friend: friend2)
+
+    get profile_path(@user)
+    assert_response :success
+    assert_select ".stat-number", text: "2"
+  end
 end

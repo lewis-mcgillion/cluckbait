@@ -120,4 +120,24 @@ class FriendshipsControllerTest < ActionDispatch::IntegrationTest
     get friendships_path
     assert_response :success
   end
+
+  # -- Broadcast resilience --
+
+  test "create friend request succeeds and creates notification" do
+    assert_difference ["Friendship.count", "Notification.count"], 1 do
+      post friendships_path, params: { friend_id: @other_user.id }
+    end
+    assert_redirected_to profile_path(@other_user)
+    assert_match "Friend request sent", flash[:notice]
+  end
+
+  test "accepting friend request succeeds and creates activities" do
+    friendship = create(:friendship, user: @other_user, friend: @user)
+
+    assert_difference "Activity.count", 2 do
+      patch friendship_path(friendship)
+    end
+    assert friendship.reload.accepted?
+    assert_redirected_to friendships_path
+  end
 end

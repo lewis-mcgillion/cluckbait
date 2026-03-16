@@ -18,12 +18,12 @@
 
       <div class="form-group">
         <%= f.label :display_name, t("devise.registrations.new.display_name"), class: "form-label" %>
-        <%= f.text_field :display_name, autofocus: true, class: "form-input", placeholder: "ChickenFan99" %>
+        <%= f.text_field :display_name, autofocus: true, class: "form-input", placeholder: "ChickenFan99", required: true, maxlength: 50 %>
       </div>
 
       <div class="form-group">
         <%= f.label :email, class: "form-label" %>
-        <%= f.email_field :email, autocomplete: "email", class: "form-input", placeholder: "you@example.com" %>
+        <%= f.email_field :email, autocomplete: "email", class: "form-input", placeholder: "you@example.com", required: true %>
       </div>
 
       <div class="form-group">
@@ -31,12 +31,12 @@
         <% if @minimum_password_length %>
           <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.3rem;"><%= t("devise.password_chars_minimum", count: @minimum_password_length) %></p>
         <% end %>
-        <%= f.password_field :password, autocomplete: "new-password", class: "form-input", placeholder: "••••••••" %>
+        <%= f.password_field :password, autocomplete: "new-password", class: "form-input", placeholder: "••••••••", required: true, minlength: 10 %>
       </div>
 
       <div class="form-group">
         <%= f.label :password_confirmation, t("devise.registrations.new.confirm_password"), class: "form-label" %>
-        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-input", placeholder: "••••••••" %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-input", placeholder: "••••••••", required: true, minlength: 10 %>
       </div>
 
       <%= f.submit t("devise.registrations.new.submit"), class: "btn btn-primary btn-block btn-lg" %>

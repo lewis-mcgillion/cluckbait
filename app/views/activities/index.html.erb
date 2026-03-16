@@ -8,12 +8,13 @@
 </div>
 
 <div class="container" style="padding: 2rem 1.5rem;">
+  <%= turbo_stream_from current_user, :activities %>
   <% if @activities.any? %>
-    <div class="activity-feed">
+    <div class="activity-feed" id="activity-feed">
       <%= render partial: "activity", collection: @activities %>
     </div>
 
-    <% if @activities.size == 20 %>
+    <% if @activities.size >= 20 %>
       <div class="activity-load-more">
         <%= link_to t("activities.load_more"), activities_path(page: @page + 1), class: "btn btn-outline" %>
       </div>

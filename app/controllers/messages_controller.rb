@@ -11,6 +11,12 @@ class MessagesController < ApplicationController
     @message = @conversation.messages.build(message_params)
     @message.user = current_user
 
+    # Clear blank shareable fields that come from the form
+    if @message.shareable_type.blank?
+      @message.shareable_type = nil
+      @message.shareable_id = nil
+    end
+
     if params[:message][:shareable_type].present? && params[:message][:shareable_id].present?
       shareable_class = SHAREABLE_CLASSES[params[:message][:shareable_type]]
       shareable = shareable_class&.find_by(id: params[:message][:shareable_id])
@@ -31,19 +37,19 @@ class MessagesController < ApplicationController
     else
       respond_to do |format|
         format.turbo_stream {
-          error_html = <<~HTML
-            <input type="text" name="message[body]" id="message_body"
-                   class="chat-input chat-input-error"
-                   placeholder="Message cannot be empty"
-                   autocomplete="off" data-message-form-target="input">
-          HTML
-          render turbo_stream: turbo_stream.update("message_body") {
-            render_to_string(inline: error_html)
+          render turbo_stream: turbo_stream.replace("message_body") {
+            render_to_string(inline: <<~HTML)
+              <input type="text" name="message[body]" id="message_body"
+                     class="chat-input chat-input-error"
+                     placeholder="Message cannot be empty"
+                     autocomplete="off" data-message-form-target="input">
+            HTML
           }
         }
         format.html do
           @messages = @conversation.messages.ordered.includes(:user, :shareable)
           @friends = current_user.friends
+          @suggested_shops = []
           render "conversations/show", status: :unprocessable_entity
         end
       end

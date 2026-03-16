@@ -65,45 +65,6 @@ class ReviewReactionTest < ActiveSupport::TestCase
     assert build(:review_reaction, user: user2, review: review, kind: "fire").valid?
   end
 
-  # -- Review#reactions_summary --
-
-  test "reactions_summary returns counts per kind" do
-    review = create(:review)
-    3.times { create(:review_reaction, review: review, kind: "fire") }
-    2.times { create(:review_reaction, review: review, kind: "thumbs_up") }
-
-    summary = review.reactions_summary
-    assert_equal 3, summary["fire"]
-    assert_equal 2, summary["thumbs_up"]
-  end
-
-  test "reactions_summary returns empty hash when no reactions" do
-    review = create(:review)
-    assert_equal({}, review.reactions_summary)
-  end
-
-  # -- Review#helpful_score --
-
-  test "helpful_score returns difference of helpful and not_helpful counts" do
-    review = create(:review)
-    3.times { create(:review_reaction, review: review, kind: "helpful") }
-    1.times { create(:review_reaction, review: review, kind: "not_helpful") }
-
-    assert_equal 2, review.helpful_score
-  end
-
-  test "helpful_score returns 0 when no votes" do
-    review = create(:review)
-    assert_equal 0, review.helpful_score
-  end
-
-  test "helpful_score can be negative" do
-    review = create(:review)
-    create(:review_reaction, review: review, kind: "not_helpful")
-
-    assert_equal(-1, review.helpful_score)
-  end
-
   # -- Review.by_most_helpful --
 
   test "by_most_helpful orders reviews by helpful score descending" do

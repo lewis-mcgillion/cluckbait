@@ -33,6 +33,7 @@ class Review < ApplicationRecord
 
   after_create :create_activity
   after_create :evaluate_badges
+  after_create_commit :broadcast_review
 
   def reactions_summary
     reactions.group(:kind).count
@@ -72,6 +73,19 @@ class Review < ApplicationRecord
 
   def create_activity
     Activity.create!(user: user, action: "posted_review", trackable: self)
+  rescue => e
+    Rails.logger.error("Failed to create activity for review #{id}: #{e.message}")
+  end
+
+  def broadcast_review
+    broadcast_prepend_to(
+      chicken_shop, :reviews,
+      target: "reviews_list",
+      partial: "reviews/review_card",
+      locals: { review: self, chicken_shop: chicken_shop, current_user: nil }
+    )
+  rescue => e
+    Rails.logger.error("Failed to broadcast review #{id}: #{e.message}")
   end
 
   def evaluate_badges

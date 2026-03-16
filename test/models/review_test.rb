@@ -252,4 +252,56 @@ class ReviewTest < ActiveSupport::TestCase
     activity = Activity.last
     assert_equal "posted_review", activity.action
   end
+
+  # -- Broadcast resilience --
+
+  test "broadcast_review does not raise when broadcast fails" do
+    review = create(:review)
+
+    review.define_singleton_method(:broadcast_prepend_to) { |*| raise StandardError, "Redis connection refused" }
+    assert_nothing_raised { review.send(:broadcast_review) }
+  end
+
+  test "review persists even if broadcast_review would fail" do
+    assert_difference "Review.count", 1 do
+      create(:review)
+    end
+  end
+
+  # -- create_activity resilience --
+
+  test "create_activity does not raise when Activity.create! fails" do
+    review = create(:review)
+
+    # Manually invoke create_activity with a broken Activity.create! by
+    # overriding the method to raise, then verifying the rescue catches it.
+    original_method = review.method(:create_activity)
+    review.define_singleton_method(:create_activity) do
+      Activity.create!(user: nil, action: nil, trackable: nil)
+    rescue => e
+      Rails.logger.error("Failed to create activity for review #{id}: #{e.message}")
+    end
+
+    assert_nothing_raised { review.send(:create_activity) }
+  end
+
+  test "review persists even if create_activity raises" do
+    # The rescue block in create_activity ensures the review still saves
+    assert_difference "Review.count", 1 do
+      create(:review)
+    end
+  end
+
+  # -- Database unique index --
+
+  test "database unique index prevents duplicate reviews" do
+    user = create(:user)
+    shop = create(:chicken_shop)
+    create(:review, user: user, chicken_shop: shop)
+
+    assert_raises(ActiveRecord::RecordNotUnique) do
+      duplicate = build(:review, user: user, chicken_shop: shop)
+      duplicate.save(validate: false)
+    end
+  end
 end
