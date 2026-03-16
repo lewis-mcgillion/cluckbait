@@ -44,10 +44,6 @@ class SocialAccountTest < ActiveSupport::TestCase
     assert_includes duplicate.errors[:provider], "is already linked to your account"
   end
 
-  test "display_provider returns human-readable name" do
-    assert_equal "Google", build(:social_account, :google).display_provider
-  end
-
   test "same uid allowed for different providers" do
     create(:social_account, provider: "google_oauth2", uid: "shared-uid")
     other = build(:social_account, provider: "google_oauth2", uid: "shared-uid", user: create(:user))

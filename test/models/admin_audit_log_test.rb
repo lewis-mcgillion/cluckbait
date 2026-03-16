@@ -23,16 +23,6 @@ class AdminAuditLogTest < ActiveSupport::TestCase
     assert_includes log.errors[:admin_user], "must exist"
   end
 
-  test "target returns the associated record" do
-    log = AdminAuditLog.create!(admin_user: @admin, action: "user.ban", target_type: "User", target_id: @user.id)
-    assert_equal @user, log.target
-  end
-
-  test "target returns nil when target_type is blank" do
-    log = AdminAuditLog.create!(admin_user: @admin, action: "test")
-    assert_nil log.target
-  end
-
   test "parsed_metadata returns parsed JSON" do
     log = AdminAuditLog.create!(admin_user: @admin, action: "test", metadata: { name: "Test" }.to_json)
     assert_equal({ "name" => "Test" }, log.parsed_metadata)

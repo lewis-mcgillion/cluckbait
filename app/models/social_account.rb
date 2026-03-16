@@ -9,10 +9,4 @@ class SocialAccount < ApplicationRecord
   PROVIDERS = %w[google_oauth2].freeze
 
   validates :provider, inclusion: { in: PROVIDERS }
-
-  def display_provider
-    case provider
-    when "google_oauth2" then "Google"
-    end
-  end
 end

@@ -30,22 +30,18 @@ class TypingChannelTest < ActionCable::Channel::TestCase
   test "broadcasts typing status" do
     subscribe conversation_id: @conversation.id
 
-    perform :typing, typing: true
-
-    broadcasts = broadcasts_for(TypingChannel.broadcasting_for(@conversation))
-    assert broadcasts.any? { |b|
-      b["type"] == "typing" && b["user_id"] == @sender.id && b["typing"] == true
-    }
+    assert_broadcast_on(TypingChannel.broadcasting_for(@conversation),
+      "type" => "typing", "user_id" => @sender.id, "typing" => true) do
+      perform :typing, typing: true
+    end
   end
 
   test "broadcasts stopped typing status" do
     subscribe conversation_id: @conversation.id
 
-    perform :typing, typing: false
-
-    broadcasts = broadcasts_for(TypingChannel.broadcasting_for(@conversation))
-    assert broadcasts.any? { |b|
-      b["type"] == "typing" && b["user_id"] == @sender.id && b["typing"] == false
-    }
+    assert_broadcast_on(TypingChannel.broadcasting_for(@conversation),
+      "type" => "typing", "user_id" => @sender.id, "typing" => false) do
+      perform :typing, typing: false
+    end
   end
 end

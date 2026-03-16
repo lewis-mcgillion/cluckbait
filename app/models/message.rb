@@ -16,10 +16,6 @@ class Message < ApplicationRecord
 
   private
 
-  def shareable_present?
-    shareable_type.present? && shareable_id.present?
-  end
-
   def user_is_participant
     return if conversation.blank?
     unless user_id == conversation.sender_id || user_id == conversation.receiver_id
