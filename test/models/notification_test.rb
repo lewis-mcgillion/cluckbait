@@ -248,7 +248,7 @@ notification.target_path
 
     # The rescue in broadcast_notification ensures the callback doesn't crash.
     # Verify friendship + notification both persist despite broadcast errors.
-    assert_difference [ "Friendship.count", "Notification.count" ], 1 do
+    assert_difference ["Friendship.count", "Notification.count"], 1 do
       create(:friendship, user: user, friend: friend)
     end
   end

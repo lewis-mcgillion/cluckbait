@@ -54,7 +54,7 @@ class LayoutTest < ActionDispatch::IntegrationTest
   test "navbar notification bell has aria-label" do
     get root_path
     assert_response :success
-    assert_select 'a.nav-bell[aria-label]'
+    assert_select "a.nav-bell[aria-label]"
   end
 
   # -- Footer headings --

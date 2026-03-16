@@ -124,7 +124,7 @@ class FriendshipsControllerTest < ActionDispatch::IntegrationTest
   # -- Broadcast resilience --
 
   test "create friend request succeeds and creates notification" do
-    assert_difference [ "Friendship.count", "Notification.count" ], 1 do
+    assert_difference ["Friendship.count", "Notification.count"], 1 do
       post friendships_path, params: { friend_id: @other_user.id }
     end
     assert_redirected_to profile_path(@other_user)

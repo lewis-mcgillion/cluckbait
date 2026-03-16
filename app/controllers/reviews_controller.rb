@@ -45,7 +45,8 @@ class ReviewsController < ApplicationController
       respond_to do |format|
         format.turbo_stream {
           render turbo_stream: turbo_stream.replace(@review) {
-            render_to_string(partial: "reviews/review_card", locals: { review: @review, chicken_shop: @chicken_shop, current_user: current_user })
+            render_to_string(partial: "reviews/review_card",
+              locals: { review: @review, chicken_shop: @chicken_shop, current_user: current_user })
           }
         }
         format.html { redirect_to @chicken_shop, notice: "Review updated! 🍗" }
