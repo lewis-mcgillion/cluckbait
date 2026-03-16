@@ -43,5 +43,7 @@ class Message < ApplicationRecord
       partial: "messages/message",
       locals: { message: self, current_user: recipient }
     )
+  rescue => e
+    Rails.logger.error("Failed to broadcast message #{id}: #{e.message}")
   end
 end

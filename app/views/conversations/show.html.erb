@@ -3,10 +3,7 @@
 
 <section class="section">
   <div class="container">
-    <div class="chat-container"
-         data-controller="typing-indicator"
-         data-typing-indicator-conversation-id-value="<%= @conversation.id %>"
-         data-typing-indicator-user-id-value="<%= current_user.id %>">
+    <div class="chat-container">
       <%= turbo_stream_from current_user, @conversation %>
 
       <!-- Chat Header -->
@@ -41,17 +38,6 @@
             <p><%= t("conversations.show.start_conversation", name: other.name) %></p>
           </div>
         <% end %>
-      </div>
-
-      <!-- Typing Indicator -->
-      <div class="typing-indicator" id="typing-indicator" style="display: none;"
-           data-typing-indicator-target="indicator">
-        <span class="typing-dots">
-          <span class="typing-dot"></span>
-          <span class="typing-dot"></span>
-          <span class="typing-dot"></span>
-        </span>
-        <span class="typing-text"><%= other.name %> <%= t("conversations.show.is_typing", default: "is typing...") %></span>
       </div>
 
       <!-- Message Form -->
@@ -102,7 +88,7 @@
           </div>
         </div>
 
-        <%= form_with(model: [@conversation, @message], class: "chat-form", data: { turbo_frame: "chat-messages-frame", controller: "message-form", action: "input->typing-indicator#onInput" }) do |f| %>
+        <%= form_with(model: [@conversation, @message], class: "chat-form", data: { turbo_frame: "chat-messages-frame", controller: "message-form" }) do |f| %>
           <%= f.hidden_field :shareable_type, data: { message_form_target: "shareableType" } %>
           <%= f.hidden_field :shareable_id, data: { message_form_target: "shareableId" } %>
           <div class="chat-input-row">
