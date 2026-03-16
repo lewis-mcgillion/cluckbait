@@ -4,6 +4,19 @@
     <title><%= content_for(:title) || t("shared.cluckbait") %></title>
     <meta name="description" content="<%= content_for(:meta_description) || t("home.meta_description") %>">
     <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="<%= content_for(:title) || t("shared.cluckbait") %>">
+    <meta property="og:description" content="<%= content_for(:meta_description) || t("home.meta_description") %>">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="<%= content_for(:og_image) || "/icon.png" %>">
+    <meta property="og:site_name" content="Cluckbait">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="<%= content_for(:title) || t("shared.cluckbait") %>">
+    <meta name="twitter:description" content="<%= content_for(:meta_description) || t("home.meta_description") %>">
+    <meta name="twitter:image" content="<%= content_for(:og_image) || "/icon.png" %>">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
