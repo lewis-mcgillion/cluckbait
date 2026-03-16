@@ -31,10 +31,9 @@
         <% @leaders.each_with_index do |leader, index| %>
           <div class="leaderboard-row <%= 'top-three' if index < 3 %>">
             <span class="lb-rank">
-              <% case index %>
-              <% when 0 %> 🥇
-              <% when 1 %> 🥈
-              <% when 2 %> 🥉
+              <% if index == 0 %> 🥇
+              <% elsif index == 1 %> 🥈
+              <% elsif index == 2 %> 🥉
               <% else %> <%= index + 1 %>
               <% end %>
             </span>

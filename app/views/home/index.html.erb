@@ -86,10 +86,9 @@
       <% @top_contributors.each_with_index do |contributor, index| %>
         <%= link_to profile_path(contributor), class: "contributor-card" do %>
           <span class="contributor-rank">
-            <% case index %>
-            <% when 0 %> 🥇
-            <% when 1 %> 🥈
-            <% when 2 %> 🥉
+            <% if index == 0 %> 🥇
+            <% elsif index == 1 %> 🥈
+            <% elsif index == 2 %> 🥉
             <% else %> #<%= index + 1 %>
             <% end %>
           </span>
