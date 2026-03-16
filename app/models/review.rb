@@ -34,14 +34,6 @@ class Review < ApplicationRecord
   after_create :create_activity
   after_create_commit :broadcast_review
 
-  def reactions_summary
-    reactions.group(:kind).count
-  end
-
-  def helpful_score
-    reactions.where(kind: "helpful").count - reactions.where(kind: "not_helpful").count
-  end
-
   def rating_label
     case rating
     when 5 then "Outstanding"

@@ -23,10 +23,10 @@ class PresenceChannelTest < ActionCable::Channel::TestCase
     friend = create(:user)
     create(:friendship, :accepted, user: @user, friend: friend)
 
-    subscribe
-
-    broadcasts = broadcasts_for(PresenceChannel.broadcasting_for(friend))
-    assert broadcasts.any? { |b| b["type"] == "presence" && b["user_id"] == @user.id && b["online"] == true }
+    assert_broadcast_on(PresenceChannel.broadcasting_for(friend),
+      "type" => "presence", "user_id" => @user.id, "online" => true) do
+      subscribe
+    end
   end
 
   test "broadcasts offline status to friends on unsubscribe" do
@@ -34,9 +34,10 @@ class PresenceChannelTest < ActionCable::Channel::TestCase
     create(:friendship, :accepted, user: @user, friend: friend)
 
     subscribe
-    unsubscribe
 
-    broadcasts = broadcasts_for(PresenceChannel.broadcasting_for(friend))
-    assert broadcasts.any? { |b| b["type"] == "presence" && b["user_id"] == @user.id && b["online"] == false }
+    assert_broadcast_on(PresenceChannel.broadcasting_for(friend),
+      "type" => "presence", "user_id" => @user.id, "online" => false) do
+      unsubscribe
+    end
   end
 end

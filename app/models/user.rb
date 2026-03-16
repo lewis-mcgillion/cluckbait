@@ -93,16 +93,6 @@ class User < ApplicationRecord
     wishlist_items.count
   end
 
-  # Batch-load all navbar badge counts in a single method to avoid N+1
-  def nav_counts
-    @nav_counts ||= {
-      wishlist: wishlist_items.count,
-      pending_friends: pending_friend_requests.count,
-      unread_notifications: notifications.unread.count,
-      unread_conversations: unread_conversations_count
-    }
-  end
-
   def unread_notifications_count
     notifications.unread.count
   end

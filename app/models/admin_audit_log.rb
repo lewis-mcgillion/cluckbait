@@ -5,12 +5,6 @@ class AdminAuditLog < ApplicationRecord
 
   scope :recent, -> { order(created_at: :desc) }
 
-  def target
-    return nil unless target_type.present? && target_id.present?
-
-    target_type.constantize.find_by(id: target_id)
-  end
-
   def parsed_metadata
     return {} if metadata.blank?
 
