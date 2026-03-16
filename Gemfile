@@ -49,8 +49,8 @@ gem "omniauth-rails_csrf_protection"
 gem "rack-attack"
 
 # Error tracking and monitoring
-gem "sentry-ruby"
 gem "sentry-rails"
+gem "sentry-ruby"
 
 # Geocoding
 gem "geocoder"
