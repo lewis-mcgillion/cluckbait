@@ -20,11 +20,15 @@ export default class extends Controller {
   }
 
   disconnect() {
-    if (this.subscription) {
-      this.subscription.unsubscribe()
-    }
     if (this.typingTimeout) {
       clearTimeout(this.typingTimeout)
+    }
+    if (this.hideTimeout) {
+      clearTimeout(this.hideTimeout)
+    }
+    if (this.subscription) {
+      this.subscription.perform("typing", { typing: false })
+      this.subscription.unsubscribe()
     }
   }
 
@@ -46,6 +50,16 @@ export default class extends Controller {
     if (data.user_id === this.userIdValue) return
     if (!this.hasIndicatorTarget) return
 
-    this.indicatorTarget.style.display = data.typing ? "flex" : "none"
+    if (this.hideTimeout) clearTimeout(this.hideTimeout)
+
+    if (data.typing) {
+      this.indicatorTarget.style.display = "flex"
+      // Auto-hide after 3s as a safety net in case "stopped typing" is never received
+      this.hideTimeout = setTimeout(() => {
+        this.indicatorTarget.style.display = "none"
+      }, 3000)
+    } else {
+      this.indicatorTarget.style.display = "none"
+    }
   }
 }

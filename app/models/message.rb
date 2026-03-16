@@ -6,7 +6,7 @@ class Message < ApplicationRecord
   ALLOWED_SHAREABLE_TYPES = %w[ChickenShop Review].freeze
 
   validates :body, presence: true, length: { maximum: 2000 }
-  validates :shareable_type, inclusion: { in: ALLOWED_SHAREABLE_TYPES }, allow_nil: true
+  validates :shareable_type, inclusion: { in: ALLOWED_SHAREABLE_TYPES }, allow_blank: true
   validate :user_is_participant
 
   scope :ordered, -> { order(created_at: :asc) }
