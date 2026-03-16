@@ -70,7 +70,20 @@
             <div class="share-tab-pane active" data-tab="shops" data-share-panel-target="shopsPane">
               <input type="text" class="share-search" placeholder="<%= t("conversations.show.search_shops") %>" data-action="input->share-panel#searchShops" data-share-panel-target="shopSearch">
               <div class="share-items" data-share-panel-target="shopResults">
-                <p class="text-muted share-hint"><%= t("conversations.show.search_hint") %></p>
+                <% if @suggested_shops.any? %>
+                  <p class="text-muted share-hint"><%= t("conversations.show.suggested_shops", default: "Suggested") %></p>
+                  <% @suggested_shops.each do |shop| %>
+                    <button type="button" class="share-item" data-action="click->share-panel#selectShop" data-shareable-type="ChickenShop" data-shareable-id="<%= shop.id %>" data-shareable-label="<%= shop.name %>">
+                      <span class="share-item-icon">🍗</span>
+                      <div class="share-item-info">
+                        <span class="share-item-title"><%= shop.name %></span>
+                        <span class="share-item-meta"><%= shop.city %> · <%= shop.average_rating %> ★</span>
+                      </div>
+                    </button>
+                  <% end %>
+                <% else %>
+                  <p class="text-muted share-hint"><%= t("conversations.show.search_hint") %></p>
+                <% end %>
               </div>
             </div>
             <div class="share-tab-pane" data-tab="reviews" data-share-panel-target="reviewsPane">

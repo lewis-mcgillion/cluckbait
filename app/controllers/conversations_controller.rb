@@ -15,6 +15,7 @@ class ConversationsController < ApplicationController
     @messages = @conversation.messages.ordered.includes(:user, :shareable)
     @message = Message.new
     @friends = current_user.friends
+    @suggested_shops = suggested_shops
     ConversationRead.mark_read!(current_user, @conversation)
   end
 
@@ -34,5 +35,24 @@ class ConversationsController < ApplicationController
     end
 
     redirect_to conversation_path(@conversation)
+  end
+
+  private
+
+  def suggested_shops
+    reviewed_ids = current_user.reviews.order(created_at: :desc).limit(5).pluck(:chicken_shop_id)
+    created_ids = ChickenShop.where(user_id: current_user.id).order(created_at: :desc).limit(5).pluck(:id)
+    user_shop_ids = (reviewed_ids + created_ids).uniq.first(5)
+
+    user_shops = user_shop_ids.any? ? ChickenShop.where(id: user_shop_ids) : ChickenShop.none
+
+    remaining = 10 - user_shops.size
+    popular_shops = if remaining > 0
+      ChickenShop.by_most_popular.where.not(id: user_shop_ids).limit(remaining)
+    else
+      ChickenShop.none
+    end
+
+    user_shops.to_a + popular_shops.to_a
   end
 end

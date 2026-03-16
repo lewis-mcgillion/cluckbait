@@ -11,6 +11,12 @@ class MessagesController < ApplicationController
     @message = @conversation.messages.build(message_params)
     @message.user = current_user
 
+    # Clear blank shareable fields that come from the form
+    if @message.shareable_type.blank?
+      @message.shareable_type = nil
+      @message.shareable_id = nil
+    end
+
     if params[:message][:shareable_type].present? && params[:message][:shareable_id].present?
       shareable_class = SHAREABLE_CLASSES[params[:message][:shareable_type]]
       shareable = shareable_class&.find_by(id: params[:message][:shareable_id])
@@ -43,6 +49,7 @@ class MessagesController < ApplicationController
         format.html do
           @messages = @conversation.messages.ordered.includes(:user, :shareable)
           @friends = current_user.friends
+          @suggested_shops = []
           render "conversations/show", status: :unprocessable_entity
         end
       end
