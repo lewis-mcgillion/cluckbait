@@ -1,3 +1,58 @@
-<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="256" cy="256" r="256" fill="red"/>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="wing" x1="0.2" y1="0" x2="0.8" y2="1">
+      <stop offset="0%" stop-color="#F6A623"/>
+      <stop offset="50%" stop-color="#D4881E"/>
+      <stop offset="100%" stop-color="#B56A0F"/>
+    </linearGradient>
+    <linearGradient id="bone" x1="0" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#FFFDF5"/>
+      <stop offset="100%" stop-color="#E0D8C8"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <circle cx="256" cy="256" r="256" fill="#DC2626"/>
+  <!-- Shadow -->
+  <ellipse cx="270" cy="320" rx="140" ry="55" fill="#B91C1C" opacity="0.35"/>
+  <!-- Wing piece - flat triangular wing shape -->
+  <path d="M130 200 C140 170, 175 145, 220 135 C270 124, 330 130, 375 155 C405 172, 420 198, 415 230 C410 260, 385 300, 350 330 C315 358, 270 372, 225 370 C185 368, 150 348, 135 318 C118 285, 118 240, 130 200Z" fill="url(#wing)" stroke="#996010" stroke-width="3.5"/>
+  <!-- Crispy coating texture bumps around edges -->
+  <circle cx="150" cy="210" r="12" fill="#C87D14" opacity="0.5"/>
+  <circle cx="140" cy="250" r="10" fill="#C87D14" opacity="0.4"/>
+  <circle cx="145" cy="290" r="11" fill="#C87D14" opacity="0.45"/>
+  <circle cx="160" cy="325" r="10" fill="#C87D14" opacity="0.4"/>
+  <circle cx="195" cy="360" r="11" fill="#C87D14" opacity="0.4"/>
+  <circle cx="240" cy="372" r="10" fill="#C87D14" opacity="0.35"/>
+  <circle cx="290" cy="368" r="11" fill="#C87D14" opacity="0.35"/>
+  <circle cx="330" cy="348" r="10" fill="#C87D14" opacity="0.4"/>
+  <circle cx="365" cy="315" r="11" fill="#C87D14" opacity="0.4"/>
+  <circle cx="395" cy="270" r="10" fill="#C87D14" opacity="0.35"/>
+  <circle cx="415" cy="225" r="9" fill="#C87D14" opacity="0.35"/>
+  <circle cx="400" cy="175" r="10" fill="#C87D14" opacity="0.4"/>
+  <circle cx="365" cy="148" r="9" fill="#C87D14" opacity="0.35"/>
+  <circle cx="310" cy="132" r="10" fill="#C87D14" opacity="0.35"/>
+  <circle cx="255" cy="128" r="9" fill="#C87D14" opacity="0.35"/>
+  <circle cx="200" cy="140" r="10" fill="#C87D14" opacity="0.4"/>
+  <circle cx="165" cy="165" r="9" fill="#C87D14" opacity="0.4"/>
+  <!-- Wing texture ridges -->
+  <path d="M180 185 C230 175, 310 180, 370 210" stroke="#996010" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.3"/>
+  <path d="M165 225 C220 212, 310 215, 385 245" stroke="#996010" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.3"/>
+  <path d="M155 265 C215 250, 305 252, 375 280" stroke="#996010" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.3"/>
+  <path d="M160 305 C215 290, 295 290, 350 315" stroke="#996010" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.25"/>
+  <!-- Highlight -->
+  <path d="M185 155 C220 140, 280 133, 340 145 C290 130, 225 133, 185 155Z" fill="white" opacity="0.15"/>
+  <!-- Bone 1 - upper, angled up-left -->
+  <line x1="175" y1="175" x2="110" y2="115" stroke="url(#bone)" stroke-width="10" stroke-linecap="round"/>
+  <line x1="175" y1="175" x2="110" y2="115" stroke="#C8BFA8" stroke-width="10" stroke-linecap="round" opacity="0.3"/>
+  <line x1="175" y1="175" x2="110" y2="115" stroke="url(#bone)" stroke-width="8" stroke-linecap="round"/>
+  <!-- Bone 1 knob -->
+  <circle cx="107" cy="112" r="9" fill="url(#bone)" stroke="#C8BFA8" stroke-width="1.5"/>
+  <circle cx="100" cy="107" r="6" fill="url(#bone)" stroke="#C8BFA8" stroke-width="1"/>
+  <!-- Bone 2 - lower, angled left -->
+  <line x1="155" y1="210" x2="85" y2="175" stroke="url(#bone)" stroke-width="10" stroke-linecap="round"/>
+  <line x1="155" y1="210" x2="85" y2="175" stroke="#C8BFA8" stroke-width="10" stroke-linecap="round" opacity="0.3"/>
+  <line x1="155" y1="210" x2="85" y2="175" stroke="url(#bone)" stroke-width="8" stroke-linecap="round"/>
+  <!-- Bone 2 knob -->
+  <circle cx="82" cy="173" r="9" fill="url(#bone)" stroke="#C8BFA8" stroke-width="1.5"/>
+  <circle cx="76" cy="167" r="6" fill="url(#bone)" stroke="#C8BFA8" stroke-width="1"/>
 </svg>
