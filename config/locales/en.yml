@@ -528,6 +528,7 @@ en:
           items:
             - "Remember me: keeps you signed in between browser sessions (only if you choose this option at sign-in)"
             - "Language preference: remembers your chosen language"
+            - "Analytics: if you accept all cookies, we record anonymised visit data (IP address and timestamp) to count unique visitors. No visit data is collected if you choose essential cookies only"
         third_party:
           title: "Third-Party Cookies"
           body: "The following third-party services may set cookies when you use Cluckbait:"
