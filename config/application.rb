@@ -32,8 +32,11 @@ module Cluckbait
     config.i18n.load_path += Dir[Rails.root.join("config", "locales", "**", "*.{rb,yml}")]
 
     # ActiveRecord Encryption (for OAuth tokens and other sensitive data)
-    config.active_record.encryption.primary_key = ENV["ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY"] || "dev-primary-key"
-    config.active_record.encryption.deterministic_key = ENV["ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY"] || "dev-deterministic-key"
-    config.active_record.encryption.key_derivation_salt = ENV["ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT"] || "dev-key-derivation-salt"
+    config.active_record.encryption.primary_key =
+      ENV["ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY"] || "dev-primary-key"
+    config.active_record.encryption.deterministic_key =
+      ENV["ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY"] || "dev-deterministic-key"
+    config.active_record.encryption.key_derivation_salt =
+      ENV["ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT"] || "dev-key-derivation-salt"
   end
 end
