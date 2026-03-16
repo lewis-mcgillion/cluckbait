@@ -28,10 +28,12 @@ class User < ApplicationRecord
 
   has_many :admin_audit_logs, foreign_key: :admin_user_id, dependent: :destroy
 
+  attr_accessor :skip_password_complexity
+
   validates :display_name, presence: true, length: { maximum: 50 }
   validates :bio, length: { maximum: 500 }
   validates :locale, inclusion: { in: I18n.available_locales.map(&:to_s) }, allow_nil: true
-  validate :password_complexity
+  validate :password_complexity, unless: :skip_password_complexity
 
   def admin?
     admin
