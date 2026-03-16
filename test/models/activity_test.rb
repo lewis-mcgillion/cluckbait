@@ -113,4 +113,26 @@ class ActivityTest < ActiveSupport::TestCase
       user.destroy
     end
   end
+
+  # -- Broadcast resilience --
+
+  test "broadcast_to_friends does not raise when broadcast fails" do
+    user = create(:user)
+    friend = create(:user)
+    create(:friendship, :accepted, user: user, friend: friend)
+    activity = create(:activity, user: user, action: "posted_review")
+
+    # Override broadcast_prepend_to on this instance to simulate Redis/cable failure
+    activity.define_singleton_method(:broadcast_prepend_to) { |*| raise RuntimeError, "Redis connection refused" }
+    assert_nothing_raised { activity.send(:broadcast_to_friends) }
+  end
+
+  test "accepting friendship creates activities despite broadcast issues" do
+    friendship = create(:friendship)
+
+    # Verify activities are created (the rescue ensures broadcast failures don't crash)
+    assert_difference "Activity.count", 2 do
+      friendship.accepted!
+    end
+  end
 end

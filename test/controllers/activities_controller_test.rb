@@ -79,4 +79,19 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
     get activities_path
     assert_select ".activity-card", 0
   end
+
+  # -- Pagination --
+
+  test "index shows load more link when exactly 20 activities" do
+    sign_in @user
+    20.times do
+      shop = create(:chicken_shop)
+      review = create(:review, user: @friend, chicken_shop: shop)
+      Activity.create!(user: @friend, action: "posted_review", trackable: review)
+    end
+
+    get activities_path
+    assert_response :success
+    assert_select ".activity-load-more a", minimum: 1
+  end
 end

@@ -170,6 +170,13 @@ en:
       photo_label: "Photo"
       submit: "Add Chicken Shop 🍗"
       back: "← Back to shops"
+    edit:
+      title: "Edit %{name} — Cluckbait"
+      heading: "Edit Chicken Shop ✏️"
+      subtitle: "Update the details for %{name}."
+      submit: "Save Changes 🍗"
+      back: "← Back to shop"
+      edit_button: "Edit Shop"
     card:
       reviews:
         one: "%{count} review"

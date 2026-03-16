@@ -27,10 +27,31 @@ class ReviewsController < ApplicationController
           @has_next_page = fetched.length > @per_page
           @reviews = @has_next_page ? fetched.first(@per_page) : fetched
           @wishlist_item = current_user ? current_user.wishlist_items.find_by(chicken_shop: @chicken_shop) : nil
-          flash.now[:alert] = @review.errors.full_messages.join(", ")
+          flash.now[:alert] = @review.errors.full_messages.to_sentence
           render "chicken_shops/show", status: :unprocessable_entity
         end
       end
+    end
+  end
+
+  def edit
+    @review = current_user.reviews.find(params[:id])
+  end
+
+  def update
+    @review = current_user.reviews.find(params[:id])
+
+    if @review.update(review_params)
+      respond_to do |format|
+        format.turbo_stream {
+          render turbo_stream: turbo_stream.replace(@review) {
+            render_to_string(partial: "reviews/review_card", locals: { review: @review, chicken_shop: @chicken_shop, current_user: current_user })
+          }
+        }
+        format.html { redirect_to @chicken_shop, notice: "Review updated! 🍗" }
+      end
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 

@@ -29,5 +29,7 @@ class PresenceChannel < ApplicationCable::Channel
         online: online
       })
     end
+  rescue => e
+    Rails.logger.error("Failed to broadcast presence for user #{current_user&.id}: #{e.message}")
   end
 end

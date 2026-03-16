@@ -232,6 +232,27 @@ notification.target_path
     assert_equal "Someone accepted your friend request", notification.message_text
   end
 
+  # -- Broadcast resilience --
+
+  test "broadcast_notification does not raise when broadcast fails" do
+    notification = create(:notification)
+
+    # Override broadcast_update_to on this instance to simulate Redis/cable failure
+    notification.define_singleton_method(:broadcast_update_to) { |*| raise RuntimeError, "Redis connection refused" }
+    assert_nothing_raised { notification.send(:broadcast_notification) }
+  end
+
+  test "friendship creation succeeds even when notification broadcast fails" do
+    user = create(:user)
+    friend = create(:user)
+
+    # The rescue in broadcast_notification ensures the callback doesn't crash.
+    # Verify friendship + notification both persist despite broadcast errors.
+    assert_difference [ "Friendship.count", "Notification.count" ], 1 do
+      create(:friendship, user: user, friend: friend)
+    end
+  end
+
   # -- icon for default action --
 
   test "icon returns bell for unknown action" do

@@ -1,0 +1,58 @@
+<% content_for(:title) { "Edit Review — #{@chicken_shop.name}" } %>
+
+<section class="section">
+  <div class="container container-narrow">
+    <h1 class="page-title">Edit your review of <%= @chicken_shop.name %></h1>
+
+    <%= form_with(model: [@chicken_shop, @review], class: "review-form auth-form") do |f| %>
+      <% if @review.errors.any? %>
+        <div class="form-errors">
+          <% @review.errors.full_messages.each do |msg| %>
+            <p><%= msg %></p>
+          <% end %>
+        </div>
+      <% end %>
+
+      <div class="form-group" data-controller="star-rating">
+        <label class="form-label" id="rating-label"><%= t("chicken_shops.show.your_rating") %></label>
+        <%= f.hidden_field :rating, data: { star_rating_target: "input" } %>
+        <div class="star-rating-input" role="radiogroup" aria-labelledby="rating-label" data-star-rating-initial-value="<%= @review.rating %>">
+          <% (1..5).each do |i| %>
+            <span class="star <%= 'active' if i <= @review.rating %>"
+                  role="radio"
+                  tabindex="0"
+                  aria-checked="<%= i == @review.rating %>"
+                  aria-label="<%= i %> star"
+                  data-star-rating-target="star"
+                  data-value="<%= i %>"
+                  data-action="click->star-rating#select mouseenter->star-rating#hover mouseleave->star-rating#unhover keydown->star-rating#keydown">★</span>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label"><%= t("chicken_shops.show.review_title") %></label>
+        <%= f.text_field :title, class: "form-input" %>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label"><%= t("chicken_shops.show.your_review") %></label>
+        <%= f.text_area :body, class: "form-input form-textarea", rows: 5 %>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label"><%= t("chicken_shops.show.photos_optional") %></label>
+        <%= f.file_field :photos, multiple: true, class: "form-file-input", accept: "image/*" %>
+        <% if @review.photos.attached? %>
+          <p class="text-muted" style="margin-top: 0.5rem;">Currently has <%= @review.photos.count %> photo(s). Upload new ones to add more.</p>
+        <% end %>
+      </div>
+
+      <%= f.submit "Update Review 🍗", class: "btn btn-primary btn-block", data: { turbo_submits_with: "Updating..." } %>
+    <% end %>
+
+    <div class="form-footer">
+      <%= link_to "Back to #{@chicken_shop.name}", @chicken_shop, class: "form-link" %>
+    </div>
+  </div>
+</section>
