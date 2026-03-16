@@ -32,7 +32,6 @@ class Review < ApplicationRecord
   }
 
   after_create :create_activity
-  after_create :evaluate_badges
   after_create_commit :broadcast_review
 
   def reactions_summary
@@ -86,9 +85,5 @@ class Review < ApplicationRecord
     )
   rescue => e
     Rails.logger.error("Failed to broadcast review #{id}: #{e.message}")
-  end
-
-  def evaluate_badges
-    AwardBadgeJob.perform_later(user_id, categories: %w[reviews photos])
   end
 end

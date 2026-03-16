@@ -1,0 +1,56 @@
+<% content_for(:title) { t("pages.cookie_policy.title") } %>
+<% content_for(:meta_description) { t("pages.cookie_policy.meta_description") } %>
+
+<div class="legal-page">
+  <div class="container">
+    <h1><%= t("pages.cookie_policy.heading") %></h1>
+    <p class="legal-updated"><%= t("pages.cookie_policy.last_updated", date: "16 March 2026") %></p>
+
+    <div class="legal-content">
+      <section>
+        <h2><%= t("pages.cookie_policy.sections.what_are_cookies.title") %></h2>
+        <p><%= t("pages.cookie_policy.sections.what_are_cookies.body") %></p>
+      </section>
+
+      <section>
+        <h2><%= t("pages.cookie_policy.sections.essential.title") %></h2>
+        <p><%= t("pages.cookie_policy.sections.essential.body") %></p>
+        <ul>
+          <% t("pages.cookie_policy.sections.essential.items").each do |item| %>
+            <li><%= item %></li>
+          <% end %>
+        </ul>
+      </section>
+
+      <section>
+        <h2><%= t("pages.cookie_policy.sections.functional.title") %></h2>
+        <p><%= t("pages.cookie_policy.sections.functional.body") %></p>
+        <ul>
+          <% t("pages.cookie_policy.sections.functional.items").each do |item| %>
+            <li><%= item %></li>
+          <% end %>
+        </ul>
+      </section>
+
+      <section>
+        <h2><%= t("pages.cookie_policy.sections.third_party.title") %></h2>
+        <p><%= t("pages.cookie_policy.sections.third_party.body") %></p>
+        <ul>
+          <% t("pages.cookie_policy.sections.third_party.items").each do |item| %>
+            <li><%= item %></li>
+          <% end %>
+        </ul>
+      </section>
+
+      <section>
+        <h2><%= t("pages.cookie_policy.sections.managing_cookies.title") %></h2>
+        <p><%= t("pages.cookie_policy.sections.managing_cookies.body") %></p>
+      </section>
+
+      <section>
+        <h2><%= t("pages.cookie_policy.sections.contact.title") %></h2>
+        <p><%= t("pages.cookie_policy.sections.contact.body") %></p>
+      </section>
+    </div>
+  </div>
+</div>

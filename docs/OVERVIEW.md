@@ -9,24 +9,29 @@ A social platform for discovering and reviewing chicken shops across the UK. Bro
 - **Reviews** with 1–5 star ratings, written text, photo uploads, and emoji reactions
 - **Advanced search** — filter by name, city, rating range, review count, and photos
 - **Wishlist** — save shops to try later and mark them as visited
-- **Social features** — friend requests, activity feed, direct messaging
-- **Notifications** — alerts for friend requests, acceptances, and new messages
+- **Social features** — friend requests, activity feed, direct messaging with shop/review sharing
+- **Real-time notifications** — alerts for friend requests, acceptances, and new messages via Turbo Streams
+- **Admin panel** — user management, shop moderation, review moderation, audit logs
+- **Localization** — 40+ languages
 - **992 seed reviews** across 5 demo accounts so the app feels alive from the start
 
 ## Tech Stack
 
 | Layer | Technology |
 |---|---|
-| Backend | Ruby on Rails 8.1 |
+| Backend | Ruby on Rails 8.1 (Ruby 3.4.1) |
 | Frontend | Hotwire (Turbo + Stimulus), Tailwind CSS |
-| Database | SQLite3 |
-| Auth | Devise (with lockable + timeoutable) |
+| Real-time | Turbo Streams + Action Cable (Solid Cable) |
+| Database | PostgreSQL 17 |
+| Auth | Devise (lockable, timeoutable) + OmniAuth (Google) |
 | File Uploads | Active Storage |
 | Maps | Leaflet.js + OpenStreetMap |
 | Asset Pipeline | Propshaft + Importmap |
 | Background Jobs | Solid Queue |
 | Caching | Solid Cache |
-| Deployment | Kamal + Thruster |
+| Monitoring | Sentry |
+| Rate Limiting | Rack::Attack |
+| Deployment | Docker + Caddy + GitHub Actions → DigitalOcean |
 
 ## Features
 
@@ -66,6 +71,19 @@ Get notified when someone sends you a friend request, accepts yours, or messages
 
 Users can set a display name, write a bio, and upload an avatar. Profile pages show review history, average rating given, and wishlist items.
 
+### Admin Panel
+
+Admin users can manage the platform through a dedicated admin area:
+
+- **Users** — view all users, ban/unban accounts
+- **Shops** — edit or remove chicken shops
+- **Reviews** — moderate and remove reviews
+- **Audit Logs** — track all admin actions
+
+### Localization
+
+The app supports 40+ languages. Users can switch language via the locale selector, and the preference is stored in the session.
+
 ## Demo Accounts
 
 All demo accounts use the password `password123`.
@@ -92,13 +110,15 @@ Running `bin/rails db:seed` is idempotent — it uses `find_or_create_by!` so yo
 
 ```bash
 bin/rails test        # 341 tests, 620 assertions
-bin/rubocop -f github # Style checks (rubocop-rails-omakase)
+bin/rubocop -f github # Style checks (rubocop-github)
 ```
 
-Tests use Minitest with FactoryBot and run in parallel across 8 processes.
+Tests use Minitest with FactoryBot and run in parallel across all available CPU cores.
 
 ## Security
 
+- **Rate limiting** — Rack::Attack throttles login attempts and API requests
+- **Safe migrations** — strong_migrations catches unsafe migration patterns before production
 - **Account lockout** — locks after 5 failed login attempts (auto-unlocks after 1 hour)
 - **Session timeout** — sessions expire after 30 minutes of inactivity
 - **Paranoid mode** — login and password reset forms don't reveal whether an account exists

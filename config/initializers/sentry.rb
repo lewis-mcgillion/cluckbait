@@ -14,8 +14,8 @@ Sentry.init do |config|
   # Set the release version for tracking deployments
   config.release = ENV["GIT_REVISION"] || "unknown"
 
-  # Include request headers, IP, etc. for debugging
-  config.send_default_pii = true
+  # Disable automatic PII collection (user IPs, emails, headers) for privacy compliance
+  config.send_default_pii = false
 
   # Exclude common bot/scanner noise
   config.excluded_exceptions += [

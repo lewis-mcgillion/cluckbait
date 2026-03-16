@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_16_162500) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_16_194747) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -65,19 +65,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_16_162500) do
     t.index ["admin_user_id"], name: "index_admin_audit_logs_on_admin_user_id"
     t.index ["created_at"], name: "index_admin_audit_logs_on_created_at"
     t.index ["target_type", "target_id"], name: "index_admin_audit_logs_on_target_type_and_target_id"
-  end
-
-  create_table "badges", force: :cascade do |t|
-    t.string "category", null: false
-    t.datetime "created_at", null: false
-    t.string "description", null: false
-    t.string "icon", null: false
-    t.string "key", null: false
-    t.string "name", null: false
-    t.integer "threshold", default: 1, null: false
-    t.datetime "updated_at", null: false
-    t.index ["category"], name: "index_badges_on_category"
-    t.index ["key"], name: "index_badges_on_key", unique: true
   end
 
   create_table "chicken_shops", force: :cascade do |t|
@@ -193,16 +180,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_16_162500) do
     t.index ["user_id"], name: "index_social_accounts_on_user_id"
   end
 
-  create_table "user_badges", force: :cascade do |t|
-    t.bigint "badge_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "user_id", null: false
-    t.index ["badge_id"], name: "index_user_badges_on_badge_id"
-    t.index ["user_id", "badge_id"], name: "index_user_badges_on_user_id_and_badge_id", unique: true
-    t.index ["user_id"], name: "index_user_badges_on_user_id"
-  end
-
   create_table "users", force: :cascade do |t|
     t.boolean "admin", default: false, null: false
     t.datetime "banned_at"
@@ -255,8 +232,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_16_162500) do
   add_foreign_key "reviews", "chicken_shops"
   add_foreign_key "reviews", "users"
   add_foreign_key "social_accounts", "users"
-  add_foreign_key "user_badges", "badges"
-  add_foreign_key "user_badges", "users"
   add_foreign_key "wishlist_items", "chicken_shops"
   add_foreign_key "wishlist_items", "users"
 end
