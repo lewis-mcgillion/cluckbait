@@ -20,6 +20,6 @@ class ActivitiesController < ApplicationController
   end
 
   def page_offset
-    (current_page - 1) * PER_PAGE
+    (current_page - 1) * PER_PAGE / 10
   end
 end
